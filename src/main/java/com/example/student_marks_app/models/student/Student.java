@@ -23,6 +23,9 @@ public class Student {
 
     private Course course;
 
+    public Student() {
+    }
+
     public Student(String name, String surname, String studNum, Course course) {
         this.name = name;
         this.surname = surname;
