@@ -4,27 +4,47 @@
  */
 package com.example.student_marks_app.models.course;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author vutlh
  */
+
+@Entity
 public class Course {
     
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    
     private String courseName;
-    private ArrayList<String> modules;
+    private List<String> modules;
 
-    public Course(String courseName, ArrayList<String> modules) {
+    public Course() {
+    }
+
+    
+    public Course(String courseName, List<String> modules) {
         this.courseName = courseName;
         this.modules = modules;
+    }
+
+    public Long getId() {
+        return id;
     }
     
     public String getCourseName() {
         return courseName;
     }
 
-    public ArrayList<String> getModules() {
+    public List<String> getModules() {
         return modules;
     }
 }
