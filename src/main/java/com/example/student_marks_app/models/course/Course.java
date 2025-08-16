@@ -4,6 +4,7 @@
  */
 package com.example.student_marks_app.models.course;
 
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,6 +25,8 @@ public class Course {
     
     
     private String courseName;
+    
+    @ElementCollection
     private List<String> modules;
 
     public Course() {

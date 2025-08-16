@@ -7,6 +7,7 @@ package com.example.student_marks_app.models.student;
 import com.example.student_marks_app.models.course.Course;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 /**
  *
@@ -21,6 +22,7 @@ public class Student {
     private String name;
     private String surname;
 
+    @ManyToOne
     private Course course;
 
     public Student() {
