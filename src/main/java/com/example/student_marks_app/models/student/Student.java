@@ -14,12 +14,13 @@ import jakarta.persistence.Id;
  */
 @Entity
 public class Student {
-   @Id
-   
+
+    @Id
+    private String studNum;
+
     private String name;
     private String surname;
-    private String studNum;
-    
+
     private Course course;
 
     public Student(String name, String surname, String studNum, Course course) {
@@ -44,6 +45,5 @@ public class Student {
     public Course getCourse() {
         return course;
     }
-    
-    
+
 }
