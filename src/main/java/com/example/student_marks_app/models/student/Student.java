@@ -4,14 +4,17 @@
  */
 package com.example.student_marks_app.models.student;
 
+import com.example.student_marks_app.models.course.Course;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
 /**
  *
  * @author vutlh
  */
-
 @Entity
 public class Student {
-   @ID
+   @Id
    
     private String name;
     private String surname;

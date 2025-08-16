@@ -15,7 +15,7 @@ public class Course {
     private String courseName;
     private ArrayList<String> modules;
 
-    public Course(String courseName, String[] modules) {
+    public Course(String courseName, ArrayList<String> modules) {
         this.courseName = courseName;
         this.modules = modules;
     }
