@@ -25,7 +25,7 @@ const rendering = {
         </div>
 
         <div class="button-container">
-          <button type="submit">Add Student</button>
+          <button class="submit">Add Student</button>
         </div>
       </div>
     `;
