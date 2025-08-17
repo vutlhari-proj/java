@@ -2,13 +2,22 @@ export class Student{
   studNum;
   name;
   surname;
-  course;
+  courseName;
 
   constructor(studentDetails){
     this.studNum = studentDetails.studNum;
     this.name = studentDetails.name;
     this.surname = studentDetails.surname;
-    this.course = {code: studentDetails.courseCode};
+    this.courseName = studentDetails.courseName || studentDetails.courseCode || "";
+  }
+
+  toRequestBody(){
+    return {
+      studNum: this.studNum,
+      name: this.name,
+      surname: this.surname,
+      course: { code: this.courseName }
+    };
   }
 }
 
@@ -22,7 +31,7 @@ export const studentFunctions = {
     const response = await fetch("http://localhost:8081/api/students", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(this.student)
+      body: JSON.stringify(this.student,toRequestBody())
     });
 
     if (!response.ok) {
@@ -34,8 +43,10 @@ export const studentFunctions = {
   },
 
   async loadStudents(){
-    const res = await fetch('/api/tsudents');
-    const students = await res.json();
+    const res = await fetch('/api/students');
+    const studentsJson = await res.json();
+
+    students = studentsJson.map((s) => new Student(s));
   },
 
   getStudent(studNum){

@@ -31,10 +31,24 @@ const rendering = {
     `;
   },
 
-  renderStudents(){
+  async renderStudents(){
+    await studentFunctions.loadStudents();
 
+    let studentHtml = ``;
+    students.forEach((student) =>{
+      studentHtml += `
+        <div class="student">
+          <p class="name">${student.name} ${student.surname}</p>
+          <p class="student-number">${student.studNum}</p>
+          <p class="modules">${student.courseName}</p>
+        </div>
+      `
+    });
+    
+    document.querySelector(".students-container").innerHTML = studentHtml;
   }
 };
+rendering.renderStudents();
 
 document.querySelector(".add-image-container").addEventListener("click", () => {
   document.querySelector(".js-sidebar").classList.add("sidebar-edit");
@@ -53,12 +67,7 @@ document.querySelector(".js-sidebar").addEventListener("click", (e) => {
         };
 
         if (["studNum", "name", "surname", "courseCode"].every((key) => student[key]?.trim())) {
-            studentFunctions.addStudent({
-                studNum: student.studNum,
-                name: student.name,
-                surname: student.surname,
-                courseCode: student.courseCode
-            });
+            studentFunctions.addStudent(student);
 
             document.getElementById("studentForm").remove();
             document.querySelector(".js-sidebar").classList.remove("sidebar-edit");
@@ -67,4 +76,9 @@ document.querySelector(".js-sidebar").addEventListener("click", (e) => {
             alert("no empty fields");
         }
     }
+});
+
+window.addEventListener("DOMContentLoaded", async () => {
+  await studentFunctions.loadStudents();
+  rendering.renderStudents();
 });
