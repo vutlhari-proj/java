@@ -51,4 +51,10 @@ public class Student {
         return course;
     }
 
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+    
+    
+
 }
