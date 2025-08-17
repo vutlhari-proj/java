@@ -15,13 +15,13 @@ public class StudentDTO {
     private String studNum;
     private String name;
     private String surname;
-    private String courseName;
+    private String courseCode;
 
     public StudentDTO(Student student) {
         this.studNum = student.getStudNum();
         this.name = student.getName();
         this.surname = student.getSurname();
-        this.courseName = student.getCourse() != null ? student.getCourse().getCourseName() : null;
+        this.courseCode = student.getCourse() != null ? student.getCourse().getCode() : null;
     }
 
     public String getStudNum() {
@@ -37,6 +37,6 @@ public class StudentDTO {
     }
 
     public String getCourseName() {
-        return courseName;
+        return courseCode;
     }  
 }

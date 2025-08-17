@@ -1,4 +1,4 @@
-import { Student, studentFunctions } from "./student/student.js";
+import { students, studentFunctions } from "./student/student.js";
 
 const rendering = {
   studentDetailForm() {
@@ -30,6 +30,10 @@ const rendering = {
       </div>
     `;
   },
+
+  renderStudents(){
+
+  }
 };
 
 document.querySelector(".add-image-container").addEventListener("click", () => {
