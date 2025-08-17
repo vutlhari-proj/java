@@ -1,11 +1,11 @@
 export class Student{
-  studnum;
+  studNum;
   name;
   surname;
   course;
 
   constructor(studentDetails){
-    this.studnum = studentDetails.studnum;
+    this.studNum = studentDetails.studNum;
     this.name = studentDetails.name;
     this.surname = studentDetails.surname;
     this.course = {code: studentDetails.courseCode};
@@ -19,8 +19,7 @@ export const studentFunctions = {
   async addStudent(studDetails){
     this.student = new Student(studDetails);
 
-    try {
-    const response = await fetch("http://localhost:8080/api/students", {
+    const response = await fetch("http://localhost:8081/api/students", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(this.student)
@@ -29,13 +28,14 @@ export const studentFunctions = {
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
-
-    const result = await response.json();
     alert("Student added")
 
-    } catch (err) {
-      alert("Student addition failed");
-    }
+   
+  },
+
+  async loadStudents(){
+    const res = await fetch('/api/tsudents');
+    const students = await res.json();
   },
 
   getStudent(studNum){
