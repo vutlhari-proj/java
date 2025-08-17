@@ -1,3 +1,9 @@
 .sidebar-edit{
   flex: 2;
 }
+
+#studentForm{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
