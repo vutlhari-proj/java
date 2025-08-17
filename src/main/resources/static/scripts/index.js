@@ -52,9 +52,22 @@ rendering.renderStudents();
 
 document.querySelector(".add-image-container").addEventListener("click", () => {
   document.querySelector(".js-sidebar").classList.add("sidebar-edit");
-  document.querySelector(".js-sidebar").innerHTML +=
-    rendering.studentDetailForm();
+  document.querySelector(".js-sidebar").innerHTML += rendering.studentDetailForm();
   document.querySelector(".add-image-container").classList.add("add-image-container-invisible");
+
+
+  const form = document.querySelector("#studentForm");
+  const inputs = form.querySelectorAll("input");
+  inputs.forEach((input, index) => {
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        const nextInput = inputs[index + 1];
+        if (nextInput) nextInput.focus();
+        else form.querySelector(".submit").click();
+      }
+    });
+  });
 });
 
 document.querySelector(".js-sidebar").addEventListener("click", (e) => {

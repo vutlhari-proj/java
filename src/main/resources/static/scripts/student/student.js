@@ -31,12 +31,21 @@ export const studentFunctions = {
     const response = await fetch("http://localhost:8081/api/students", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(this.student,toRequestBody())
+      body: JSON.stringify(this.student.toRequestBody())
     });
 
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
+
+    document.querySelector(".students-container").innerHTML += `
+      <div class="student">
+          <p class="name">${this.student.name} ${this.student.surname}</p>
+          <p class="student-number">${this.student.studNum}</p>
+          <p class="modules">${this.student.courseName}</p>
+      </div>
+    
+    `;
     alert("Student added")
 
    
