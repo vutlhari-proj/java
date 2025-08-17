@@ -38,8 +38,5 @@ public class StudentDTO {
 
     public String getCourseName() {
         return courseName;
-    }
-    
-    
-    
+    }  
 }

@@ -40,7 +40,9 @@ public class StudentRestController {
     
     @PostMapping
     public Student addStudent(@RequestBody Student student){
-        
+         if (student.getStudNum() == null || student.getStudNum().trim().isEmpty()) {
+            throw new RuntimeException("Student number is required");
+        }
         if (student.getCourse() != null && student.getCourse().getCode() != null) {
             Course course = CourseRepository.findById(student.getCourse().getCode())
                     .orElseThrow(() -> new RuntimeException("Course not found"));
