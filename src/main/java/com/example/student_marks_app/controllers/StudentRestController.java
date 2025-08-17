@@ -10,7 +10,6 @@ import com.example.student_marks_app.models.student.Student;
 import com.example.student_marks_app.repositories.CourseRepository;
 import com.example.student_marks_app.repositories.StudentRepository;
 import java.util.List;
-import javax.management.RuntimeErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,8 +41,8 @@ public class StudentRestController {
     @PostMapping
     public Student addStudent(@RequestBody Student student){
         
-        if (student.getCourse() != null && student.getCourse().getId() != null) {
-            Course course = CourseRepository.findById(student.getCourse().getId())
+        if (student.getCourse() != null && student.getCourse().getCode() != null) {
+            Course course = CourseRepository.findById(student.getCourse().getCode())
                     .orElseThrow(() -> new RuntimeException("Course not found"));
             
             student.setCourse(course);

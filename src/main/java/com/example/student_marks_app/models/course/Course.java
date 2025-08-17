@@ -6,8 +6,6 @@ package com.example.student_marks_app.models.course;
 
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.util.List;
 
@@ -20,8 +18,7 @@ import java.util.List;
 public class Course {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String code;
     
     
     private String courseName;
@@ -33,13 +30,14 @@ public class Course {
     }
 
     
-    public Course(String courseName, List<String> modules) {
+    public Course(String code, String courseName, List<String> modules) {
+        this.code = code;
         this.courseName = courseName;
         this.modules = modules;
     }
 
-    public Long getId() {
-        return id;
+    public String getCode() {
+        return code;
     }
     
     public String getCourseName() {
