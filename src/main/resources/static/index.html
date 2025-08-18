@@ -14,26 +14,40 @@
   <script type="module" src="scripts/index.js" defer></script>
 </head>
 <body>
-    <header>
-      <div class="menu-container">
-        <img class="menu" src="images/menu.svg">
-      </div>
+  <header>
+    <h1>Student Database</h1>
 
-      <h1>Student Database</h1>
+    <div class="filter-container">
+      <input type="text" id="search" placeholder="search student">
 
-      <div class="filter-container">
-        <input type="text" id="search" placeholder="search student">
-
-         
-          <select id="view" name="view">
-            <option value="all" selected>View all</option>
-            <option value="1">View AOP</option>
-            <option value="2">View WEB</option>
-          </select>
         
-      </div>
-    </header>
+        <select id="view" name="view">
+          <option value="all" selected>View all</option>
+          <option value="1">View AOP</option>
+          <option value="2">View WEB</option>
+        </select>
+      
+    </div>
+  </header>
   
+  <aside class="sidebar">
+    <a class="sidebar-link">
+      <img src="images/student.svg">
+      <p>Students</p>
+    </a>
+
+    <a class="sidebar-link">
+      <img src="images/course.svg">
+      <p>Courses</p>
+    </a>
+
+    <a class="sidebar-link">
+      <img src="images/module.svg">
+      <p>Modules</p>
+    </a>
+
+  </aside>
+
   <main class="container">
     <div class="students-container">
       <div class="student">
