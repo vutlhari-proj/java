@@ -46,6 +46,24 @@ const rendering = {
     });
     
     document.querySelector(".students-container").innerHTML = studentHtml;
+  },
+
+  renderMenu(){
+    return `
+      <div class="menu-bar">
+        <div class="menu-bar-header">
+          <div class="menu-header-icon">
+            <img class="menu" src="images/menu.svg">
+          </div>
+        </div>
+
+        <div class="menu-body">
+          <a class="menu-item add-student">
+            <di
+          </a>
+        </div>
+      </div>
+    `;
   }
 };
 rendering.renderStudents();
@@ -94,4 +112,13 @@ document.querySelector(".js-sidebar").addEventListener("click", (e) => {
 window.addEventListener("DOMContentLoaded", async () => {
   await studentFunctions.loadStudents();
   rendering.renderStudents();
+});
+
+const header = document.querySelector("header");
+window.addEventListener("scroll", () => {
+  if (window.scrollY > 50) {
+    header.style.background = "rgba(0, 136, 255, 0.95)"; // more solid
+  } else {
+    header.style.background = "rgba(0, 136, 255, 0.6)";  // more transparent
+  }
 });
