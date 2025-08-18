@@ -50,10 +50,10 @@ const rendering = {
 };
 rendering.renderStudents();
 
-document.querySelector(".add-image-container").addEventListener("click", () => {
+document.querySelector(".js-add-image-container").addEventListener("click", () => {
   document.querySelector(".js-sidebar").classList.add("sidebar-edit");
   document.querySelector(".js-sidebar").innerHTML += rendering.studentDetailForm();
-  document.querySelector(".add-image-container").classList.add("add-image-container-invisible");
+  document.querySelector(".js-add-image-container").classList.add("add-image-container-invisible");
 
 
   const form = document.querySelector("#studentForm");
