@@ -43,4 +43,6 @@ header{
   min-width: 8rem;
 
   text-align: center;
+
+  cursor: pointer;
 }
