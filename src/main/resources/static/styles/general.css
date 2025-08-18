@@ -25,6 +25,35 @@ header{
 
 }
 
+.menu-container{
+  top: 15px;
+  left: 15px;
+
+  margin: 0;
+  padding: 0;
+  position: absolute;
+
+  border-radius: 100px;
+
+  transition: background-color 0.3s ease;
+}
+
+.menu-container:hover{
+  background-color: rgba(92, 140, 181, 0.5);
+  cursor:pointer;
+}
+
+.menu-container:active{
+ transform: scale(0.9);
+}
+
+#menu{
+  height: 20px;
+
+  padding: 0;
+  margin: 10px 10px 3px 10px;
+}
+
 .filter-container{
   display: inline;
 }
@@ -49,7 +78,7 @@ header{
 
 #view{
   border-radius: 8px;
-  padding: 8px 10px 8px 10px;
+  padding: 5px 10px 5px 10px;
 
   width: 10rem;
   min-width: 8rem;
