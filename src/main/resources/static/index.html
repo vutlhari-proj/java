@@ -15,17 +15,24 @@
 </head>
 <body>
   
-  <header>
-    <h1>Student Database</h1>
-  </header>
 
-  <div class="select-container">
-    <select id="view" name="view">
-      <option value="all" selected>View all</option>
-      <option value="1">View AOP</option>
-      <option value="2">View WEB</option>
-    </select>
-  </div>
+    <header>
+      <h1>Student Database</h1>
+
+      <div class="filter-container">
+        <input type="text" id="search" placeholder="search student">
+
+         
+          <select id="view" name="view">
+            <option value="all" selected>View all</option>
+            <option value="1">View AOP</option>
+            <option value="2">View WEB</option>
+          </select>
+        
+      </div>
+    </header>
+  
+
 
   <div class="container">
     <aside class="sidebar js-sidebar">
