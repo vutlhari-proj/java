@@ -31,7 +31,7 @@ header{
 
   margin: 0;
   padding: 0;
-  position: absolute;
+  position: fixed;
 
   border-radius: 100px;
 
@@ -58,14 +58,6 @@ header{
   display: inline;
 }
 
-.select-container{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  padding-top: 10px;
-}
-
 #search{
   padding: 5px 8px 5px 10px;
   
@@ -87,38 +79,8 @@ header{
 }
 
 .container{
-  display: flex;
   padding-top: 1.5rem;
-  padding-left: 1rem;
-  margin-top: 250px;
-}
-
-.sidebar{
-  flex: 1;
-
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-
-  box-shadow:0 4px 8px rgba(0,0,0,.1);
-
-  background-color: #ffffff;
-
-  border-radius: 10px;
-}
-
-.add-image-container{
-  position: relative;
-
-  display: inline-block;
-
-  margin-top: 1rem;
-  text-align: center;
-}
-
-#add{
-  position: relative;
-  cursor: pointer;
+  margin-top: 200px;
 }
 
 .tooltiptext{
@@ -142,30 +104,18 @@ header{
   z-index: 10;
 }
 
-#add:hover{
-  opacity: 0.5;
-}
-
-.add-image-container:hover .tooltiptext{
-  visibility: visible;
-  opacity: 1;
-}
-
-main{
-  flex: 3;
-}
-
 .students-container{
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  
+  gap: 1rem;
   justify-content: space-evenly;
   align-items: center;
 
   padding-top: 20px;
   padding-bottom: 20px;
-  margin-left: 2rem;
+  padding-left: 10px;
+  padding-right: 10px;
 
   background-color: #ffffff;
   
@@ -175,8 +125,6 @@ main{
 }
 
 .student{
-  margin-bottom: 1rem;
-
   width: 20rem;
   padding: 8px 0px 8px 10px;
 
