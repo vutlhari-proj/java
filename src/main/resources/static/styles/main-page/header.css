@@ -33,6 +33,14 @@ header{
 
   font-size: 14px;
   font-weight: 300;
+
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+#search:focus{
+  outline: none;           /* removes the default browser outline */
+  border: 2px solid rgba(109, 187, 255, 0.5); /* custom border while editing */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* optional subtle glow */
 }
 
 #view{
