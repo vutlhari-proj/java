@@ -4,9 +4,14 @@
  */
 package com.example.student_marks_app.models.course;
 
-import jakarta.persistence.ElementCollection;
+import com.example.student_marks_app.models.module.CourseModule;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.OneToMany;
 import java.util.List;
 
 /**
@@ -23,14 +28,20 @@ public class Course {
     
     private String courseName;
     
-    @ElementCollection
-    private List<String> modules;
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+        name = "course_module_mapping",
+        joinColumns = @JoinColumn(name = "course_code"),
+        inverseJoinColumns = @JoinColumn(name = "module_code")
+    )
+    @JsonManagedReference
+    private List<CourseModule> modules;
 
     public Course() {
     }
 
     
-    public Course(String code, String courseName, List<String> modules) {
+    public Course(String code, String courseName, List<CourseModule> modules) {
         this.code = code;
         this.courseName = courseName;
         this.modules = modules;
@@ -44,7 +55,11 @@ public class Course {
         return courseName;
     }
 
-    public List<String> getModules() {
+    public List<CourseModule> getModules() {
         return modules;
+    }
+
+    public void setModules(List<CourseModule> modules) {
+        this.modules = modules;
     }
 }
