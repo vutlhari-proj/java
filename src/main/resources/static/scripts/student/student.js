@@ -46,6 +46,8 @@ export const studentFunctions = {
       </div>
     
     `;
+
+    students.push(this.student);
     alert("Student added")
 
    
@@ -58,7 +60,21 @@ export const studentFunctions = {
     students = studentsJson.map((s) => new Student(s));
   },
 
-  getStudent(studNum){
-    return students.find((student) => student.studNum == studNum);
+  getStudent(param) {
+  // if para is only digits, search by student number
+  if (/^\d+$/.test(param)) {
+    return students.filter((student) => 
+      student.studNum.includes(param)
+    );
+  } 
+  // otherwise, search by fullname
+  else {
+    return students.filter((student) => {
+      let fullname = student.name + " " + student.surname;
+      return fullname.toLowerCase().includes(param.toLowerCase());
+    });
   }
+}
+
+    
 }

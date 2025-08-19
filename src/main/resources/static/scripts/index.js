@@ -48,65 +48,30 @@ const rendering = {
     document.querySelector(".students-container").innerHTML = studentHtml;
   },
 
-  renderMenu(){
-    return `
-      <div class="menu-bar">
-        <div class="menu-bar-header">
-          <div class="menu-header-icon">
-            <img class="menu" src="images/menu.svg">
-          </div>
+  renderSearchedStudents(search){
+    let studentHtml = ``;
+    studentFunctions.getStudent(search)
+    .forEach((student) =>{
+      studentHtml += `
+        <div class="student">
+          <p class="name">${student.name} ${student.surname}</p>
+          <p class="student-number">${student.studNum}</p>
+          <p class="modules">${student.courseName}</p>
         </div>
+      `;
+    });
 
-        <div class="menu-body">
-          <a class="menu-item add-student">
-            <di
-          </a>
-        </div>
-      </div>
-    `;
+    document.querySelector(".students-container").innerHTML = studentHtml;
   }
 };
 rendering.renderStudents();
 
-document.querySelector(".js-add-image-container").addEventListener("click", () => {
-  document.querySelector(".js-sidebar").classList.add("sidebar-edit");
-  document.querySelector(".js-sidebar").innerHTML += rendering.studentDetailForm();
-  document.querySelector(".js-add-image-container").classList.add("add-image-container-invisible");
-
-
-  const form = document.querySelector("#studentForm");
-  const inputs = form.querySelectorAll("input");
-  inputs.forEach((input, index) => {
-    input.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        const nextInput = inputs[index + 1];
-        if (nextInput) nextInput.focus();
-        else form.querySelector(".submit").click();
-      }
-    });
-  });
-});
-
-document.querySelector(".js-sidebar").addEventListener("click", (e) => {
-    if (e.target.classList.contains("submit")) {
-        const student = {
-            studNum: document.querySelector("#studNum").value,
-            name: document.querySelector("#name").value,
-            surname: document.querySelector("#surname").value,
-            courseCode: document.querySelector("#courseCode").value,
-        };
-
-        if (["studNum", "name", "surname", "courseCode"].every((key) => student[key]?.trim())) {
-            studentFunctions.addStudent(student);
-
-            document.getElementById("studentForm").remove();
-            document.querySelector(".js-sidebar").classList.remove("sidebar-edit");
-            document.querySelector(".add-image-container").classList.remove("add-image-container-invisible");
-        } else {
-            alert("no empty fields");
-        }
-    }
+const search = document.getElementById("search");
+search.addEventListener("keydown", (e) =>{
+  if(e.key == "Enter"){
+    rendering.renderSearchedStudents(search.value);
+    search.blur();
+  }
 });
 
 window.addEventListener("DOMContentLoaded", async () => {
