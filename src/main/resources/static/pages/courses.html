@@ -3,9 +3,68 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Courses</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto+Flex:opsz,wght@8..144,100..1000&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../styles/general.css">
+  <link rel="stylesheet" href="../styles/main-page/header.css">
+  <link rel="stylesheet" href="../styles/main-page/sidebar.css">
+  <link rel="stylesheet" href="../styles/main-page/container-content.css">
+  <link rel="stylesheet" href="../styles/courses-page/table-container.css">
 </head>
 <body>
+  <header>
+    <h1>Student Database</h1>
+  </header>
   
+  <aside class="sidebar">
+    <a class="sidebar-link" href="../index.html">
+      <img src="../images/home.svg">
+      <p>Home</p>
+    </a>
+
+    <a class="sidebar-link" href="pages/courses.html">
+      <img src="../images/student.svg">
+      <p>Students</p>
+    </a>
+
+    <a class="sidebar-link">
+      <img src="../images/module.svg">
+      <p>Modules</p>
+    </a>
+
+  </aside>
+
+  <main class="container table-container">
+    <table class="courses">
+      <caption>Courses</caption>
+      <thead>
+        <tr>
+          <th>Course Code</th>
+          <th>Course Name</th>
+        </tr>
+      </thead>
+
+      <tfoot>
+        <tr>
+          <td colspan="2">
+            <div class="add-container">
+              <img class="add-course-img" src="../images/add.svg">
+            </div>
+          </td>
+        </tr>
+      </tfoot>
+
+      <tbody>
+        <tr>
+          <td>DPRS20</td>
+          <td>Computer Science</td>
+        </tr>
+      </tbody>
+    </table>
+  </main>
 </body>
 </html>

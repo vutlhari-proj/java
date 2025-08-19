@@ -1,0 +1,84 @@
+header{
+  height: 110px;
+}
+
+.sidebar{
+  top: 120px;
+}
+
+.table-container {
+  width: 85%;
+  border-radius: 9px;
+  overflow: hidden; /* keep corners rounded */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+
+  margin-top: 160px;
+}
+
+.courses {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-family: "Arial", sans-serif;
+}
+
+.courses thead,
+.courses tfoot {
+  background-color: #f5f5f5;
+}
+
+.courses caption {
+  caption-side: top;
+  text-align: left;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 8px 12px;
+  background-color: #5c8cb5;
+  color: white;
+}
+
+.courses th,
+.courses td {
+  border: 1px solid #ddd;
+  text-align: center;
+  padding: 12px 15px;
+}
+
+/* Make tbody scrollable */
+.courses tbody {
+  display: block;
+  max-height: calc(100vh - 200px - 70px); /* set how tall it can be before scrolling */
+  overflow-y: auto;
+}
+
+.courses tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed; /* ensures alignment with header */
+}
+
+.courses thead tr,
+.courses tfoot tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.courses tbody tr:hover {
+  background-color: #f0f8ff;
+}
+
+.add-course-img {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.add-course-img:hover {
+  transform: scale(1.2);
+}
+
+.add-course-img:active{
+  transform: scale(.9);
+}
