@@ -15,19 +15,19 @@ header{
   margin-top: 160px;
 }
 
-.courses {
+.info-table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
   font-family: "Arial", sans-serif;
 }
 
-.courses thead,
-.courses tfoot {
+.info-table thead,
+.info-table tfoot {
   background-color: #f5f5f5;
 }
 
-.courses caption {
+.info-table caption {
   caption-side: top;
   text-align: left;
   font-size: 1.2rem;
@@ -37,49 +37,59 @@ header{
   color: white;
 }
 
-.courses th,
-.courses td {
+.info-table th,
+.info-table td {
   border: 1px solid #ddd;
   text-align: center;
   padding: 12px 15px;
 }
 
 /* Make tbody scrollable */
-.courses tbody {
+.info-table tbody {
   display: block;
   max-height: calc(100vh - 200px - 70px); /* set how tall it can be before scrolling */
   overflow-y: auto;
 }
 
-.courses tbody tr {
+.info-table tbody tr {
   display: table;
   width: 100%;
   table-layout: fixed; /* ensures alignment with header */
 }
 
-.courses thead tr,
-.courses tfoot tr {
+.info-table thead tr,
+.info-table tfoot tr {
   display: table;
   width: 100%;
   table-layout: fixed;
 }
 
-.courses tbody tr:hover {
+.info-table tbody tr:hover {
   background-color: #f0f8ff;
 }
 
-.add-course-img {
+.img-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.add-img, 
+.search-img {
   width: 24px;
   height: 24px;
   cursor: pointer;
   transition: transform 0.2s ease;
 }
 
-.add-course-img:hover {
+.add-img:hover, 
+.search-img:hover {
   transform: scale(1.2);
 }
 
-.add-course-img:active{
+.add-img:active,
+.search-img:active{
   transform: scale(.9);
 }
 

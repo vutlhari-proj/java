@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="../styles/main-page/header.css">
   <link rel="stylesheet" href="../styles/main-page/sidebar.css">
   <link rel="stylesheet" href="../styles/main-page/container-content.css">
-  <link rel="stylesheet" href="../styles/courses-page/table-container.css">
+  <link rel="stylesheet" href="../styles/table/table-container.css">
 
   <script type="module" src="../scripts/courses.js" defer></script>
 </head>
@@ -41,7 +41,7 @@
   </aside>
 
   <main class="container table-container">
-    <table class="courses">
+    <table class="info-table">
       <caption>Courses</caption>
       <thead>
         <tr>
@@ -52,9 +52,13 @@
 
       <tfoot>
         <tr>
-          <td colspan="2">
+          <td class="img-container" colspan="2">
+            <div class="search-container">
+              <img class="search-img" src="../images/search.svg">
+            </div>
+
             <div class="add-container">
-              <img class="add-course-img" src="../images/add.svg">
+              <img class="add-img" src="../images/add.svg">
             </div>
           </td>
         </tr>

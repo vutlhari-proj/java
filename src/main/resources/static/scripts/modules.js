@@ -2,7 +2,7 @@ import { moduleFunction } from "./module/module.js";
 import { capitalizeWords } from "./utility/utility.js";
 moduleFunction.loadModules();
 
-document.querySelector(".add-course-img").addEventListener("click", ()=>{
+document.querySelector(".add-img").addEventListener("click", ()=>{
   render.newModule();
 
   const code = document.getElementById("code");

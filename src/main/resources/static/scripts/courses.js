@@ -2,7 +2,7 @@ import { Course, courseFunctions, courses } from "./course/course.js";
 import { capitalizeWords } from "./utility/utility.js";
 courseFunctions.loadCourses();
 
-document.querySelector(".add-course-img").addEventListener("click", ()=>{
+document.querySelector(".add-img").addEventListener("click", ()=>{
   render.newCourse();
 
   const code = document.getElementById("code");
