@@ -23,16 +23,38 @@ public class StudentMarksAppApplication {
 
             String url = "http://localhost:" + port;
 
-            if (Desktop.isDesktopSupported()) {
-                try {
-                    Desktop.getDesktop().browse(new URI(url));
-                } catch (Exception e) {
-                    System.err.println("Failed to open browser: " + e.getMessage());
-                }
-            } else {
-                System.out.println("open browser to " + url);
+            if (!openInBrowser(url)) {
+                System.out.println("Open manually: " + url);
             }
         }
 
+    }
+    
+    private boolean openInBrowser(String url){
+        try{
+            if (Desktop.isDesktopSupported()) {
+                Desktop desktop = Desktop.getDesktop();
+                if (desktop.isSupported(Desktop.Action.BROWSE)) {
+                    desktop.browse(new URI(url));
+                    return true;
+                }
+            }
+            
+            String os = System.getProperty("os.name").toLowerCase();
+            if (os.contains("win")) {
+                Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + url);
+            }
+            else if (os.contains("mac")) {
+                Runtime.getRuntime().exec("open " + url);
+            }
+            else if (os.contains("nix")) {
+                Runtime.getRuntime().exec("xdg-open " + url);
+            }
+            return true;
+        }
+        catch(Exception e){
+            System.err.println("Failed to open browser: " + e.getMessage());
+            return false;
+        }
     }
 }
