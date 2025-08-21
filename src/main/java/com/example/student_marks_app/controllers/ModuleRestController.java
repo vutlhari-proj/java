@@ -34,7 +34,7 @@ public class ModuleRestController {
     
     @PostMapping
     public CourseModule addModule(@RequestBody CourseModule module){
-        if (module.getCode() != null || module.getCode().trim().isEmpty()) {
+        if (module.getCode() == null || module.getCode().trim().isEmpty()) {
             throw new RuntimeException("Module code is required");
         }
         
