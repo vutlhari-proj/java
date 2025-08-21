@@ -64,5 +64,25 @@ export const moduleFunction = {
 
     document.querySelector(".js-body")
     .innerHTML = moduleHtml;
+  }, 
+  
+  findModules(input){
+    let filterHtml = ``;
+    modules.forEach((module) =>{
+      if((`${module.code} ${module.moduleName}`)
+        .toLowerCase().includes(input.toLowerCase())){
+        filterHtml += 
+        `
+            <tr>
+              <td>${module.code}</td>
+              <td>${module.moduleName}</td>
+            <tr/>
+        `;
+      }
+    });
+    
+
+    document.querySelector(".js-body")
+    .innerHTML = filterHtml;
   }
 }

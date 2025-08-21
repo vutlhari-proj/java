@@ -66,5 +66,25 @@ export const courseFunctions = {
 
     document.querySelector(".js-body")
     .innerHTML = courseHtml;
+  }, 
+
+  findCourses(input){
+    let filterHtml = ``;
+    courses.forEach((course) =>{
+      if((`${course.code} ${course.courseName}`)
+        .toLowerCase().includes(input.toLowerCase())){
+        filterHtml += 
+        `
+            <tr>
+              <td>${course.code}</td>
+              <td>${course.courseName}</td>
+            <tr/>
+        `;
+      }
+    });
+    
+
+    document.querySelector(".js-body")
+    .innerHTML = filterHtml;
   }
 }

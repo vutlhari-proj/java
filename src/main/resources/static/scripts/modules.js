@@ -40,6 +40,9 @@ document.querySelector(".add-img").addEventListener("click", ()=>{
 document.querySelector(".search-img").addEventListener("click", ()=>{
   render.search();
 
+  const search =document.getElementById("search");
+  search.focus();
+
   function handleClickOutside(e) {
     const searchContainer = document.querySelector(".search-container");
     const searchInput = document.querySelector("#search");
@@ -93,6 +96,16 @@ const render = {
           </div>
         `
       );
+
+      let typingTimer;
+      const search = document.getElementById("search");
+      search.addEventListener("input", ()=>{
+        clearTimeout(typingTimer);
+
+        typingTimer = setTimeout(() =>{
+          moduleFunction.findModules(search.value);
+        }, 1500);
+      });
     }
 
     const tooltip = container.querySelector(".search-tooltip");
