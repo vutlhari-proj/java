@@ -1,4 +1,5 @@
 import { Course, courseFunctions, courses } from "./course/course.js";
+import { capitalizeWords } from "./utility/utility.js";
 courseFunctions.loadCourses();
 
 document.querySelector(".add-course-img").addEventListener("click", ()=>{
@@ -18,7 +19,7 @@ document.querySelector(".add-course-img").addEventListener("click", ()=>{
 
   name.addEventListener("keydown", (e)=>{
     if (e.key == "Enter" && name.value.trim() != null ) {
-      courseFunctions.addCourse({code: code.value.toUpperCase(), courseName: name.value});
+      courseFunctions.addCourse({code: code.value.toUpperCase(), courseName: capitalizeWords(name.value)});
     }
   });
 
