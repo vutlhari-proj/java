@@ -7,7 +7,7 @@ body{
   background:#f4f4f4;
 }
 
-.tooltiptext{
+.tooltip{
   visibility: hidden; /* hide by default */
   width: 80px;
   background-color: rgb(165, 165, 165);

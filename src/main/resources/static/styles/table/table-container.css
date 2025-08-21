@@ -75,6 +75,11 @@ header{
   gap: 10px;
 }
 
+.add-container, .search-container {
+  position: relative; /* needed for absolute tooltip positioning */
+  display: inline-block; /* optional, keeps layout tidy */
+}
+
 .add-img, 
 .search-img {
   width: 24px;
@@ -86,6 +91,12 @@ header{
 .add-img:hover, 
 .search-img:hover {
   transform: scale(1.2);
+}
+
+.add-container:hover .tooltip, 
+.search-container:hover .tooltip{
+  visibility:visible;
+  opacity: 1;
 }
 
 .add-img:active,
