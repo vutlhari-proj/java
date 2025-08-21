@@ -11,7 +11,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToMany;
 import java.util.List;
 
 /**
@@ -28,13 +28,12 @@ public class Course {
     
     private String courseName;
     
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
         name = "course_module_mapping",
         joinColumns = @JoinColumn(name = "course_code"),
         inverseJoinColumns = @JoinColumn(name = "module_code")
     )
-    @JsonManagedReference
     private List<CourseModule> modules;
 
     public Course() {
@@ -47,6 +46,12 @@ public class Course {
         this.modules = modules;
     }
 
+    public Course(String code, String courseName) {
+        this.code = code;
+        this.courseName = courseName;
+        this.modules = null;
+    }
+    
     public String getCode() {
         return code;
     }

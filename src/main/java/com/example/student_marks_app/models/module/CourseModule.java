@@ -6,6 +6,7 @@ package com.example.student_marks_app.models.module;
 
 import com.example.student_marks_app.models.course.Course;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
@@ -24,7 +25,7 @@ public class CourseModule {
     private String moduleName;
 
     @ManyToMany(mappedBy = "modules")
-    @JsonBackReference
+    @JsonIgnore
     private List<Course> courses;
     
     public CourseModule() {

@@ -59,6 +59,8 @@ public class CourseRestController {
                 
                 validModules.add(exstingModule);
             }
+            
+            
         }
         
         course.setModules(validModules);
