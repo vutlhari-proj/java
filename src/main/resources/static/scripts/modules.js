@@ -23,6 +23,17 @@ document.querySelector(".add-img").addEventListener("click", ()=>{
     }
   });
 
+  function handleClickOutside(e) {
+    if (e.target.id !== "code" && e.target.id !== "name") {
+      document.querySelector(".input-row")?.remove();
+      document.removeEventListener("click", handleClickOutside);
+    }
+  }
+
+  setTimeout(() => {
+    document.addEventListener("click", handleClickOutside);
+  }, 0);
+
 });
 
 const render = {
