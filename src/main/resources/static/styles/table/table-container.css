@@ -7,26 +7,61 @@ header{
 }
 
 .table-container {
+  max-width: calc(100vw - 250px);
   width: 85%;
   border-radius: 9px;
-  overflow: hidden; /* keep corners rounded */
+  overflow: hidden;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-
   margin-top: 160px;
 }
 
-.info-table {
+/* Outer table wrapper */
+.table-wrapper {
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  font-family: "Arial", sans-serif;
+  border-collapse: collapse;
 }
 
+/* Fixed header & footer */
 .info-table thead,
 .info-table tfoot {
   background-color: #f5f5f5;
+  display: table;
+  width: 100%;
+  table-layout: fixed;
 }
 
+/* Scrollable tbody */
+.table-scroll {
+  max-height: calc(100vh - 200px - 110px); /* adjust as needed */
+  overflow-y: auto;
+  width: 100%;
+}
+
+/* Table inside scrollable div keeps full width */
+.table-scroll table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+/* Cells */
+.info-table th,
+.info-table td {
+  border: 1px solid #ddd;
+  text-align: center;
+  padding: 12px 15px;
+  min-width: 120px;
+  box-sizing: border-box;
+}
+
+/* Hover effect */
+.info-table tbody tr:hover {
+  background-color: #f0f8ff;
+}
+
+/* Caption */
 .info-table caption {
   caption-side: top;
   text-align: left;
@@ -35,37 +70,6 @@ header{
   padding: 8px 12px;
   background-color: #5c8cb5;
   color: white;
-}
-
-.info-table th,
-.info-table td {
-  border: 1px solid #ddd;
-  text-align: center;
-  padding: 12px 15px;
-}
-
-/* Make tbody scrollable */
-.info-table tbody {
-  display: block;
-  max-height: calc(100vh - 200px - 70px); /* set how tall it can be before scrolling */
-  overflow-y: auto;
-}
-
-.info-table tbody tr {
-  display: table;
-  width: 100%;
-  table-layout: fixed; /* ensures alignment with header */
-}
-
-.info-table thead tr,
-.info-table tfoot tr {
-  display: table;
-  width: 100%;
-  table-layout: fixed;
-}
-
-.info-table tbody tr:hover {
-  background-color: #f0f8ff;
 }
 
 .img-container{
