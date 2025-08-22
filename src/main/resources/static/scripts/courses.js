@@ -58,6 +58,14 @@ document.querySelector(".search-img").addEventListener("click", ()=>{
   }, 0);
 });
 
+document.querySelector(".js-body").addEventListener("click", (e) => {
+  const row = e.target.closest("tr");
+  if (!row) return; // clicked outside row
+  
+  localStorage.setItem("selectedCourse", row.className);
+  window.location.href = "../pages/course-info.html";
+});
+
 const render = {
   newCourse(){
     const body = document.querySelector(".js-body");

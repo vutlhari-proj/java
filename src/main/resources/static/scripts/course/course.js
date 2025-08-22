@@ -34,13 +34,15 @@ export const courseFunctions = {
       document.querySelectorAll("tr.input-row").forEach(row => row.remove());
 
       document.querySelector(".js-body")
-      .innerHTML += 
-      `
-        <tr>
-          <td>${savedCourse.code}</td>
-          <td>${savedCourse.courseName}</td>
-        </tr>
-      `
+      .insertAdjacentHTML( 
+        "beforeend",
+        `
+          <tr class="${savedCourse.code}>
+            <td>${savedCourse.code}</td>
+            <td>${savedCourse.courseName}</td>
+          </tr>
+        `
+      )  
     }
     catch(error){
       alert("Could not add course");
@@ -48,16 +50,13 @@ export const courseFunctions = {
   },
 
   async loadCourses(){
-    const res = await fetch("/api/courses");
-    const coursesJson = await res.json();
-
-    courses = coursesJson.map((course) => new Course(course));
+    await this.populateCourses();
 
     let courseHtml = ``;
     courses.forEach((course) =>{
       courseHtml += 
       `
-        <tr>
+        <tr class="${course.code}">
           <td>${course.code}</td>
           <td>${course.courseName}</td>
         <tr/>
@@ -65,7 +64,9 @@ export const courseFunctions = {
     });
 
     document.querySelector(".js-body")
-    .innerHTML = courseHtml;
+    .insertAdjacentHTML(
+      "beforeend", courseHtml
+    );
   }, 
 
   findCourses(input){
@@ -75,7 +76,7 @@ export const courseFunctions = {
         .toLowerCase().includes(input.toLowerCase())){
         filterHtml += 
         `
-            <tr>
+            <tr class="${course.code}>
               <td>${course.code}</td>
               <td>${course.courseName}</td>
             <tr/>
@@ -86,5 +87,28 @@ export const courseFunctions = {
 
     document.querySelector(".js-body")
     .innerHTML = filterHtml;
+  },
+
+  async loadCourseInfo(){
+    await this.populateCourses();
+
+    const code = localStorage.getItem("selectedCourse");
+    this.course = courses.find((course) => course.code === code);
+
+    document.querySelector(".courseName").innerHTML = this.course.courseName;
+    document.querySelector(".code").innerHTML = this.course.code;
+    
+    let displayHtml = ``;
+    if(!this.course.modules || this.course.modules.length === 0){
+      displayHtml += `<h1>No Modules Have Been Added<h1>`;
+      document.querySelector(".tables").innerHTML = displayHtml;
+    }
+  },
+
+  async populateCourses(){
+    const res = await fetch("/api/courses");
+    const coursesJson = await res.json();
+
+    courses = coursesJson.map((course) => new Course(course));
   }
 }
