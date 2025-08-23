@@ -1,6 +1,8 @@
 import { courseFunctions } from "./course/course.js";
 import { moduleFunction } from "./module/module.js";
 
+const params = new URLSearchParams(window.location.search);
+const courseCode = params.get("code");
 const render ={
   addCourseTable(){
     let tableHtml = 
@@ -50,6 +52,14 @@ const render ={
       display.insertAdjacentHTML("beforeend", tableHtml);
     }
 
+    const tableWrapper = document.querySelector(".modules-table-wrapper");
+    if (tableWrapper) {
+      tableWrapper.scrollIntoView({ behavior: "smooth", block: "start" });
+
+      const searchInput = tableWrapper.querySelector("#moduleSearch");
+      if (searchInput) searchInput.focus();
+    }
+
     let typingTimer;
     const search =document.getElementById("moduleSearch");
     search.addEventListener("input", ()=>{
@@ -67,7 +77,6 @@ const render ={
   },
 
   moduleTable(code){
-    alert(code);
     const renderFirst = () =>{
       return `
         <table class="display" border="0">
@@ -143,16 +152,20 @@ const render ={
   }
 };
 
-const params = new URLSearchParams(window.location.search);
-const courseCode = params.get("code");
-render.moduleTable(courseCode);
-courseFunctions.loadCourseInfo();
+async function initPage() {
+  render.moduleTable(courseCode);
+  await courseFunctions.loadCourseInfo();
+
+  document.body.classList.remove("loading");
+}
+
+document.addEventListener("DOMContentLoaded", initPage);
 
 document.querySelector(".add-img")
 .addEventListener("click", ()=>{
   render.addCourseTable();
 
-  moduleFunction.loadModules();
+  moduleFunction.loadModules(courseFunctions.getCourse(courseCode).modules);
   function handleClickOutside(e) {
     const module = document.querySelector(".modules-container");
     const addImg = document.querySelector(".add-img");

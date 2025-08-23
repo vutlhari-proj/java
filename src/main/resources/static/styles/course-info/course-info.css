@@ -110,14 +110,40 @@ table th, table td {
   font-weight: bold;
 }
 
+.modules-table tr {
+  cursor: pointer;
+}
+
 .modules-table tr:hover {
   background-color: #f0f8ff;
 }
 
 .exists{
   background-color: rgb(210, 255, 210);
+  transition: background-color 0.3s;
 }
 
-.exists:hover{
+.modules-table tr.exists:hover {
   background-color: rgb(255, 205, 205);
+}
+
+.modules-table td{
+  position: relative;
+}
+
+.modules-table tr.exists .tooltip{
+  visibility: hidden;
+  opacity: 1;
+
+  background: rgba(165, 165, 165, 0.8);
+  width: 130px;
+  bottom: 30%;
+  left: 60%;
+
+  transition: opacity 0.3s;
+}
+
+.modules-table tr.exists:hover .tooltip{
+  visibility: visible;
+  opacity: 1;
 }

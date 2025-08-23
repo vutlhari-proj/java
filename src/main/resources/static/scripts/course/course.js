@@ -90,7 +90,6 @@ export const courseFunctions = {
   },
 
   async addModulesToCourse(code, modules){
-    alert(`${code}----- ${JSON.stringify(modules)}`);
     try {
       const response = await fetch(`/api/courses/${code}/modules`, {
         method: "POST",
@@ -101,9 +100,6 @@ export const courseFunctions = {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-
-      const savedCourse = await response.json();
-      alert(JSON.stringify(savedCourse));
     } catch (error) {
       alert("couldn't add modules");
     }
@@ -128,7 +124,6 @@ export const courseFunctions = {
     }
     else{
       this.course.modules.forEach((module) =>{
-        alert(JSON.stringify(module));
         if (module.code.includes("11")) {
           displayHtml +=
           `
@@ -144,6 +139,12 @@ export const courseFunctions = {
 
       document.querySelector(".first-year").innerHTML = displayHtml;
     }
+  },
+
+  getCourse(code){
+    this.populateCourses();
+
+    return courses.find((course) => course.code === code);
   },
 
   async populateCourses(){

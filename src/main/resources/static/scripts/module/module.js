@@ -51,12 +51,16 @@ export const moduleFunction = {
 
     let moduleHtml = ``;
     modules.forEach((module) =>{
-      let exists = (moduleCodes.includes(module.code)) ? "exists" : "";
+      let exists = "";
+      exists = moduleCodes.some(mod => mod.code === module.code) ? "exists" : "";
        
       moduleHtml += 
       `
         <tr class="module ${exists}" data-code="${module.code}">
-          <td>${module.code}</td>
+          <td>
+            ${module.code}
+            <span class="tooltip">remove from course</span>
+          </td>
           <td>${module.moduleName}</td>
         <tr/>
       `
