@@ -108,10 +108,11 @@ export const moduleFunction = {
 
             const modCode = row.dataset.code;
             this.module = modules.find((module) => module.code === modCode);
-            const code = localStorage.getItem("selectedCourse");
+            const params = new URLSearchParams(window.location.search);
+            const courseCode = params.get("code");
 
             let temp = [this.module];
-            await courseFunctions.addModulesToCourse(code, temp);
+            await courseFunctions.addModulesToCourse(courseCode, temp);
             await courseFunctions.loadCourseInfo();
           }
         });

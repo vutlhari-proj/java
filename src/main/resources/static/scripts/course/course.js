@@ -37,7 +37,7 @@ export const courseFunctions = {
       .insertAdjacentHTML( 
         "beforeend",
         `
-          <tr class="${savedCourse.code}>
+          <tr class="${savedCourse.code}">
             <td>${savedCourse.code}</td>
             <td>${savedCourse.courseName}</td>
           </tr>
@@ -59,7 +59,7 @@ export const courseFunctions = {
         <tr class="${course.code}">
           <td>${course.code}</td>
           <td>${course.courseName}</td>
-        <tr/>
+        </tr>
       `;
     });
 
@@ -76,10 +76,10 @@ export const courseFunctions = {
         .toLowerCase().includes(input.toLowerCase())){
         filterHtml += 
         `
-            <tr class="${course.code}>
+            <tr class="${course.code}">
               <td>${course.code}</td>
               <td>${course.courseName}</td>
-            <tr/>
+            </tr>
         `;
       }
     });
@@ -113,8 +113,9 @@ export const courseFunctions = {
   async loadCourseInfo(){
     await this.populateCourses();
 
-    const code = localStorage.getItem("selectedCourse");
-    this.course = courses.find((course) => course.code === code);
+    const params = new URLSearchParams(window.location.search);
+    const courseCode = params.get("code");
+    this.course = courses.find((course) => course.code === courseCode);
 
     document.querySelector(".courseName").innerHTML = this.course.courseName;
     document.querySelector(".code").innerHTML = this.course.code;
@@ -134,14 +135,14 @@ export const courseFunctions = {
           <tr>
               <td>${module.code}</td>
               <td>${module.moduleName}</td>
-          <tr/>
+          </tr>
           
           `;
-
-          document.querySelector(".first-year").innerHTML+= displayHtml;
         }
 
       })
+
+      document.querySelector(".first-year").innerHTML = displayHtml;
     }
   },
 

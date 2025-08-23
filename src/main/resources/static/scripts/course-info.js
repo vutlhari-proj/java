@@ -1,24 +1,5 @@
 import { courseFunctions } from "./course/course.js";
 import { moduleFunction } from "./module/module.js";
-courseFunctions.loadCourseInfo();
-
-document.querySelector(".add-img")
-.addEventListener("click", ()=>{
-  render.addCourseTable();
-
-  moduleFunction.loadModules();
-  function handleClickOutside(e) {
-    const module = document.querySelector(".modules-container");
-    const addImg = document.querySelector(".add-img");
-    if(!module.contains(e.target) && e.target !== addImg){
-      render.removeTable();
-    }
-  }
-
-  setTimeout(() => {
-    document.addEventListener("click", handleClickOutside);
-  }, 0);
-});
 
 const render ={
   addCourseTable(){
@@ -83,5 +64,105 @@ const render ={
   removeTable(){
     const module = document.querySelector(".modules-container");
     if(module) module.remove();
+  },
+
+  moduleTable(code){
+    alert(code);
+    const renderFirst = () =>{
+      return `
+        <table class="display" border="0">
+            <caption>First Year</caption>
+            <thead class="modules-head">
+              <tr>
+                <th>Code</th>
+                <th>Module</th>
+              </tr>
+            </thead>
+            <tbody class="modules first-year"></tbody>
+          </table>
+      `;
+    }
+
+    const renderSecond = () =>{
+      return `
+        <table class="display" border="0">
+          <caption>Second Year</caption>
+          <thead class="modules-head">
+            <tr>
+              <th>Code</th>
+              <th>Module</th>
+            </tr>
+          </thead>
+          <tbody class="modules second-year"></tbody>
+        </table>
+      `;
+    }
+
+    const renderThird = () =>{
+      return `
+        <table class="display" border="0">
+          <caption>Third Year</caption>
+          <thead class="modules-head">
+            <tr>
+              <th>Code</th>
+              <th>Module</th>
+            </tr>
+          </thead>
+          <tbody class="modules third-year"></tbody>
+        </table>
+      `;
+    }
+
+    const renderFourth = () =>{
+      return `
+        <table class="display" border="0">
+            <caption>Fourth Year</caption>
+            <thead class="modules-head">
+              <tr>
+                <th>Code</th>
+                <th>Module</th>
+              </tr>
+            </thead>
+            <tbody class="modules fourth-year"></tbody>
+          </table>
+      `;
+    }
+
+    const course = code.toLowerCase();
+    let content = "";
+
+    if (course.includes("ad") || course.includes("pd")) {
+      content = renderFirst();
+    } else if (course.includes("dp") && !course.includes("f0")) {
+      content = renderFirst() + renderSecond() + renderThird();
+    } else if(course.includes("f0")){
+      content = renderFirst() + renderSecond() + renderThird() + renderFourth();
+    }
+
+    document.querySelector(".tables").innerHTML = content;
   }
-}
+};
+
+const params = new URLSearchParams(window.location.search);
+const courseCode = params.get("code");
+render.moduleTable(courseCode);
+courseFunctions.loadCourseInfo();
+
+document.querySelector(".add-img")
+.addEventListener("click", ()=>{
+  render.addCourseTable();
+
+  moduleFunction.loadModules();
+  function handleClickOutside(e) {
+    const module = document.querySelector(".modules-container");
+    const addImg = document.querySelector(".add-img");
+    if(!module.contains(e.target) && e.target !== addImg){
+      render.removeTable();
+    }
+  }
+
+  setTimeout(() => {
+    document.addEventListener("click", handleClickOutside);
+  }, 0);
+});
+
