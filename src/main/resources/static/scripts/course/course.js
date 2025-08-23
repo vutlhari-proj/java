@@ -116,29 +116,35 @@ export const courseFunctions = {
     document.querySelector(".courseName").innerHTML = this.course.courseName;
     document.querySelector(".code").innerHTML = this.course.code;
 
-    let displayHtml = ``;
-    if(!this.course.modules || this.course.modules.length === 0){
-      displayHtml += `<h1>No Modules Have Been Added<h1>`;
-      document.querySelectorAll(".modules")
-      .forEach((mod) => mod.innerHTML = displayHtml);
-    }
-    else{
-      this.course.modules.forEach((module) =>{
-        if (module.code.includes("11")) {
-          displayHtml +=
-          `
+
+    if (!this.course.modules || this.course.modules.length === 0) {
+      const noModulesHtml = `<h1>No Modules Have Been Added</h1>`;
+      document.querySelectorAll(".modules").forEach((mod) => mod.innerHTML = noModulesHtml);
+    } else {
+      // Clear all year tables first
+      document.querySelector(".first-year").innerHTML = "";
+      document.querySelector(".second-year").innerHTML = "";
+      document.querySelector(".third-year").innerHTML = "";
+
+      // Iterate and categorize
+      this.course.modules.forEach((module) => {
+        const moduleHtml = `
           <tr>
-              <td>${module.code}</td>
-              <td>${module.moduleName}</td>
+            <td>${module.code}</td>
+            <td>${module.moduleName}</td>
           </tr>
-          
-          `;
+        `;
+
+        if (module.code.includes("11") || module.code.includes("105") || module.code.includes("125")) {
+          document.querySelector(".first-year").insertAdjacentHTML("beforeend", moduleHtml);
+        } else if (module.code.includes("21")) {
+          document.querySelector(".second-year").insertAdjacentHTML("beforeend", moduleHtml);
+        } else if (module.code.includes("31")) {
+          document.querySelector(".third-year").insertAdjacentHTML("beforeend", moduleHtml);
         }
-
-      })
-
-      document.querySelector(".first-year").innerHTML = displayHtml;
+      });
     }
+
   },
 
   getCourse(code){
