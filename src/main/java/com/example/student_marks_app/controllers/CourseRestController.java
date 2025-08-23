@@ -84,4 +84,30 @@ public class CourseRestController {
         
         return courseRepository.save(course);
     }
+    
+    @PostMapping("/{code}/update")
+    public Course updateCourse(@PathVariable String code,@RequestBody Course updatedCourse){
+        Course course = courseRepository.findById(code)
+                        .orElseThrow(() -> new RuntimeException("Course not found"));
+        
+        
+        if (updatedCourse.getCourseName() != null &&
+            !course.getCourseName().equals(updatedCourse.getCourseName())) {
+            
+            course.setCourseName(updatedCourse.getCourseName());
+        }
+        
+        if (updatedCourse.getModules() != null &&
+            !course.getModules().equals(updatedCourse.getModules())) {
+            
+            List<CourseModule> modules = updatedCourse.getModules().stream()
+                                         .map(m -> moduleRepository.findById(m.getCode())
+                                         .orElseThrow(() -> new RuntimeException("Module not found" + m.getCode())))
+                                         .toList();
+            
+            course.setModules(modules);
+        }
+        
+        return courseRepository.save(course);
+    }
 }

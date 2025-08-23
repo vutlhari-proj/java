@@ -5,7 +5,6 @@
 package com.example.student_marks_app.models.course;
 
 import com.example.student_marks_app.models.module.CourseModule;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -58,6 +57,10 @@ public class Course {
     
     public String getCourseName() {
         return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
     }
 
     public List<CourseModule> getModules() {
