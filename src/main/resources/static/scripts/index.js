@@ -64,7 +64,13 @@ const rendering = {
     document.querySelector(".students-container").innerHTML = studentHtml;
   }
 };
-rendering.renderStudents();
+
+async function initPage() {
+  await rendering.renderStudents();
+
+  document.body.classList.remove("loading");
+}
+document.addEventListener("DOMContentLoaded", initPage);
 
 const search = document.getElementById("search");
 search.addEventListener("keydown", (e) =>{
