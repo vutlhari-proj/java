@@ -89,6 +89,27 @@ export const courseFunctions = {
     .innerHTML = filterHtml;
   },
 
+  async addModulesToCourse(code, modules){
+    alert(`${code}----- ${JSON.stringify(modules)}`);
+    try {
+      const response = await fetch(`/api/courses/${code}/modules`, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(modules)
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const savedCourse = await response.json();
+      alert(JSON.stringify(savedCourse));
+    } catch (error) {
+      alert("couldn't add modules");
+    }
+
+  },
+
   async loadCourseInfo(){
     await this.populateCourses();
 
@@ -97,11 +118,30 @@ export const courseFunctions = {
 
     document.querySelector(".courseName").innerHTML = this.course.courseName;
     document.querySelector(".code").innerHTML = this.course.code;
-    
+
     let displayHtml = ``;
     if(!this.course.modules || this.course.modules.length === 0){
       displayHtml += `<h1>No Modules Have Been Added<h1>`;
-      document.querySelector(".tables").innerHTML = displayHtml;
+      document.querySelectorAll(".modules")
+      .forEach((mod) => mod.innerHTML = displayHtml);
+    }
+    else{
+      this.course.modules.forEach((module) =>{
+        alert(JSON.stringify(module));
+        if (module.code.includes("11")) {
+          displayHtml +=
+          `
+          <tr>
+              <td>${module.code}</td>
+              <td>${module.moduleName}</td>
+          <tr/>
+          
+          `;
+
+          document.querySelector(".first-year").innerHTML+= displayHtml;
+        }
+
+      })
     }
   },
 

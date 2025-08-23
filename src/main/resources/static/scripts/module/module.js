@@ -1,3 +1,4 @@
+import { courseFunctions } from "../course/course.js";
 export class Module{
   code;
   moduleName;
@@ -45,17 +46,16 @@ export const moduleFunction = {
     }
   },
 
-  async loadModules(){
-    const response = await fetch("/api/modules");
-    const modulesJson = await response.json();
-
-    modules = modulesJson.map((module) => new Module(module));
+  async loadModules(moduleCodes = []){
+    await this.populateModules();
 
     let moduleHtml = ``;
     modules.forEach((module) =>{
+      let exists = (moduleCodes.includes(module.code)) ? "exists" : "";
+       
       moduleHtml += 
       `
-        <tr>
+        <tr class="module ${exists}" data-code="${module.code}">
           <td>${module.code}</td>
           <td>${module.moduleName}</td>
         <tr/>
@@ -64,25 +64,62 @@ export const moduleFunction = {
 
     document.querySelector(".js-body")
     .innerHTML = moduleHtml;
+
+    this.moduleEventListeners();
   }, 
   
-  findModules(input){
+  findModules(input, moduleCodes = []){
     let filterHtml = ``;
     modules.forEach((module) =>{
       if((`${module.code} ${module.moduleName}`)
         .toLowerCase().includes(input.toLowerCase())){
-        filterHtml += 
-        `
-            <tr>
-              <td>${module.code}</td>
-              <td>${module.moduleName}</td>
-            <tr/>
-        `;
+          let exists = (moduleCodes.includes(module.code)) ? "exists" : "";
+          filterHtml += 
+          `
+              <tr class="module ${exists}" data-code="${module.code}">
+                <td>${module.code}</td>
+                <td>${module.moduleName}</td>
+              <tr/>
+          `;
       }
     });
     
 
     document.querySelector(".js-body")
     .innerHTML = filterHtml;
+
+    this.moduleEventListeners();
+  },
+
+  async populateModules(){
+    const response = await fetch("/api/modules");
+    const modulesJson = await response.json();
+
+    modules = modulesJson.map((module) => new Module(module));
+  },
+
+ moduleEventListeners(){
+    const rows = document.querySelectorAll("tr");
+    rows.forEach((row) =>{
+      if (row.classList.contains("module")) {
+        row.addEventListener("click", async ()=>{
+          if (!row.classList.contains("exists")) {
+            row.classList.add("exists");
+
+            const modCode = row.dataset.code;
+            this.module = modules.find((module) => module.code === modCode);
+            const code = localStorage.getItem("selectedCourse");
+
+            let temp = [this.module];
+            await courseFunctions.addModulesToCourse(code, temp);
+            await courseFunctions.loadCourseInfo();
+          }
+        });
+      }
+    });
   }
+}
+
+const renderModuleTable = (moduleDetails) => {
+  const table = document.querySelector(".");
 }

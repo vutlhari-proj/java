@@ -52,3 +52,72 @@ table th, table td {
   border: none;
   padding: 8px 120px;
 }
+
+.modules-container {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  font-family: Arial, sans-serif;
+}
+
+.modules-title {
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.modules-search {
+  margin-bottom: 15px;
+}
+
+.modules-search input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.modules-search input:focus {
+  border-color: #4a90e2;
+  outline: none;
+  box-shadow: 0 0 5px rgba(74, 144, 226, 0.4);
+}
+
+.modules-table-wrapper {
+  max-height: 300px; /* makes table scrollable if long */
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+.modules-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.modules-table th,
+.modules-table td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+
+.modules-table th {
+  background-color: #f7f7f7;
+  font-weight: bold;
+}
+
+.modules-table tr:hover {
+  background-color: #f0f8ff;
+}
+
+.exists{
+  background-color: rgb(210, 255, 210);
+}
+
+.exists:hover{
+  background-color: rgb(255, 205, 205);
+}
