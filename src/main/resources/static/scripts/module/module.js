@@ -77,11 +77,15 @@ export const moduleFunction = {
     modules.forEach((module) =>{
       if((`${module.code} ${module.moduleName}`)
         .toLowerCase().includes(input.toLowerCase())){
-          let exists = (moduleCodes.includes(module.code)) ? "exists" : "";
+          let exists = "";
+          exists = moduleCodes.some(mod => mod.code === module.code) ? "exists" : "";
           filterHtml += 
           `
               <tr class="module ${exists}" data-code="${module.code}">
-                <td>${module.code}</td>
+                <td>
+                  ${module.code}
+                  <span class="tooltip">remove from course</span>
+                </td>
                 <td>${module.moduleName}</td>
               <tr/>
           `;
@@ -105,15 +109,25 @@ export const moduleFunction = {
  moduleEventListeners(){
     const rows = document.querySelectorAll("tr");
     rows.forEach((row) =>{
-      if (row.classList.contains("module")) {
+       if (row.classList.contains("module")) {
         row.addEventListener("click", async ()=>{
-          if (!row.classList.contains("exists")) {
-            row.classList.add("exists");
+          const modCode = row.dataset.code;
+          this.module = modules.find((module) => module.code === modCode);
 
-            const modCode = row.dataset.code;
-            this.module = modules.find((module) => module.code === modCode);
-            const params = new URLSearchParams(window.location.search);
-            const courseCode = params.get("code");
+          const params = new URLSearchParams(window.location.search);
+          const courseCode = params.get("code");
+
+          if (row.classList.contains("exists")) {
+            const course = courseFunctions.getCourse(courseCode);
+            course.modules = course.modules.filter(mod => mod.code !== modCode);
+            
+            
+            await courseFunctions.updateCourse(course);
+            await courseFunctions.loadCourseInfo();
+
+            row.classList.remove("exists");
+          } else if (!row.classList.contains("exists")) {
+            row.classList.add("exists");
 
             let temp = [this.module];
             await courseFunctions.addModulesToCourse(courseCode, temp);

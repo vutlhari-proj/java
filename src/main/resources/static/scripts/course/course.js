@@ -147,6 +147,41 @@ export const courseFunctions = {
 
   },
 
+  async updateCourse(course) {
+    this.course = new Course(course);
+
+    try {
+      const url = `/api/courses/${encodeURIComponent(this.course.code)}/update`;
+      console.log("Fetching URL:", url);
+
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(this.course),
+      });
+
+      // Check if fetch completed at all
+      console.log("Fetch completed, response:", response);
+
+      if (!response.ok) {
+        const errorText = await response.text(); // get server error message
+        console.error("Server error:", response.status, errorText);
+        throw new Error(`HTTP error! Status: ${response.status}\n${errorText}`);
+      }
+
+      const updatedCourse = await response.json();
+      console.log("Updated course from server:", updatedCourse);
+      alert(`Update successful: ${JSON.stringify(updatedCourse)}`);
+
+      let index = courses.findIndex(c => c.code === updatedCourse.code);
+      (index !== -1) && (courses[index] = updatedCourse);
+
+    } catch (error) {
+      console.error("Error updating course:", error);
+      alert("Couldn't edit course: " + error.message);
+    }
+  },
+
   getCourse(code){
     this.populateCourses();
 

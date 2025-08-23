@@ -15,7 +15,8 @@ const render ={
         <input 
           type="text" 
           id="moduleSearch" 
-          placeholder="Search module..."
+          placeholder="Search module..." 
+          autocomplete="off"
         />
       </div>
 
@@ -66,7 +67,7 @@ const render ={
       clearTimeout(typingTimer);
 
       typingTimer = setTimeout(() =>{
-        moduleFunction.findModules(search.value);
+        moduleFunction.findModules(search.value, courseFunctions.getCourse(courseCode).modules);
       }, 1500);
     });
   },

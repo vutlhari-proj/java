@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.student_marks_app.repositories.CourseModuleRepository;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -103,7 +104,7 @@ public class CourseRestController {
             List<CourseModule> modules = updatedCourse.getModules().stream()
                                          .map(m -> moduleRepository.findById(m.getCode())
                                          .orElseThrow(() -> new RuntimeException("Module not found" + m.getCode())))
-                                         .toList();
+                                         .collect(Collectors.toList());
             
             course.setModules(modules);
         }
