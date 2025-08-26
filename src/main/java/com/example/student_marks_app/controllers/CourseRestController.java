@@ -76,7 +76,10 @@ public class CourseRestController {
                 }
             }
         }
-        return course.toDTO();
+        
+        Course savedCourse = courseRepository.findById(course.getCode())
+                .orElseThrow(() -> new RuntimeException("course not found after saving"));
+        return savedCourse.toDTO();
     }
     
     @PostMapping("/{code}/modules")
@@ -124,6 +127,9 @@ public class CourseRestController {
         }
         
         courseRepository.save(course);
-        return course.toDTO();
+        
+        Course updatedCourse = courseRepository.findById(course.getCode())
+                .orElseThrow(() -> new RuntimeException("course not found after updating"));
+        return updatedCourse.toDTO();
     }
 }
