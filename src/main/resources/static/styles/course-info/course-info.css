@@ -204,7 +204,6 @@ table th, table td {
   border-top: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.hide-tooltip{
-  visibility: hidden;
-  opacity: 0;
+.edit-container.tooltip-disabled .tooltip {
+  display: none; /* completely hide when menu is open */
 }

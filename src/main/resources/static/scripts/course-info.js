@@ -166,33 +166,36 @@ const render ={
     const edit = document.querySelector(".edit-container");
     if(!edit.querySelector(".menu-container")){
       edit.insertAdjacentHTML("afterbegin", menuHtml);
+
+      edit.classList.add("tooltip-disabled");
     }
 
-    document.querySelectorAll(".menu-item")
-    .forEach((item) =>{
-      item.addEventListener("click", () =>{
-        const choice = (item.classList.contains("edit-modules")) ?
-        (() =>{
-          this.addCourseTable();
+    document.querySelectorAll(".menu-item").forEach((item) => {
+      item.addEventListener("click", () => {
+        const choice = item.classList.contains("edit-modules")
+          ? () => {
+              this.addCourseTable();
+              moduleFunction.loadModules(courseFunctions.getCourse(courseCode).modules);
 
-          moduleFunction.loadModules(courseFunctions.getCourse(courseCode).modules);
-          function handleClickOutside(e) {
-            const module = document.querySelector(".modules-container");
-            const addImg = document.querySelector(".edit-img");
-            if(!module.contains(e.target) && e.target !== addImg){
-              this.removeTable();
+              function handleClickOutside(e) {
+                const module = document.querySelector(".modules-container");
+                const addImg = document.querySelector(".edit-img");
+
+                if (module && !module.contains(e.target) && e.target !== addImg && !item.contains(e.target)) {
+                  render.removeTable(); // <-- use render explicitly
+                  document.removeEventListener("click", handleClickOutside);
+                }
+              }
+
+              setTimeout(() => {
+                document.addEventListener("click", handleClickOutside);
+              }, 0);
             }
-          }
-
-          setTimeout(() => {
-            document.addEventListener("click", handleClickOutside);
-          }, 0);
-        }) 
-        : this.editCourseInfo(); 
+          : () => this.editCourseInfo();
 
         choice();
-      })
-    })
+      });
+    });
   },
 
   editCourseInfo(){
@@ -227,6 +230,7 @@ document.querySelector(".edit-img")
     const addImg = document.querySelector(".edit-img");
     if(!menu.contains(e.target) && e.target !== addImg){
       render.removeMenu();
+      edit.classList.remove("tooltip-disabled");
     }
   }
 
