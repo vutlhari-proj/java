@@ -4,14 +4,17 @@
  */
 package com.example.student_marks_app.models.course;
 
+import com.example.student_marks_app.coursemodulemapping.CourseModuleMapping;
+import com.example.student_marks_app.dtos.CourseDTO;
+import com.example.student_marks_app.dtos.ModuleDTO;
 import com.example.student_marks_app.models.module.CourseModule;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -27,28 +30,16 @@ public class Course {
     
     private String courseName;
     
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(
-        name = "course_module_mapping",
-        joinColumns = @JoinColumn(name = "course_code"),
-        inverseJoinColumns = @JoinColumn(name = "module_code")
-    )
-    private List<CourseModule> modules;
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<CourseModuleMapping> courseModules = new HashSet<>();
 
     public Course() {
     }
 
     
-    public Course(String code, String courseName, List<CourseModule> modules) {
-        this.code = code;
-        this.courseName = courseName;
-        this.modules = modules;
-    }
-
     public Course(String code, String courseName) {
         this.code = code;
         this.courseName = courseName;
-        this.modules = null;
     }
     
     public String getCode() {
@@ -63,11 +54,24 @@ public class Course {
         this.courseName = courseName;
     }
 
-    public List<CourseModule> getModules() {
-        return modules;
+    public Set<CourseModuleMapping> getCourseModules() {
+        return courseModules;
     }
 
-    public void setModules(List<CourseModule> modules) {
-        this.modules = modules;
+    public CourseDTO toDTO(){
+        List<ModuleDTO> moduleList = this.courseModules.stream()
+                .map(mapping -> new ModuleDTO(mapping.getModule().getCode(), mapping.getModule().getModuleName()))
+                .toList();
+        
+        return new CourseDTO(this.code, this.courseName, moduleList);
+    }
+    
+    public void addModule(CourseModule module){
+        CourseModuleMapping mapping = new CourseModuleMapping(this, module);
+        courseModules.add(mapping);
+    }
+    
+    public void removeModule(CourseModule module){
+        courseModules.removeIf(mapping -> mapping.getModule().equals(module));
     }
 }

@@ -89,19 +89,20 @@ export const courseFunctions = {
     .innerHTML = filterHtml;
   },
 
-  async addModulesToCourse(code, modules){
+  async addModulesToCourse(code, moduleCodes){
     try {
       const response = await fetch(`/api/courses/${code}/modules`, {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(modules)
+        body: JSON.stringify(moduleCodes)
       });
 
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
+
     } catch (error) {
-      alert("couldn't add modules");
+      alert("couldn't add modules" + error.message());
     }
 
   },
@@ -171,13 +172,12 @@ export const courseFunctions = {
 
       const updatedCourse = await response.json();
       console.log("Updated course from server:", updatedCourse);
-      alert(`Update successful: ${JSON.stringify(updatedCourse)}`);
 
       let index = courses.findIndex(c => c.code === updatedCourse.code);
       (index !== -1) && (courses[index] = updatedCourse);
 
     } catch (error) {
-      console.error("Error updating course:", error);
+      console.error("Error updating course: coursejs", error);
       alert("Couldn't edit course: " + error.message);
     }
   },

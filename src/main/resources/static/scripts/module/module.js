@@ -106,35 +106,42 @@ export const moduleFunction = {
     modules = modulesJson.map((module) => new Module(module));
   },
 
- moduleEventListeners(){
-    const rows = document.querySelectorAll("tr");
-    rows.forEach((row) =>{
-       if (row.classList.contains("module")) {
-        row.addEventListener("click", async ()=>{
+  moduleEventListeners() {
+    const rows = document.querySelectorAll("tr.module");
+    rows.forEach((row) => {
+      row.addEventListener("click", async () => {
+        if (row.classList.contains("loading")) return; // prevent double click
+        row.classList.add("loading");
+        row.style.pointerEvents = "none";
+
+        try {
           const modCode = row.dataset.code;
           this.module = modules.find((module) => module.code === modCode);
-
           const params = new URLSearchParams(window.location.search);
           const courseCode = params.get("code");
+          const course = courseFunctions.getCourse(courseCode);
 
           if (row.classList.contains("exists")) {
-            const course = courseFunctions.getCourse(courseCode);
+            // Remove module
             course.modules = course.modules.filter(mod => mod.code !== modCode);
-            
-            
             await courseFunctions.updateCourse(course);
-            await courseFunctions.loadCourseInfo();
-
             row.classList.remove("exists");
-          } else if (!row.classList.contains("exists")) {
-            row.classList.add("exists");
-
-            let temp = [this.module];
+          } else {
+            // Add module
+            const temp = [this.module.code];
             await courseFunctions.addModulesToCourse(courseCode, temp);
-            await courseFunctions.loadCourseInfo();
+            row.classList.add("exists");
           }
-        });
-      }
+
+          await courseFunctions.loadCourseInfo();
+        } catch (err) {
+          console.error(err);
+          alert("Error updating course modules");
+        } finally {
+          row.classList.remove("loading");
+          row.style.pointerEvents = "auto";
+        }
+      });
     });
   }
 }

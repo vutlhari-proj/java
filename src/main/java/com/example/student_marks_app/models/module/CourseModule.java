@@ -4,13 +4,14 @@
  */
 package com.example.student_marks_app.models.module;
 
-import com.example.student_marks_app.models.course.Course;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.example.student_marks_app.coursemodulemapping.CourseModuleMapping;
+import com.example.student_marks_app.dtos.ModuleDTO;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import java.util.List;
+import jakarta.persistence.OneToMany;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  *
@@ -24,9 +25,8 @@ public class CourseModule {
     
     private String moduleName;
 
-    @ManyToMany(mappedBy = "modules")
-    @JsonIgnore
-    private List<Course> courses;
+    @OneToMany(mappedBy = "module", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<CourseModuleMapping> courseModules = new HashSet<>();
     
     public CourseModule() {
     }
@@ -43,6 +43,8 @@ public class CourseModule {
     public String getModuleName() {
         return moduleName;
     }
-    
-    
+  
+    public ModuleDTO toDto(){
+        return new ModuleDTO(this.code, this.moduleName);
+    }
 }

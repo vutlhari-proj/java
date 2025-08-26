@@ -53,6 +53,8 @@ const render ={
       display.insertAdjacentHTML("beforeend", tableHtml);
     }
 
+    this.removeMenu();
+
     const tableWrapper = document.querySelector(".modules-table-wrapper");
     if (tableWrapper) {
       tableWrapper.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -150,6 +152,59 @@ const render ={
     }
 
     document.querySelector(".tables").innerHTML = content;
+  },
+
+  dropDownMenu(){
+    let menuHtml =
+    `
+      <div class="menu-container">
+        <div class="menu-item edit-course">edit course</div>
+        <div class="menu-item edit-modules">edit course modules</div>
+      </div>
+    `;
+
+    const edit = document.querySelector(".edit-container");
+    if(!edit.querySelector(".menu-container")){
+      edit.insertAdjacentHTML("afterbegin", menuHtml);
+    }
+
+    document.querySelectorAll(".menu-item")
+    .forEach((item) =>{
+      item.addEventListener("click", () =>{
+        const choice = (item.classList.contains("edit-modules")) ?
+        (() =>{
+          this.addCourseTable();
+
+          moduleFunction.loadModules(courseFunctions.getCourse(courseCode).modules);
+          function handleClickOutside(e) {
+            const module = document.querySelector(".modules-container");
+            const addImg = document.querySelector(".edit-img");
+            if(!module.contains(e.target) && e.target !== addImg){
+              this.removeTable();
+            }
+          }
+
+          setTimeout(() => {
+            document.addEventListener("click", handleClickOutside);
+          }, 0);
+        }) 
+        : this.editCourseInfo(); 
+
+        choice();
+      })
+    })
+  },
+
+  editCourseInfo(){
+    let editHtml =
+    `
+      <div class="info-container
+    `
+  },
+
+  removeMenu(){
+    const menu = document.querySelector(".menu-container");
+    if(menu) menu.remove();
   }
 };
 
@@ -162,16 +217,16 @@ async function initPage() {
 
 document.addEventListener("DOMContentLoaded", initPage);
 
-document.querySelector(".add-img")
+document.querySelector(".edit-img")
 .addEventListener("click", ()=>{
-  render.addCourseTable();
+  render.dropDownMenu()
+  //render.addCourseTable();
 
-  moduleFunction.loadModules(courseFunctions.getCourse(courseCode).modules);
   function handleClickOutside(e) {
-    const module = document.querySelector(".modules-container");
-    const addImg = document.querySelector(".add-img");
-    if(!module.contains(e.target) && e.target !== addImg){
-      render.removeTable();
+    const menu = document.querySelector(".menu-container");
+    const addImg = document.querySelector(".edit-img");
+    if(!menu.contains(e.target) && e.target !== addImg){
+      render.removeMenu();
     }
   }
 

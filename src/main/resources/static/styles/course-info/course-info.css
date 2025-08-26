@@ -147,3 +147,64 @@ table th, table td {
   visibility: visible;
   opacity: 1;
 }
+
+.edit-container {
+  position: relative; /* needed for absolute tooltip positioning */
+  display: inline-block; /* optional, keeps layout tidy */
+  cursor: pointer;
+}
+
+.edit-container:hover .tooltip{
+  visibility: visible;
+  opacity: 1;
+}
+
+.edit-img{
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.edit-img:hover {
+  transform: scale(1.2);
+}
+
+.menu-container {
+  position: absolute;
+
+  color: white;
+  background: rgb(60, 60, 60);
+
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+
+  width: 180px;
+  bottom: 60%;
+  left: 60%;
+
+  z-index: 100;
+
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* keeps rounded corners */
+}
+
+.menu-item {
+  padding: 10px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.menu-item:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.edit-modules {
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.hide-tooltip{
+  visibility: hidden;
+  opacity: 0;
+}
