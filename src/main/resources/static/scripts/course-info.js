@@ -77,79 +77,42 @@ const render ={
     if(module) module.remove();
   },
 
-  moduleTable(code){
-    const renderFirst = () =>{
-      return `
-        <table class="display" border="0">
-            <caption>First Year</caption>
-            <thead class="modules-head">
-              <tr>
-                <th>Code</th>
-                <th>Module</th>
-              </tr>
-            </thead>
-            <tbody class="modules first-year"></tbody>
-          </table>
-      `;
+  moduleTable(courseCode){
+    // Map year numbers to captions
+    const yearLabels = {
+    1: "First Year",
+    2: "Second Year",
+    3: "Third Year",
+    4: "Fourth Year"
+    };
+
+    // Decide how many years this course should display
+    let maxYears = 1; // default
+
+    // Diploma (dp) → 3 years
+    if (courseCode.toLowerCase().includes("dp") && !courseCode.toLowerCase().includes("f0")) {
+      maxYears = 3;
+    }
+    // Degree with F0 (f0) → 4 years
+    else if (courseCode.toLowerCase().includes("f0")) {
+      maxYears = 4;
     }
 
-    const renderSecond = () =>{
-      return `
-        <table class="display" border="0">
-          <caption>Second Year</caption>
-          <thead class="modules-head">
-            <tr>
-              <th>Code</th>
-              <th>Module</th>
-            </tr>
-          </thead>
-          <tbody class="modules second-year"></tbody>
-        </table>
-      `;
-    }
-
-    const renderThird = () =>{
-      return `
-        <table class="display" border="0">
-          <caption>Third Year</caption>
-          <thead class="modules-head">
-            <tr>
-              <th>Code</th>
-              <th>Module</th>
-            </tr>
-          </thead>
-          <tbody class="modules third-year"></tbody>
-        </table>
-      `;
-    }
-
-    const renderFourth = () =>{
-      return `
-        <table class="display" border="0">
-            <caption>Fourth Year</caption>
-            <thead class="modules-head">
-              <tr>
-                <th>Code</th>
-                <th>Module</th>
-              </tr>
-            </thead>
-            <tbody class="modules fourth-year"></tbody>
-          </table>
-      `;
-    }
-
-    const course = code.toLowerCase();
+    // Render tables dynamically
     let content = "";
-
-    if (course.includes("ad") || course.includes("pd")) {
-      content = renderFirst();
-    } else if (course.includes("dp") && !course.includes("f0")) {
-      content = renderFirst() + renderSecond() + renderThird();
-    } else if(course.includes("f0")){
-      content = renderFirst() + renderSecond() + renderThird() + renderFourth();
-    }
-    else{
-      content = renderFirst();
+    for (let year = 1; year <= maxYears; year++) {
+      content += `
+        <table class="display" border="0">
+          <caption>${yearLabels[year]}</caption>
+          <thead class="modules-head">
+            <tr>
+              <th>Code</th>
+              <th>Module</th>
+            </tr>
+          </thead>
+          <tbody class="modules year-${year}"></tbody>
+        </table>
+      `;
     }
 
     document.querySelector(".tables").innerHTML = content;

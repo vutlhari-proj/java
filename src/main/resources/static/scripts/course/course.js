@@ -139,13 +139,13 @@ export const courseFunctions = {
 
         let targetBody;
         if (module.code.includes("11") || module.code.includes("105") || module.code.includes("125")) {
-          targetBody = document.querySelector(".first-year");
+          targetBody = document.querySelector(".year-1");
         } else if (module.code.includes("21")) {
-          targetBody = document.querySelector(".second-year");
+          targetBody = document.querySelector(".year-2");
         } else if (module.code.includes("31")) {
-          targetBody = document.querySelector(".third-year");
+          targetBody = document.querySelector(".year-3");
         } else{
-          targetBody = document.querySelector(".first-year");
+          targetBody = document.querySelector(".year-4");
         }
 
         if(targetBody) targetBody.insertAdjacentHTML("beforeend", moduleHtml);
