@@ -188,6 +188,19 @@ export const courseFunctions = {
     }
   },
 
+  async deleteCourse(courseCode){
+    try{
+      const response = await fetch(`/api/courses/${courseCode}/delete`, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(courseCode)
+      });
+    }
+    catch(error){
+      alert("Failed to delete course");
+    }
+  },
+
   getCourse(code){
     this.populateCourses();
 

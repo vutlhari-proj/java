@@ -124,6 +124,7 @@ const render ={
       <div class="menu-container">
         <div class="menu-item edit-course">edit course</div>
         <div class="menu-item edit-modules">edit course modules</div>
+        <div class="menu-item delete-course">delete course</div>
       </div>
     `;
 
@@ -136,43 +137,44 @@ const render ={
 
     document.querySelectorAll(".menu-item").forEach((item) => {
       item.addEventListener("click", () => {
-        const choice = item.classList.contains("edit-modules")
-          ? () => {
-              this.addCourseTable();
-              moduleFunction.loadModules(courseFunctions.getCourse(courseCode).modules);
+        if(item.classList.contains("edit-modules")){
+          this.addCourseTable();
+          moduleFunction.loadModules(courseFunctions.getCourse(courseCode).modules);
 
-              function handleClickOutside(e) {
-                const module = document.querySelector(".modules-container");
-                const addImg = document.querySelector(".edit-img");
+          function handleClickOutside(e) {
+            const module = document.querySelector(".modules-container");
+            const addImg = document.querySelector(".edit-img");
 
-                if (module && !module.contains(e.target) && e.target !== addImg && !item.contains(e.target)) {
-                  render.removeTable();
-                  document.removeEventListener("click", handleClickOutside);
-                }
-              }
-
-              setTimeout(() => {
-                document.addEventListener("click", handleClickOutside);
-              }, 0);
+            if (module && !module.contains(e.target) && e.target !== addImg && !item.contains(e.target)) {
+              render.removeTable();
+              document.removeEventListener("click", handleClickOutside);
             }
-          : () => {
-            render.editCourseInfo(); 
-            
-            document.querySelector(".confirm")
-            .addEventListener("click", async () =>{
-              let name = document.getElementById("edit-courseName");
-              let course = courseFunctions.getCourse(courseCode);
+          }
 
-              course.courseName = name.value.toUpperCase();
+          setTimeout(() => {
+            document.addEventListener("click", handleClickOutside);
+          }, 0);
+        }
+        else if(item.classList.contains("edit-course")){
+          render.editCourseInfo(); 
+          
+          document.querySelector(".confirm")
+          .addEventListener("click", async () =>{
+            let name = document.getElementById("edit-courseName");
+            let course = courseFunctions.getCourse(courseCode);
 
-              await courseFunctions.updateCourse(course);
-              await courseFunctions.loadCourseInfo();
+            course.courseName = name.value.toUpperCase();
 
-              render.removeEditCourseInfo();
-            });
-          };
+            await courseFunctions.updateCourse(course);
+            await courseFunctions.loadCourseInfo();
 
-        choice();
+            render.removeEditCourseInfo();
+          });
+        }
+        else{
+          render.confirmationModal();
+        }
+
       });
     });
   },
@@ -227,6 +229,43 @@ const render ={
       render.removeMenu();
     }
     
+  },
+
+  confirmationModal(){
+    let modalHtml =
+    `
+    <div id="overlay" class="overlay">
+      <div class="modal">
+        <h2>Are you sure?</h2>
+        <p>This action cannot be undone.</p>
+        <div class="modal-buttons">
+          <button id="confirmBtn">Yes</button>
+          <button id="cancelBtn">Cancel</button>
+        </div>
+      </div>
+    </div>
+    `;
+
+    document.body.insertAdjacentHTML("afterbegin", modalHtml);
+
+    render.removeMenu();
+
+    const confirm = document.getElementById("confirmBtn");
+    confirm.addEventListener("click", async ()=>{
+      await courseFunctions.deleteCourse(courseCode);
+
+      window.location.href = `../pages/courses.html`;
+    });
+
+    const cancel = document.getElementById("cancelBtn");
+    cancel.addEventListener("click", ()=>{
+      render.removeModal();
+    });
+  },
+
+  removeModal(){
+    const modal = document.getElementById("overlay");
+    if(modal) modal.remove();
   },
 
   removeEditCourseInfo(){
