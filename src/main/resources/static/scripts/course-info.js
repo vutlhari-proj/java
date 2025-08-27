@@ -53,18 +53,16 @@ const render ={
       display.insertAdjacentHTML("beforeend", tableHtml);
     }
 
-    this.removeMenu();
+    render.removeMenu();
 
     const tableWrapper = document.querySelector(".modules-table-wrapper");
     if (tableWrapper) {
       tableWrapper.scrollIntoView({ behavior: "smooth", block: "start" });
-
-      const searchInput = tableWrapper.querySelector("#moduleSearch");
-      if (searchInput) searchInput.focus();
     }
 
     let typingTimer;
     const search =document.getElementById("moduleSearch");
+    search.focus();
     search.addEventListener("input", ()=>{
       clearTimeout(typingTimer);
 
@@ -182,7 +180,7 @@ const render ={
                 const addImg = document.querySelector(".edit-img");
 
                 if (module && !module.contains(e.target) && e.target !== addImg && !item.contains(e.target)) {
-                  render.removeTable(); // <-- use render explicitly
+                  render.removeTable();
                   document.removeEventListener("click", handleClickOutside);
                 }
               }
@@ -191,7 +189,7 @@ const render ={
                 document.addEventListener("click", handleClickOutside);
               }, 0);
             }
-          : () => this.editCourseInfo();
+          : () => {render.editCourseInfo(); alert("click");};
 
         choice();
       });
@@ -201,8 +199,53 @@ const render ={
   editCourseInfo(){
     let editHtml =
     `
-      <div class="info-container
-    `
+    <div class="js-info">
+      <div class="enter-info-container">
+        <div class="edit-item">
+          <p>Course name:</p>
+          <input 
+          type="text"
+          id="edit-courseName"
+          autocomplete="off"
+          value="${courseFunctions.getCourse(courseCode).courseName}"
+          >
+        </div>
+
+        <div class="edit-item">
+          <p>Faculty:</p>
+          <select id="edit-faculty" name="faculty">
+            <option value="all" selected>ICT</option>
+            <option value="1">Science</option>
+            <option value="2">Humanities</option>
+          </select>
+        </div>
+
+        <div class="edit-item">
+          <p>Faculty:</p>
+          <select id="edit-department" name="department">
+            <option value="all" selected>Computer Science</option>
+            <option value="1">Computer Systems and Engineering</option>
+            <option value="2">Informatics</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="button-container">
+        <button>Confirm</div>
+      </div>
+    </div?
+    `;
+
+    const container = document.querySelector(".container");
+    if (!container.querySelector(".js-info")) {
+      document.querySelector(".modules-display-header")
+      .insertAdjacentHTML(
+        "afterend", editHtml
+      );
+
+      render.removeMenu();
+    }
+    
   },
 
   removeMenu(){
