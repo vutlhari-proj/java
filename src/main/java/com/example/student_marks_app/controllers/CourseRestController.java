@@ -132,4 +132,12 @@ public class CourseRestController {
                 .orElseThrow(() -> new RuntimeException("course not found after updating"));
         return updatedCourse.toDTO();
     }
+    
+    @PostMapping("/{code}/delete")
+    public void deleteCourse(@PathVariable String code){  
+        Course course = courseRepository.findById(code)
+                .orElseThrow(() -> new RuntimeException("unable to find course" + code));
+        
+        courseRepository.deleteById(code);
+    }
 }
