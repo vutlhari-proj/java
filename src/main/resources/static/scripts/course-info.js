@@ -148,6 +148,9 @@ const render ={
     } else if(course.includes("f0")){
       content = renderFirst() + renderSecond() + renderThird() + renderFourth();
     }
+    else{
+      content = renderFirst();
+    }
 
     document.querySelector(".tables").innerHTML = content;
   },

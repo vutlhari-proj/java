@@ -123,9 +123,10 @@ export const courseFunctions = {
       document.querySelectorAll(".modules").forEach((mod) => mod.innerHTML = noModulesHtml);
     } else {
       // Clear all year tables first
-      document.querySelector(".first-year").innerHTML = "";
-      document.querySelector(".second-year").innerHTML = "";
-      document.querySelector(".third-year").innerHTML = "";
+      [".first-year", ".second-year", ".third-year", ".fourth-year"].forEach(selector => {
+        const tableBody = document.querySelector(selector);
+        if (tableBody) tableBody.innerHTML = "";
+      });
 
       // Iterate and categorize
       this.course.modules.forEach((module) => {
@@ -136,13 +137,18 @@ export const courseFunctions = {
           </tr>
         `;
 
+        let targetBody;
         if (module.code.includes("11") || module.code.includes("105") || module.code.includes("125")) {
-          document.querySelector(".first-year").insertAdjacentHTML("beforeend", moduleHtml);
+          targetBody = document.querySelector(".first-year");
         } else if (module.code.includes("21")) {
-          document.querySelector(".second-year").insertAdjacentHTML("beforeend", moduleHtml);
+          targetBody = document.querySelector(".second-year");
         } else if (module.code.includes("31")) {
-          document.querySelector(".third-year").insertAdjacentHTML("beforeend", moduleHtml);
+          targetBody = document.querySelector(".third-year");
+        } else{
+          targetBody = document.querySelector(".first-year");
         }
+
+        if(targetBody) targetBody.insertAdjacentHTML("beforeend", moduleHtml);
       });
     }
 
