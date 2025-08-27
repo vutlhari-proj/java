@@ -189,7 +189,22 @@ const render ={
                 document.addEventListener("click", handleClickOutside);
               }, 0);
             }
-          : () => {render.editCourseInfo(); alert("click");};
+          : () => {
+            render.editCourseInfo(); 
+            
+            document.querySelector(".confirm")
+            .addEventListener("click", async () =>{
+              let name = document.getElementById("edit-courseName");
+              let course = courseFunctions.getCourse(courseCode);
+
+              course.courseName = name.value.toUpperCase();
+
+              await courseFunctions.updateCourse(course);
+              await courseFunctions.loadCourseInfo();
+
+              render.removeEditCourseInfo();
+            });
+          };
 
         choice();
       });
@@ -231,9 +246,9 @@ const render ={
       </div>
 
       <div class="button-container">
-        <button>Confirm</div>
+        <button class="confirm">Confirm</button>
       </div>
-    </div?
+    </div>
     `;
 
     const container = document.querySelector(".container");
@@ -246,6 +261,11 @@ const render ={
       render.removeMenu();
     }
     
+  },
+
+  removeEditCourseInfo(){
+    const info = document.querySelector(".js-info");
+    if(info) info.remove();
   },
 
   removeMenu(){
