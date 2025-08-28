@@ -58,6 +58,13 @@ document.querySelector(".search-img").addEventListener("click", ()=>{
   }, 0);
 });
 
+document.querySelector(".js-body").addEventListener("click", (e) => {
+  const row = e.target.closest("tr");
+  if (!row) return; // clicked outside row
+  
+  window.location.href = `../pages/module-info.html?code=${encodeURIComponent(row.dataset.code)}`;
+});
+
 const render = {
   newModule(){
     const body = document.querySelector(".js-body");
