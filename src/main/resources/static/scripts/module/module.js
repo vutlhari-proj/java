@@ -125,11 +125,17 @@ export const moduleFunction = {
   },
 
   async inCourses(){
+    await this.populateModules();
+
     const params = new URLSearchParams(window.location.search);
     const moduleCode = params.get("code");
 
     const response = await fetch(`/api/modules/${moduleCode}/courses`);
     this.courses = await response.json();
+
+    const module = modules.find(module => module.code === moduleCode);
+    document.querySelector(".moduleName").textContent = module.moduleName;
+    document.querySelector(".code").textContent = moduleCode;
 
     this.renderCourses();
   },
@@ -138,8 +144,8 @@ export const moduleFunction = {
     const courseTable = document.querySelector(".courses");
     courseTable.innerHTML = "";
 
-    let courseHtml = `'`
-    courses.forEach(course =>{
+    let courseHtml = ``;
+    this.courses.forEach(course =>{
       courseHtml+=
       `
       <tr class="course">
