@@ -12,6 +12,7 @@ export class Module{
 export let modules = [];
 export const moduleFunction = {
   module: null,
+  courses: [],
 
   async addModule(moduleDetails){
     try{
@@ -121,6 +122,52 @@ export const moduleFunction = {
     const modulesJson = await response.json();
 
     modules = modulesJson.map((module) => new Module(module));
+  },
+
+  async inCourses(){
+    const params = new URLSearchParams(window.location.search);
+    const moduleCode = params.get("code");
+
+    const response = await fetch(`/api/modules/${moduleCode}/courses`);
+    this.courses = await response.json();
+
+    this.renderCourses();
+  },
+
+  renderCourses(){
+    const courseTable = document.querySelector(".courses");
+    courseTable.innerHTML = "";
+
+    let courseHtml = `'`
+    courses.forEach(course =>{
+      courseHtml+=
+      `
+      <tr class="course">
+        <td>${course.code}</td>
+        <td>${course.courseName}</td>
+      </tr>
+      `;
+    });
+
+    courseTable.insertAdjacentHTML("beforeend", courseHtml);
+  },
+
+  addCourses(courses){
+    courses.forEach(course =>{
+      if (!this.courses.some((c) => c.code === course.code)) {
+        this.courses.push(course);
+      }
+    })
+
+    this.renderCourses;
+  },
+
+  removeCourses(courseCodes){
+    courseCodes.forEach(courseCode =>{
+      this.courses = this.courses.filter((c) => c.code !== courseCode);
+    });
+
+    this.renderCourses();
   },
 
   moduleEventListeners() {

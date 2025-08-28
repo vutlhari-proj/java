@@ -4,9 +4,14 @@
  */
 package com.example.student_marks_app.controllers;
 
+import com.example.student_marks_app.coursemodulemapping.CourseModuleMapping;
+import com.example.student_marks_app.dtos.CourseDTO;
 import com.example.student_marks_app.dtos.ModuleDTO;
+import com.example.student_marks_app.models.course.Course;
 import com.example.student_marks_app.models.module.CourseModule;
+import com.example.student_marks_app.repositories.CourseModuleMappingRepository;
 import com.example.student_marks_app.repositories.CourseModuleRepository;
+import com.example.student_marks_app.repositories.CourseRepository;
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,9 +29,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class ModuleRestController {
     
     private final CourseModuleRepository moduleRepository;
+    private final CourseRepository courseRepository;
+    private final CourseModuleMappingRepository mappingRepository;
 
-    public ModuleRestController(CourseModuleRepository moduleRepository) {
+    public ModuleRestController(CourseModuleRepository moduleRepository,
+                                CourseRepository courseRepository,
+                                CourseModuleMappingRepository mappingRepository) {
         this.moduleRepository = moduleRepository;
+        this.courseRepository = courseRepository;
+        this.mappingRepository = mappingRepository;
     }
     
     @GetMapping
@@ -39,6 +50,17 @@ public class ModuleRestController {
         return moduleRepository.findById(code)
                 .orElseThrow(() -> new RuntimeException("unable to find module"))
                 .toDto();
+    }
+    
+    @GetMapping("/{code}/courses")
+    public List<CourseDTO> inCourses(@PathVariable String code){
+        return mappingRepository.findByModule_Code(code).stream()
+                .map(CourseModuleMapping::getCourse)
+                .map(course ->{
+                    CourseDTO dto = new CourseDTO(course.getCode(),course.getCourseName(), null);
+                    return dto;
+                })
+                .toList();
     }
     
     @PostMapping
