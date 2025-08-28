@@ -1,0 +1,35 @@
+.tables{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+table {
+  border-collapse: collapse;
+  border: none;
+}
+
+table caption{
+  font-weight: bold;
+  font-size: 18px;
+
+  background-color: rgb(165, 165, 165);
+}
+
+table thead{
+  font-weight: bold;
+  font-size: 16px;
+}
+
+table tr{
+  font-size: 14px;
+}
+
+table th, table td {
+  border: none;
+  padding: 8px 120px;
+}

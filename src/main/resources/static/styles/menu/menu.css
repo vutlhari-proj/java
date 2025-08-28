@@ -1,0 +1,29 @@
+.menu-container {
+  position: absolute;
+
+  color: white;
+  background: rgb(60, 60, 60);
+
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+
+  width: 180px;
+  bottom: 60%;
+  left: 60%;
+
+  z-index: 100;
+
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* keeps rounded corners */
+}
+
+.menu-item {
+  padding: 10px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.menu-item:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
