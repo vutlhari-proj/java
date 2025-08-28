@@ -68,6 +68,7 @@ const render ={
 
       typingTimer = setTimeout(() =>{
         moduleFunction.findModules(search.value, courseFunctions.getCourse(courseCode).modules);
+        moduleFunction.moduleEventListeners();
       }, 1500);
     });
   },
@@ -136,10 +137,11 @@ const render ={
     }
 
     document.querySelectorAll(".menu-item").forEach((item) => {
-      item.addEventListener("click", () => {
+      item.addEventListener("click", async () => {
         if(item.classList.contains("edit-modules")){
           this.addCourseTable();
-          moduleFunction.loadModules(courseFunctions.getCourse(courseCode).modules);
+          await moduleFunction.loadModules(courseFunctions.getCourse(courseCode).modules);
+          moduleFunction.moduleEventListeners();
 
           function handleClickOutside(e) {
             const module = document.querySelector(".modules-container");

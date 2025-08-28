@@ -68,8 +68,6 @@ export const moduleFunction = {
 
     document.querySelector(".js-body")
     .innerHTML = moduleHtml;
-
-    this.moduleEventListeners();
   }, 
   
   findModules(input, moduleCodes = []){
@@ -95,8 +93,27 @@ export const moduleFunction = {
 
     document.querySelector(".js-body")
     .innerHTML = filterHtml;
+  },
 
-    this.moduleEventListeners();
+  async getModule(moduleCode){
+    try {
+      const response = await fetch(`/api/modules/${moduleCode}`, {
+      method: "POST",
+      headers: {"Content-Type" : "application/json"},
+      body: JSON.stringify(moduleCode)
+      });
+
+      if (!response.ok) {
+        console.log(response.status);
+      }
+
+      const addedModule = await response.json();
+
+      return addedModule;
+    } catch (error) {
+      alert("unable to get module")
+    }
+    
   },
 
   async populateModules(){
@@ -126,14 +143,18 @@ export const moduleFunction = {
             course.modules = course.modules.filter(mod => mod.code !== modCode);
             await courseFunctions.updateCourse(course);
             row.classList.remove("exists");
+
+            courseFunctions.removeModule(modCode);
           } else {
             // Add module
             const temp = [this.module.code];
             await courseFunctions.addModulesToCourse(courseCode, temp);
+
+            courseFunctions.addModule(this.module);
             row.classList.add("exists");
           }
 
-          await courseFunctions.loadCourseInfo();
+          
         } catch (err) {
           console.error(err);
           alert("Error updating course modules");

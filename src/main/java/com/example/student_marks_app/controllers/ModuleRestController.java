@@ -4,10 +4,12 @@
  */
 package com.example.student_marks_app.controllers;
 
+import com.example.student_marks_app.dtos.ModuleDTO;
 import com.example.student_marks_app.models.module.CourseModule;
 import com.example.student_marks_app.repositories.CourseModuleRepository;
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +32,13 @@ public class ModuleRestController {
     @GetMapping
     public List<CourseModule> getAllModules(){
         return moduleRepository.findAll();
+    }
+    
+    @GetMapping("/{code}")
+    public ModuleDTO getMOdule(@PathVariable String code){
+        return moduleRepository.findById(code)
+                .orElseThrow(() -> new RuntimeException("unable to find module"))
+                .toDto();
     }
     
     @PostMapping

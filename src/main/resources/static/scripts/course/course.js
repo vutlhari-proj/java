@@ -107,52 +107,71 @@ export const courseFunctions = {
 
   },
 
-  async loadCourseInfo(){
+  async loadCourseInfo() {
     await this.populateCourses();
 
     const params = new URLSearchParams(window.location.search);
     const courseCode = params.get("code");
     this.course = courses.find((course) => course.code === courseCode);
 
-    document.querySelector(".courseName").innerHTML = this.course.courseName;
-    document.querySelector(".code").innerHTML = this.course.code;
+    document.querySelector(".courseName").textContent = this.course.courseName;
+    document.querySelector(".code").textContent = this.course.code;
 
+    this.renderModules();
+  },
+
+  renderModules() {
+    const modulesContainer = document.querySelectorAll(".modules");
 
     if (!this.course.modules || this.course.modules.length === 0) {
-      const noModulesHtml = `<h1>No Modules Have Been Added</h1>`;
-      document.querySelectorAll(".modules").forEach((mod) => mod.innerHTML = noModulesHtml);
-    } else {
-      // Clear all year tables first
-      [".first-year", ".second-year", ".third-year", ".fourth-year"].forEach(selector => {
-        const tableBody = document.querySelector(selector);
-        if (tableBody) tableBody.innerHTML = "";
-      });
-
-      // Iterate and categorize
-      this.course.modules.forEach((module) => {
-        const moduleHtml = `
-          <tr>
-            <td>${module.code}</td>
-            <td>${module.moduleName}</td>
-          </tr>
-        `;
-
-        let targetBody;
-        if (module.code.includes("11") || module.code.includes("105") || module.code.includes("125")) {
-          targetBody = document.querySelector(".year-1");
-        } else if (module.code.includes("21")) {
-          targetBody = document.querySelector(".year-2");
-        } else if (module.code.includes("31")) {
-          targetBody = document.querySelector(".year-3");
-        } else{
-          targetBody = document.querySelector(".year-4");
-        }
-
-        if(targetBody) targetBody.insertAdjacentHTML("beforeend", moduleHtml);
-      });
+      modulesContainer.forEach((mod) => (mod.innerHTML = `<h1>No Modules Have Been Added</h1>`));
+      return;
     }
 
+    // Clear all year tables first
+    [".year-1", ".year-2", ".year-3", ".year-4"].forEach((selector) => {
+      const tableBody = document.querySelector(selector);
+      if (tableBody) tableBody.innerHTML = "";
+    });
+
+    // Fill year tables
+    this.course.modules.forEach((module) => {
+      const moduleHtml = `
+        <tr>
+          <td>${module.code}</td>
+          <td>${module.moduleName}</td>
+        </tr>
+      `;
+
+      let targetBody;
+      if (/11|105|125/.test(module.code)) {
+        targetBody = document.querySelector(".year-1");
+      } else if (/21/.test(module.code)) {
+        targetBody = document.querySelector(".year-2");
+      } else if (/31/.test(module.code)) {
+        targetBody = document.querySelector(".year-3");
+      } else {
+        targetBody = document.querySelector(".year-4");
+      }
+
+      targetBody?.insertAdjacentHTML("beforeend", moduleHtml);
+    });
   },
+
+  addModule(module) {
+    // Prevent duplicates
+    if (!this.course.modules.some((m) => m.code === module.code)) {
+      this.course.modules.push(module);
+      this.renderModules();
+    }
+  },
+
+  removeModule(moduleCode) {
+    // Filter out module
+    this.course.modules = this.course.modules.filter((m) => m.code !== moduleCode);
+    this.renderModules();
+  },
+
 
   async updateCourse(course) {
     this.course = new Course(course);
