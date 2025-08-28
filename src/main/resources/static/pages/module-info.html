@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto+Flex:opsz,wght@8..144,100..1000&family=Roboto:wght@400;500;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="../styles/general.css" />
+  <link rel="stylesheet" href="../styles/main-page/sidebar.css" />
+  <link rel="stylesheet" href="../styles/table/table-container.css">
+  <link rel="stylesheet" href="../styles/modal/modal.css">
+  <link rel="stylesheet" href="../styles/menu/menu.css">
+  <link rel="stylesheet" href="../styles/edit-info/edit-info.css">
+  <link rel="stylesheet" href="../styles/module-info/module-info.css">
+  <link rel="stylesheet" href="../styles/table/tables.css">
+</head>
+<body>
+  <aside class="sidebar info-sidebar">
+      <a class="sidebar-link" href="../index.html">
+        <img src="../images/home.svg" />
+        <p>Home</p>
+      </a>
+
+      <a class="sidebar-link">
+        <img src="../images/student.svg" />
+        <p>Students</p>
+      </a>
+
+      <a class="sidebar-link" href="../pages/courses.html">
+        <img src="../images/course.svg" />
+        <p>Courses</p>
+      </a>
+
+      <a class="sidebar-link" href="modules.html">
+        <img src="../images/module.svg" />
+        <p>Modules</p>
+      </a>
+    </aside>
+
+    <main class="container">
+      <div class="module-info">
+        <h1 class="moduleName">Advanced Discrete Structures</h1>
+        <h2 class="code">ADS216D</h2>
+      </div>
+      
+      <div class="courses-display">
+        <div class="courses-display-header">
+          <h1>Module</h1>
+          <div class="edit-container">
+            <img src="../images/edit.svg" alt="edit-module" class="edit-img">
+            <span class="tooltip">edit module</span>
+          </div>
+        </div>
+
+        <div class="tables">
+          <table class="display" border="0">
+            <caption>Appears in Courses</caption>
+            <thead class="courses-head">
+              <tr>
+                <th>Code</th>
+                <th>Course</th>
+              </tr>
+            </thead>
+            <tbody class="courses">
+              <tr class="course">
+                <td>DPIT20</td>
+                <td>INFORMATION TECHNOLOGY</td>
+              </tr>
+              <tr class="course">
+                <td>DPRS20</td>
+                <td>COMPUTER SCIENCE</td>
+              </tr>
+              <tr class="course">
+                <td>DPIT20</td>
+                <td>INFORMATION TECHNOLOGY</td>
+              </tr>
+              <tr class="course">
+                <td>DPRS20</td>
+                <td>COMPUTER SCIENCE</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+      </div>
+    </main>
+
+</body>
+</html>

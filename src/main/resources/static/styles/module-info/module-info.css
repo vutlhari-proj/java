@@ -1,0 +1,136 @@
+.info-sidebar{
+  top: 0;
+  height: 100%;
+}
+
+.container{
+  margin-left: 220px;
+}
+
+.module-info{
+  text-align: center;
+}
+
+.courses-display-header{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.course-container {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  font-family: Arial, sans-serif;
+}
+
+.course-title {
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.course-search {
+  margin-bottom: 15px;
+}
+
+.course-search input{
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.course-search input:focus,
+.edit-item input:focus {
+  border-color: #4a90e2;
+  outline: none;
+  box-shadow: 0 0 5px rgba(74, 144, 226, 0.4);
+}
+
+.course-table-wrapper {
+  max-height: 300px; /* makes table scrollable if long */
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+.course-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.course-table th,
+.course-table td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+
+.course-table th {
+  background-color: #f7f7f7;
+  font-weight: bold;
+}
+
+.course-table tr {
+  cursor: pointer;
+}
+
+.course-table tr:hover {
+  background-color: #f0f8ff;
+}
+
+.exists{
+  background-color: rgb(210, 255, 210);
+  transition: background-color 0.3s;
+}
+
+.course-table tr.exists:hover {
+  background-color: rgb(255, 205, 205);
+}
+
+.course-table td{
+  position: relative;
+}
+
+.course-table tr.exists .tooltip{
+  visibility: hidden;
+  opacity: 1;
+
+  background: rgba(165, 165, 165, 0.8);
+  width: 130px;
+  bottom: 30%;
+  left: 60%;
+
+  transition: opacity 0.3s;
+}
+
+.course-table tr.exists:hover .tooltip{
+  visibility: visible;
+  opacity: 1;
+}
+
+.edit-container {
+  position: relative; /* needed for absolute tooltip positioning */
+  display: inline-block; /* optional, keeps layout tidy */
+  cursor: pointer;
+}
+
+.edit-container:hover .tooltip{
+  visibility: visible;
+  opacity: 1;
+}
+
+.edit-img{
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.edit-img:hover {
+  transform: scale(1.2);
+}
