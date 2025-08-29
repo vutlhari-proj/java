@@ -43,6 +43,10 @@ public class CourseModule {
     public String getModuleName() {
         return moduleName;
     }
+
+    public void setModuleName(String moduleName) {
+        this.moduleName = moduleName;
+    }
   
     public ModuleDTO toDto(){
         return new ModuleDTO(this.code, this.moduleName);

@@ -71,4 +71,29 @@ public class ModuleRestController {
         
         return moduleRepository.save(module);
     }
+    
+    @PostMapping("/{code}/delete")
+    public void deleteModule(@PathVariable String code){
+        CourseModule module = moduleRepository.findById(code)
+                .orElseThrow(() -> new RuntimeException("Module doesn't exist"));
+        
+        courseRepository.deleteById(code);
+    }
+    
+    @PostMapping("/{code}/update")
+    public ModuleDTO updateModule(@PathVariable String code, ModuleDTO dto){
+        CourseModule module = moduleRepository.findById(code)
+                .orElseThrow(() -> new RuntimeException("unable to find module " + code));
+        
+        if (dto.getModuleName() != null &&
+                !module.getModuleName().equals(dto.getModuleName())) {
+            module.setModuleName(dto.getModuleName());
+        }
+        
+        moduleRepository.save(module);
+        
+        return moduleRepository.findById(code)
+                    .orElseThrow(() -> new RuntimeException("module not found after updating"))
+                .toDto();
+    }
 }
