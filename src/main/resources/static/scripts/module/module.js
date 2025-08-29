@@ -96,13 +96,23 @@ export const moduleFunction = {
     .innerHTML = filterHtml;
   },
 
+
+  async deleteModule(moduleCode){
+    try{
+      const response = await fetch(`/api/modules/${moduleCode}/delete`, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(moduleCode)
+      });
+    }
+    catch(error){
+      alert("failed to delete module");
+    }
+  },
+
   async getModule(moduleCode){
     try {
-      const response = await fetch(`/api/modules/${moduleCode}`, {
-      method: "POST",
-      headers: {"Content-Type" : "application/json"},
-      body: JSON.stringify(moduleCode)
-      });
+      const response = await fetch(`/api/modules/${moduleCode}`);
 
       if (!response.ok) {
         console.log(response.status);
@@ -117,6 +127,23 @@ export const moduleFunction = {
     
   },
 
+  async updateModule(module){
+    try {
+      const response = await fetch(`/api/modules/${module.code}/update`,{
+        method: "POST",
+        headers: {"Content-Type" : "application/json"},
+        body: JSON.stringify(module)
+      });
+
+      const updatedModule = await response.json();
+
+      let index = modules.findIndex(m => m.code === updatedModule.code);
+      (index !== -1) && (modules[index] = updatedModule);
+    } catch (error) {
+      alert("couldnt edit module: " + error.getMessage);
+    }
+  },
+
   async populateModules(){
     const response = await fetch("/api/modules");
     const modulesJson = await response.json();
@@ -124,7 +151,7 @@ export const moduleFunction = {
     modules = modulesJson.map((module) => new Module(module));
   },
 
-  async inCourses(){
+  async loadModuleInfo(){
     await this.populateModules();
 
     const params = new URLSearchParams(window.location.search);
@@ -218,8 +245,4 @@ export const moduleFunction = {
       });
     });
   }
-}
-
-const renderModuleTable = (moduleDetails) => {
-  const table = document.querySelector(".");
 }
