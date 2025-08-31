@@ -62,8 +62,7 @@ document.querySelector(".js-body").addEventListener("click", (e) => {
   const row = e.target.closest("tr");
   if (!row) return; // clicked outside row
   
-  localStorage.setItem("selectedCourse", row.className);
-  window.location.href = `../pages/course-info.html?code=${encodeURIComponent(row.classList[0])}`;
+  window.location.href = `../pages/course-info.html?code=${encodeURIComponent(row.dataset.code)}`;
 });
 
 const render = {
