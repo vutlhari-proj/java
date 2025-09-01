@@ -62,7 +62,7 @@ document.querySelector(".search-img").addEventListener("click", ()=>{
 
 document.querySelector(".js-body").addEventListener("click", (e) => {
   const row = e.target.closest("tr");
-  if (!row) return; // clicked outside row
+  if (!row || row.classList.contains("input-row")) return; // clicked outside row
   
   window.location.href = `../pages/course-info.html?code=${encodeURIComponent(row.dataset.code)}`;
 });

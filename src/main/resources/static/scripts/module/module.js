@@ -89,7 +89,6 @@ export const moduleFunction = {
 
 
   async deleteModule(moduleCode){
-    alert("delete " + moduleCode);
     try{
       const response = await fetch(`/api/modules/${moduleCode}/delete`, {
         method: "POST",
