@@ -118,7 +118,7 @@ public class ModuleRestController {
         CourseModule module = moduleRepository.findById(code)
                 .orElseThrow(() -> new RuntimeException("Module doesn't exist"));
         
-        courseRepository.deleteById(code);
+        moduleRepository.deleteById(module.getCode());
     }
     
     @PostMapping("/{code}/update")

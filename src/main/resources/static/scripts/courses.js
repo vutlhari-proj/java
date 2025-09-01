@@ -17,9 +17,11 @@ document.querySelector(".add-img").addEventListener("click", ()=>{
     }
   });
 
-  name.addEventListener("keydown", (e)=>{
+  name.addEventListener("keydown", async (e)=>{
     if (e.key == "Enter" && name.value.trim() != null ) {
-      courseFunctions.addCourse({code: code.value.toUpperCase(), courseName: capitalizeWords(name.value)});
+      await courseFunctions.addCourse({code: code.value.toUpperCase(), courseName: capitalizeWords(name.value)});
+
+      await courseFunctions.loadCourses();
     }
   });
 

@@ -33,18 +33,7 @@ export const courseFunctions = {
       const savedCourse = await response.json();
       courses.push(savedCourse);
 
-      document.querySelectorAll("tr.input-row").forEach(row => row.remove());
-
-      document.querySelector(".js-body")
-      .insertAdjacentHTML( 
-        "beforeend",
-        `
-          <tr class="${savedCourse.code}">
-            <td>${savedCourse.code}</td>
-            <td>${savedCourse.courseName}</td>
-          </tr>
-        `
-      )  
+      document.querySelectorAll("tr.input-row").forEach(row => row.remove()); 
     }
     catch(error){
       alert("Could not add course");
@@ -273,7 +262,7 @@ export const courseFunctions = {
 
     const pill = document.createElement("div");
     pill.classList.add("code-pill");
-    
+
     pill.dataset.code = code;
     pill.innerHTML = `${code} <span>&times;</span>`;
 

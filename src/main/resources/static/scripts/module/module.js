@@ -32,15 +32,6 @@ export const moduleFunction = {
       modules.push(savedModule);
 
       document.querySelectorAll("tr.input-row").forEach(row => row.remove());
-
-      document.querySelector(".js-body")
-      .innerHTML += 
-      `
-        <tr>
-          <td>${savedModule.code}</td>
-          <td>${savedModule.moduleName}</td>
-        </tr>
-      `
     }
     catch(error){
       alert("Could not add module");
@@ -98,12 +89,16 @@ export const moduleFunction = {
 
 
   async deleteModule(moduleCode){
+    alert("delete " + moduleCode);
     try{
       const response = await fetch(`/api/modules/${moduleCode}/delete`, {
         method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(moduleCode)
+        headers: {"Content-Type": "application/json"}
       });
+
+      if (!response.ok) {
+        console.log("couldnt delete")
+      }
     }
     catch(error){
       alert("failed to delete module");
