@@ -171,7 +171,7 @@ export const moduleFunction = {
     try {
       const response = await fetch(`/api/modules/${code}/addToCourses`, {
       method: "POST",
-      headers: {"Content-Type": "application/jspn"},
+      headers: {"Content-Type": "application/json"},
       body: JSON.stringify(courseCodes)
       })
 
@@ -226,8 +226,8 @@ export const moduleFunction = {
 
   addCourses(courses){
     courses.forEach(course =>{
-      if (!this.courses.some((c) => c.code === course.code)) {
-        this.courses.push(course);
+      if (!this.courses.some((c) => c.code === course)) {
+        this.courses.push(courseFunctions.getCourse(course));
       }
     })
 

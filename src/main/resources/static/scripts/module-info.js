@@ -73,6 +73,45 @@ const render ={
         courseFunctions.courseEventListeners();
       }, 800);
     });
+
+    const inputWrapper = document.querySelector(".input-wrapper")
+    search.addEventListener("keydown", (e) =>{
+      if (e.key === "Backspace" && search.value === "") {
+        const pills = inputWrapper.querySelectorAll(".code-pill");
+        if (pills.length > 0) {
+          pills[pills.length - 1].remove();
+        }
+      }
+
+      if (e.key === "Enter") {
+        search.value = "";
+        const pills = inputWrapper.querySelectorAll(".code-pill");
+        if (pills.length > 0) {
+          const addCourseCodes = [];
+          const removeCourseCodes = [];
+          pills.forEach((pill) =>{
+            if (pill.classList.contains("to-remove")) {
+              removeCourseCodes.push(pill.dataset.code);
+            } else {
+              addCourseCodes.push(pill.dataset.code);
+            }
+
+            pill.remove();
+          });
+
+          try {
+            (removeCourseCodes.length > 0) && moduleFunction.removeFromCourse(moduleCode, removeCourseCodes);
+            (addCourseCodes.length > 0) && moduleFunction.addToCourse(moduleCode, addCourseCodes);
+          } catch (error) {
+            alert("add coursetbale error");
+          }finally{
+            moduleFunction.addCourses(addCourseCodes);
+            moduleFunction.removeCourses(removeCourseCodes);
+          }
+          
+        }
+      }
+    });
   },
 
   removeTable(){
@@ -250,7 +289,7 @@ const render ={
 async function initPage() {
   await moduleFunction.loadModuleInfo();
 
-  //document.body.classList.remove("loading");
+  document.body.classList.remove("loading");
 }
 document.addEventListener("DOMContentLoaded", initPage);
 

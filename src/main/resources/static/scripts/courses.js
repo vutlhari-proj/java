@@ -111,7 +111,7 @@ const render = {
 
         typingTimer = setTimeout(() =>{
           courseFunctions.findCourses(search.value);
-        }, 1500);
+        }, 300);
       });
     }
 

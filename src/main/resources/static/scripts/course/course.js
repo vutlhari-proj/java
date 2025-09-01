@@ -78,7 +78,7 @@ export const courseFunctions = {
         .toLowerCase().includes(input.toLowerCase())){
         let exists = "";
         exists = courseCodes.some((co) => co.code === course.code) ? "exists" : "";
-        
+
         filterHtml += 
         `
             <tr class="course ${exists}" data-code="${course.code}">
@@ -273,6 +273,7 @@ export const courseFunctions = {
 
     const pill = document.createElement("div");
     pill.classList.add("code-pill");
+    
     pill.dataset.code = code;
     pill.innerHTML = `${code} <span>&times;</span>`;
 

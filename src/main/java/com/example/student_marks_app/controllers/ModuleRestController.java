@@ -65,7 +65,7 @@ public class ModuleRestController {
     }
     
     @PostMapping("/{code}/addToCourses")
-    public List<CourseDTO> addToCourses(@PathVariable String code, List<String> courseCodes){
+    public List<CourseDTO> addToCourses(@PathVariable String code, @RequestBody List<String> courseCodes){
         CourseModule module = moduleRepository.findById(code)
                 .orElseThrow(() -> new RuntimeException("Module not found"));
         
@@ -89,7 +89,7 @@ public class ModuleRestController {
     }
     
     @PostMapping("/{code}/removeFromCourses")
-    public void removeFromCourses(@PathVariable String code, List<String> courseCodes){
+    public void removeFromCourses(@PathVariable String code, @RequestBody List<String> courseCodes){
         CourseModule module = moduleRepository.findById(code)
                 .orElseThrow(() -> new RuntimeException("Module not found"));
         
@@ -98,7 +98,7 @@ public class ModuleRestController {
                     .orElseThrow(() -> new RuntimeException("course not found"));
             
             CourseModuleMapping mapping = new CourseModuleMapping(course, module);
-            if (!mappingRepository.existsById(mapping.getId())) {
+            if (mappingRepository.existsById(mapping.getId())) {
                 mappingRepository.deleteById(mapping.getId());
             }
         }
@@ -122,7 +122,7 @@ public class ModuleRestController {
     }
     
     @PostMapping("/{code}/update")
-    public ModuleDTO updateModule(@PathVariable String code, ModuleDTO dto){
+    public ModuleDTO updateModule(@PathVariable String code, @RequestBody ModuleDTO dto){
         CourseModule module = moduleRepository.findById(code)
                 .orElseThrow(() -> new RuntimeException("unable to find module " + code));
         

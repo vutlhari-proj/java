@@ -111,7 +111,7 @@ const render = {
 
         typingTimer = setTimeout(() =>{
           moduleFunction.findModules(search.value);
-        }, 1500);
+        }, 300);
       });
     }
 

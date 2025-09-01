@@ -69,7 +69,7 @@ const render ={
       typingTimer = setTimeout(() =>{
         moduleFunction.findModules(search.value, courseFunctions.getCourse(courseCode).modules);
         moduleFunction.moduleEventListeners();
-      }, 1500);
+      }, 300);
     });
   },
 
