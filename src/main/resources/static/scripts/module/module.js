@@ -135,10 +135,10 @@ export const moduleFunction = {
         body: JSON.stringify(module)
       });
 
-      const updatedModule = await response.json();
+      this.module = await response.json();
 
-      let index = modules.findIndex(m => m.code === updatedModule.code);
-      (index !== -1) && (modules[index] = updatedModule);
+      let index = modules.findIndex(m => m.code === this.module.code);
+      (index !== -1) && (modules[index] = this.module);
     } catch (error) {
       alert("couldnt edit module: " + error.getMessage);
     }
@@ -160,8 +160,8 @@ export const moduleFunction = {
     const response = await fetch(`/api/modules/${moduleCode}/courses`);
     this.courses = await response.json();
 
-    const module = modules.find(module => module.code === moduleCode);
-    document.querySelector(".moduleName").textContent = module.moduleName;
+    this.module = modules.find(module => module.code === moduleCode);
+    document.querySelector(".moduleName").textContent = this.module.moduleName;
     document.querySelector(".code").textContent = moduleCode;
 
     this.renderCourses();

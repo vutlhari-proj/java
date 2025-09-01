@@ -123,9 +123,9 @@ const render ={
     let menuHtml =
     `
       <div class="menu-container">
-        <div class="menu-item edit-course">edit module</div>
+        <div class="menu-item edit-module">edit module</div>
         <div class="menu-item edit-courses">edit courses</div>
-        <div class="menu-item delete-course">delete module</div>
+        <div class="menu-item delete-module">delete module</div>
       </div>
     `;
 
@@ -138,7 +138,7 @@ const render ={
 
     document.querySelectorAll(".menu-item").forEach((item) => {
       item.addEventListener("click", async () => {
-        if(item.classList.contains("edit-modules")){
+        if(item.classList.contains("edit-module")){
           render.editModuleInfo();
         }
         else if(item.classList.contains("edit-courses")){
@@ -167,6 +167,19 @@ const render ={
 
       });
     });
+
+    function handleClickOutside(e) {
+      const menu = document.querySelector(".menu-container");
+      const addImg = document.querySelector(".edit-img");
+      if(!menu.contains(e.target) && e.target !== addImg){
+        render.removeMenu();
+        edit.classList.remove("tooltip-disabled");
+      }
+    }
+
+    setTimeout(() => {
+      document.addEventListener("click", handleClickOutside);
+    }, 0);
   },
 
   async editModuleInfo(){
@@ -180,7 +193,7 @@ const render ={
           type="text"
           id="edit-moduleName"
           autocomplete="off"
-          value="${await moduleFunction.getModule(moduleCode).moduleName}"
+          value="${moduleFunction.module.moduleName}"
           >
         </div>
 
@@ -230,7 +243,7 @@ const render ={
 
     const container = document.querySelector(".container");
     if (!container.querySelector(".js-info")) {
-      document.querySelector(".modules-display-header")
+      document.querySelector(".courses-display-header")
       .insertAdjacentHTML(
         "afterend", editHtml
       );
@@ -238,7 +251,7 @@ const render ={
        document.querySelector(".confirm")
         .addEventListener("click", async () =>{
           let name = document.getElementById("edit-moduleName");
-          let module = moduleFunction.getModule(moduleCode);
+          let module = moduleFunction.module;
 
           module.moduleName = capitalizeWords(name.value);
 
@@ -358,5 +371,11 @@ document.body.addEventListener("keydown", (e)=>{
         }
       }
     }
+  }
+
+  const info = document.querySelector(".js-info");
+  if (e.key === "Escape") {
+    info && info.remove();
+    container && container.remove();
   }
 })
