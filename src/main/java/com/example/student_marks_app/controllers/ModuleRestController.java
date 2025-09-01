@@ -4,6 +4,7 @@
  */
 package com.example.student_marks_app.controllers;
 
+import com.example.student_marks_app.coursemodulemapping.CourseModuleId;
 import com.example.student_marks_app.coursemodulemapping.CourseModuleMapping;
 import com.example.student_marks_app.dtos.CourseDTO;
 import com.example.student_marks_app.dtos.ModuleDTO;
@@ -61,6 +62,46 @@ public class ModuleRestController {
                     return dto;
                 })
                 .toList();
+    }
+    
+    @PostMapping("/{code}/addToCourses")
+    public List<CourseDTO> addToCourses(@PathVariable String code, List<String> courseCodes){
+        CourseModule module = moduleRepository.findById(code)
+                .orElseThrow(() -> new RuntimeException("Module not found"));
+        
+        for (String courseCode : courseCodes) {
+            Course course = courseRepository.findById(courseCode)
+                    .orElseThrow(() -> new RuntimeException("course not found"));
+            
+            CourseModuleMapping mapping = new CourseModuleMapping(course, module);
+            if (!mappingRepository.existsById(mapping.getId())) {
+                mappingRepository.save(mapping);
+            }
+        }
+        
+        return mappingRepository.findByModule_Code(module.getCode()).stream()
+                .map(CourseModuleMapping::getCourse)
+                .map(course ->{
+                    CourseDTO dto = new CourseDTO(course.getCode(),course.getCourseName(), null);
+                    return dto;
+                })
+                .toList();
+    }
+    
+    @PostMapping("/{code}/removeFromCourses")
+    public void removeFromCourses(@PathVariable String code, List<String> courseCodes){
+        CourseModule module = moduleRepository.findById(code)
+                .orElseThrow(() -> new RuntimeException("Module not found"));
+        
+        for (String courseCode : courseCodes) {
+            Course course = courseRepository.findById(courseCode)
+                    .orElseThrow(() -> new RuntimeException("course not found"));
+            
+            CourseModuleMapping mapping = new CourseModuleMapping(course, module);
+            if (!mappingRepository.existsById(mapping.getId())) {
+                mappingRepository.deleteById(mapping.getId());
+            }
+        }
     }
     
     @PostMapping
