@@ -229,7 +229,14 @@ export const moduleFunction = {
       if (!this.courses.some((c) => c.code === course)) {
         this.courses.push(courseFunctions.getCourse(course));
       }
-    })
+    });
+
+    const rows = document.querySelectorAll("tr.course");
+    rows.forEach((row) => {
+      if (courses.some((c) => c === row.dataset.code)) {
+        row.classList.add("exists");
+      }
+    });
 
     this.renderCourses;
   },
@@ -239,6 +246,12 @@ export const moduleFunction = {
       this.courses = this.courses.filter((c) => c.code !== courseCode);
     });
 
+    const rows = document.querySelectorAll("tr.course");
+    rows.forEach((row) => {
+      if (courseCodes.some((c) => c === row.dataset.code)) {
+        row.classList.remove("exists");
+      }
+    });
     this.renderCourses();
   },
 

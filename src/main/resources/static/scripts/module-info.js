@@ -146,6 +146,20 @@ const render ={
           await courseFunctions.loadCourses(moduleFunction.courses);
 
           courseFunctions.courseEventListeners();
+
+          function handleClickOutside(e) {
+            const course = document.querySelector(".courses-container");
+            const addImg = document.querySelector(".edit-img");
+
+            if (course && !course.contains(e.target) && e.target !== addImg && !item.contains(e.target)) {
+              render.removeTable();
+              document.removeEventListener("click", handleClickOutside);
+            }
+          }
+
+          setTimeout(() => {
+            document.addEventListener("click", handleClickOutside);
+          }, 0);
         }
         else{
           render.confirmationModal();
@@ -296,4 +310,53 @@ document.addEventListener("DOMContentLoaded", initPage);
 document.querySelector(".edit-img")
 .addEventListener("click", () =>{
   render.dropDownMenu();
+});
+
+document.body.addEventListener("keydown", (e)=>{
+  const container = document.querySelector(".courses-container");
+  if (container) {
+    const inputWrapper = container.querySelector(".input-wrapper");
+    if (inputWrapper) {
+      const search = inputWrapper.querySelector("input");
+      if (document.activeElement !== search) {
+        if (e.key === "Backspace" && search.value === "") {
+          const pills = inputWrapper.querySelectorAll(".code-pill");
+          if (pills.length > 0) {
+            pills[pills.length - 1].remove();
+          }
+
+          search.focus();
+        }
+
+        if (e.key === "Enter") {
+          search.value = "";
+          const pills = inputWrapper.querySelectorAll(".code-pill");
+          if (pills.length > 0) {
+            const addCourseCodes = [];
+            const removeCourseCodes = [];
+            pills.forEach((pill) =>{
+              if (pill.classList.contains("to-remove")) {
+                removeCourseCodes.push(pill.dataset.code);
+              } else {
+                addCourseCodes.push(pill.dataset.code);
+              }
+
+              pill.remove();
+            });
+
+            try {
+              (removeCourseCodes.length > 0) && moduleFunction.removeFromCourse(moduleCode, removeCourseCodes);
+              (addCourseCodes.length > 0) && moduleFunction.addToCourse(moduleCode, addCourseCodes);
+            } catch (error) {
+              alert("add coursetbale error");
+            }finally{
+              moduleFunction.addCourses(addCourseCodes);
+              moduleFunction.removeCourses(removeCourseCodes);
+            }
+            
+          }
+        }
+      }
+    }
+  }
 })
