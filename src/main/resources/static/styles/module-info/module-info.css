@@ -17,7 +17,7 @@
   gap: 10px;
 }
 
-.course-container {
+.courses-container {
   max-width: 700px;
   margin: 40px auto;
   padding: 20px;
@@ -27,59 +27,58 @@
   font-family: Arial, sans-serif;
 }
 
-.course-title {
+.courses-title {
   margin-bottom: 15px;
   color: #333;
 }
 
-.course-search {
+.courses-search {
   margin-bottom: 15px;
 }
 
-.course-search input{
+/*.courses-search input{
   width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 1rem;
-}
+}*/
 
-.course-search input:focus,
 .edit-item input:focus {
   border-color: #4a90e2;
   outline: none;
   box-shadow: 0 0 5px rgba(74, 144, 226, 0.4);
 }
 
-.course-table-wrapper {
+.courses-table-wrapper {
   max-height: 300px; /* makes table scrollable if long */
   overflow-y: auto;
   border: 1px solid #ddd;
   border-radius: 6px;
 }
 
-.course-table {
+.courses-table {
   width: 100%;
   border-collapse: collapse;
 }
 
-.course-table th,
-.course-table td {
+.courses-table th,
+.courses-table td {
   padding: 12px;
   border-bottom: 1px solid #eee;
   text-align: left;
 }
 
-.course-table th {
+.courses-table th {
   background-color: #f7f7f7;
   font-weight: bold;
 }
 
-.course-table tr {
+.courses-table tr {
   cursor: pointer;
 }
 
-.course-table tr:hover {
+.courses-table tr:hover {
   background-color: #f0f8ff;
 }
 
@@ -88,15 +87,15 @@
   transition: background-color 0.3s;
 }
 
-.course-table tr.exists:hover {
+.courses-table tr.exists:hover {
   background-color: rgb(255, 205, 205);
 }
 
-.course-table td{
+.courses-table td{
   position: relative;
 }
 
-.course-table tr.exists .tooltip{
+.courses-table tr.exists .tooltip{
   visibility: hidden;
   opacity: 1;
 
@@ -108,7 +107,7 @@
   transition: opacity 0.3s;
 }
 
-.course-table tr.exists:hover .tooltip{
+.courses-table tr.exists:hover .tooltip{
   visibility: visible;
   opacity: 1;
 }
@@ -133,4 +132,48 @@
 
 .edit-img:hover {
   transform: scale(1.2);
+}
+
+.input-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid #ccc;
+  padding: 6px;
+  border-radius: 6px;
+  cursor: text;
+}
+
+.input-wrapper:focus-within{
+  border-color: #4a90e2;
+  box-shadow: 0 0 5px rgba(74, 144, 226, 0.4);
+}
+
+.code-pill {
+  background: #4a90e2;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+
+.to-remove{
+  background: #e24a4a;
+}
+
+.code-pill span {
+  margin-left: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.input-wrapper input {
+  border: none;
+  outline: none;
+  flex: 1;
+  min-width: 60px;
+  font-size: 14px;
 }

@@ -1,3 +1,5 @@
+import { moduleFunction } from "../module/module.js";
+
 export class Course{
   code;
   courseName;
@@ -49,14 +51,16 @@ export const courseFunctions = {
     }
   },
 
-  async loadCourses(){
+  async loadCourses(courseCodes = []){
     await this.populateCourses();
 
     let courseHtml = ``;
     courses.forEach((course) =>{
+      let exists = ``;
+      exists = courseCodes.some((co) => co.code === course.code) ? "exists" : "";
       courseHtml += 
       `
-        <tr class="${course.code}">
+        <tr class="course ${exists}" data-code="${course.code}">
           <td>${course.code}</td>
           <td>${course.courseName}</td>
         </tr>
@@ -64,19 +68,20 @@ export const courseFunctions = {
     });
 
     document.querySelector(".js-body")
-    .insertAdjacentHTML(
-      "beforeend", courseHtml
-    );
+    .innerHTML = courseHtml;
   }, 
 
-  findCourses(input){
+  findCourses(input, courseCodes = []){
     let filterHtml = ``;
     courses.forEach((course) =>{
       if((`${course.code} ${course.courseName}`)
         .toLowerCase().includes(input.toLowerCase())){
+        let exists = "";
+        exists = courseCodes.some((co) => co.code === course.code) ? "exists" : "";
+        
         filterHtml += 
         `
-            <tr class="${course.code}">
+            <tr class="course ${exists}" data-code="${course.code}">
               <td>${course.code}</td>
               <td>${course.courseName}</td>
             </tr>
@@ -231,5 +236,53 @@ export const courseFunctions = {
     const coursesJson = await res.json();
 
     courses = coursesJson.map((course) => new Course(course));
+  },
+
+  courseEventListeners(){
+    const rows = document.querySelectorAll("tr.course");
+    rows.forEach((row) => {
+      row.addEventListener("click", async () => {
+        if (row.classList.contains("loading")) return; // prevent double click
+        row.classList.add("loading");
+        row.style.pointerEvents = "none";
+
+        try {
+          const courseCode = row.dataset.code;
+
+          if (row.classList.contains("exists")) {
+            this.addPill(courseCode, true);
+          } else {
+            this.addPill(courseCode)
+          }
+
+          
+        } catch (err) {
+          console.error(err);
+          alert("Error updating course modules");
+        } finally {
+          row.classList.remove("loading");
+          row.style.pointerEvents = "auto";
+        }
+      });
+    });
+  },
+
+  addPill(code, exists = false){
+    const input = document.getElementById("courseSearch");
+    const inputWrapper = document.querySelector(".input-wrapper");
+
+    const pill = document.createElement("div");
+    pill.classList.add("code-pill");
+    pill.dataset.code = code;
+    pill.innerHTML = `${code} <span>&times;</span>`;
+
+    exists && pill.classList.add("to-remove");
+
+    pill.querySelector("span").addEventListener("click", () => {
+      pill.remove();
+    });
+
+    inputWrapper.insertBefore(pill, input);
   }
+  
 }

@@ -167,6 +167,45 @@ export const moduleFunction = {
     this.renderCourses();
   },
 
+  async addToCourse(code, courseCodes){
+    try {
+      const response = await fetch(`/api/modules/${code}/addToCourses`, {
+      method: "POST",
+      headers: {"Content-Type": "application/jspn"},
+      body: JSON.stringify(courseCodes)
+      })
+
+      if(!response.ok){
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      this.courses = response.json();
+      this.removeCourses();
+    } catch (error) {
+      console.log(error.message());
+      alert("unable to add module to courses");
+    }
+    
+  },
+
+  async removeFromCourse(code, courseCodes){
+    try {
+      const response = await fetch(`/api/modules/${code}/removeFromCourses`, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(courseCodes)
+      });
+
+      if(!response.ok){
+        const errorText = await response.text(); // get server error message
+        console.error("Server error:", response.status, errorText);
+        throw new Error(`HTTP error! Status: ${response.status}\n${errorText}`);
+      }
+    } catch (error) {
+      alert("unable to delete, error: " + error.getMessage());
+    }
+  },
+
   renderCourses(){
     const courseTable = document.querySelector(".courses");
     courseTable.innerHTML = "";
