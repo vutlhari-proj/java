@@ -159,19 +159,7 @@ const render ={
         }
         else if(item.classList.contains("edit-course")){
           render.editCourseInfo(); 
-          
-          document.querySelector(".confirm")
-          .addEventListener("click", async () =>{
-            let name = document.getElementById("edit-courseName");
-            let course = courseFunctions.getCourse(courseCode);
-
-            course.courseName = name.value.toUpperCase();
-
-            await courseFunctions.updateCourse(course);
-            await courseFunctions.loadCourseInfo();
-
-            render.removeEditCourseInfo();
-          });
+    
         }
         else{
           render.confirmationModal();
@@ -179,6 +167,19 @@ const render ={
 
       });
     });
+
+    function handleClickOutside(e) {
+      const menu = document.querySelector(".menu-container");
+      const addImg = document.querySelector(".edit-img");
+      if(!menu.contains(e.target) && e.target !== addImg){
+        render.removeMenu();
+        edit.classList.remove("tooltip-disabled");
+      }
+    }
+
+    setTimeout(() => {
+      document.addEventListener("click", handleClickOutside);
+    }, 0);
   },
 
   editCourseInfo(){
@@ -230,6 +231,19 @@ const render ={
 
       render.removeMenu();
     }
+
+    document.querySelector(".confirm")
+    .addEventListener("click", async () =>{
+      let name = document.getElementById("edit-courseName");
+      let course = courseFunctions.getCourse(courseCode);
+
+      course.courseName = name.value.toUpperCase();
+
+      await courseFunctions.updateCourse(course);
+      await courseFunctions.loadCourseInfo();
+
+      render.removeEditCourseInfo();
+    });
     
   },
 
@@ -293,19 +307,13 @@ document.addEventListener("DOMContentLoaded", initPage);
 document.querySelector(".edit-img")
 .addEventListener("click", ()=>{
   render.dropDownMenu()
-  //render.addCourseTable();
-
-  function handleClickOutside(e) {
-    const menu = document.querySelector(".menu-container");
-    const addImg = document.querySelector(".edit-img");
-    if(!menu.contains(e.target) && e.target !== addImg){
-      render.removeMenu();
-      edit.classList.remove("tooltip-disabled");
-    }
-  }
-
-  setTimeout(() => {
-    document.addEventListener("click", handleClickOutside);
-  }, 0);
 });
 
+document.body.addEventListener("keydown", (e)=>{
+  const container = document.querySelector(".modules-container");
+  const info = document.querySelector(".js-info");
+  if (e.key === "Escape") {
+    info && info.remove();
+    container && container.remove();
+  }
+})
