@@ -58,7 +58,7 @@ public class ModuleRestController {
         return mappingRepository.findByModule_Code(code).stream()
                 .map(CourseModuleMapping::getCourse)
                 .map(course ->{
-                    CourseDTO dto = new CourseDTO(course.getCode(),course.getCourseName(), null);
+                    CourseDTO dto = new CourseDTO(course.getCode(),course.getCourseName(), null, null);
                     return dto;
                 })
                 .toList();
@@ -82,7 +82,7 @@ public class ModuleRestController {
         return mappingRepository.findByModule_Code(module.getCode()).stream()
                 .map(CourseModuleMapping::getCourse)
                 .map(course ->{
-                    CourseDTO dto = new CourseDTO(course.getCode(),course.getCourseName(), null);
+                    CourseDTO dto = new CourseDTO(course.getCode(),course.getCourseName(), null, null);
                     return dto;
                 })
                 .toList();

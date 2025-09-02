@@ -20,6 +20,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.student_marks_app.repositories.CourseModuleRepository;
+import com.example.student_marks_app.repositories.DepartmentRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.server.ResponseStatusException;
 
 /**
  *
@@ -33,13 +38,17 @@ public class CourseRestController {
     private final CourseRepository courseRepository;
     private final CourseModuleRepository moduleRepository;
     private final CourseModuleMappingRepository mappingRepository;
-
+    
+    private final DepartmentRepository deptRepository;
+    
     public CourseRestController(CourseRepository courseRepository, 
                                 CourseModuleRepository moduleRepository,
-                                CourseModuleMappingRepository mappingRepository) {
+                                CourseModuleMappingRepository mappingRepository,
+                                DepartmentRepository deptRepository) {
         this.courseRepository = courseRepository;
         this.moduleRepository = moduleRepository;
         this.mappingRepository = mappingRepository;
+        this.deptRepository = deptRepository;
     }
     
     @GetMapping
@@ -52,7 +61,7 @@ public class CourseRestController {
     @GetMapping("/{code}")
     public CourseDTO getCourse(@PathVariable String code){
         return courseRepository.findById(code)
-                .orElseThrow(() -> new RuntimeException("Course not found"))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found"))
                 .toDTO();
     }
     
@@ -68,7 +77,8 @@ public class CourseRestController {
         if (dto.getModules() != null && !dto.getModules().isEmpty()) {
             for (ModuleDTO moduleDTO : dto.getModules()) {
                 CourseModule module = moduleRepository.findById(moduleDTO.getCode())
-                                        .orElseThrow(() -> new RuntimeException("module not found"));
+                                        .orElseThrow(() -> 
+                                        new ResponseStatusException(HttpStatus.NOT_FOUND, "MOdule not found"));
                 
                 CourseModuleMapping mapping = new CourseModuleMapping(course, module);
                 if (!mappingRepository.existsById(mapping.getId())) {
@@ -78,18 +88,20 @@ public class CourseRestController {
         }
         
         Course savedCourse = courseRepository.findById(course.getCode())
-                .orElseThrow(() -> new RuntimeException("course not found after saving"));
+                .orElseThrow(() -> 
+                        new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found after saving"));
         return savedCourse.toDTO();
     }
     
     @PostMapping("/{code}/modules")
     public CourseDTO addModuleToCourse(@PathVariable String code, @RequestBody List<String> moduleCodes){
         Course course = courseRepository.findById(code)
-                        .orElseThrow(() -> new RuntimeException("Course not found"));
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found"));
         
         for (String moduleCode : moduleCodes) {
             CourseModule module = moduleRepository.findById(moduleCode)
-                    .orElseThrow(() -> new RuntimeException("module not found " + moduleCode));
+                    .orElseThrow(() -> 
+                           new ResponseStatusException(HttpStatus.NOT_FOUND, "Module not found " + moduleCode));
             
             CourseModuleId id = new CourseModuleId(course.getCode(), module.getCode());
             CourseModuleMapping mapping = new CourseModuleMapping(course, module);
@@ -99,15 +111,15 @@ public class CourseRestController {
         }
         
         Course updatedCourse = courseRepository.findById(code)
-                .orElseThrow(() -> new RuntimeException("course not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found"));
         
         return updatedCourse.toDTO();
     }
     
-    @PostMapping("/{code}/update")
+    @PutMapping("/{code}")
     public CourseDTO updateCourse(@PathVariable String code,@RequestBody CourseDTO dto){
         Course course = courseRepository.findById(code)
-                        .orElseThrow(() -> new RuntimeException("Course not found"));
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found"));
         
         
         if (dto.getCourseName() != null &&
@@ -120,24 +132,33 @@ public class CourseRestController {
         if (dto.getModules()!= null) { 
             for (ModuleDTO moduleDTO : dto.getModules()) {
                 CourseModule module = moduleRepository.findById(moduleDTO.getCode())
-                        .orElseThrow(() -> new RuntimeException("module not found " + moduleDTO.getCode()));
+                        .orElseThrow(() ->
+                                new ResponseStatusException(HttpStatus.NOT_FOUND, "Module not found" + moduleDTO.getCode()));
 
                 mappingRepository.save(new CourseModuleMapping(course, module));
             }
         }
         
+        if (dto.getDepartment() != null && !course.getDepartment().equals(dto.getDepartment())) {
+            course.setDepartment(dto.getDepartment());
+        }
+        
         courseRepository.save(course);
         
         Course updatedCourse = courseRepository.findById(course.getCode())
-                .orElseThrow(() -> new RuntimeException("course not found after updating"));
+                .orElseThrow(() -> new
+         ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found after updating"));
         return updatedCourse.toDTO();
     }
     
-    @PostMapping("/{code}/delete")
+    @DeleteMapping("/{code}")
     public void deleteCourse(@PathVariable String code){  
         Course course = courseRepository.findById(code)
-                .orElseThrow(() -> new RuntimeException("unable to find course" + code));
+                .orElseThrow(() -> 
+                        new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found"));
         
         courseRepository.deleteById(code);
     }
+    
+    
 }

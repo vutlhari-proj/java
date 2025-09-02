@@ -70,7 +70,7 @@ public class Course {
                 .map(mapping -> new ModuleDTO(mapping.getModule().getCode(), mapping.getModule().getModuleName()))
                 .toList();
         
-        return new CourseDTO(this.code, this.courseName, moduleList);
+        return new CourseDTO(this.code, this.courseName, moduleList, department);
     }
     
     public void addModule(CourseModule module){

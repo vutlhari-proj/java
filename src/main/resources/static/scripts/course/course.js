@@ -4,11 +4,13 @@ export class Course{
   code;
   courseName;
   modules;
+  department;
 
   constructor(courseDetails){
     this.code = courseDetails.code;
     this.courseName = courseDetails.courseName;
     this.modules = courseDetails.modules || null;
+    this.department = courseDetails.department || null;
   }
 }
 
@@ -171,11 +173,11 @@ export const courseFunctions = {
     this.course = new Course(course);
 
     try {
-      const url = `/api/courses/${encodeURIComponent(this.course.code)}/update`;
+      const url = `/api/${encodeURIComponent(this.course.code)}`;
       console.log("Fetching URL:", url);
 
       const response = await fetch(url, {
-        method: "POST",
+        method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(this.course),
       });
@@ -203,8 +205,8 @@ export const courseFunctions = {
 
   async deleteCourse(courseCode){
     try{
-      const response = await fetch(`/api/courses/${courseCode}/delete`, {
-      method: "POST",
+      const response = await fetch(`/api/${courseCode}`, {
+      method: "DELETE",
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify(courseCode)
       });

@@ -4,6 +4,7 @@
  */
 package com.example.student_marks_app.dtos;
 
+import com.example.student_marks_app.models.department.Department;
 import java.util.List;
 
 /**
@@ -15,11 +16,13 @@ public class CourseDTO {
     private String code;
     private String courseName;
     private List<ModuleDTO> modules;
+    private Department department;
 
-    public CourseDTO(String code, String courseName, List<ModuleDTO> modules) {
+    public CourseDTO(String code, String courseName, List<ModuleDTO> modules, Department department) {
         this.code = code;
         this.courseName = courseName;
         this.modules = modules;
+        this.department = department;
     }
 
     public String getCode() {
@@ -45,6 +48,13 @@ public class CourseDTO {
     public void setModules(List<ModuleDTO> modules) {
         this.modules = modules;
     }
-    
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
     
 }
