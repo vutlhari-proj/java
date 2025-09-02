@@ -7,10 +7,14 @@ package com.example.student_marks_app.models.course;
 import com.example.student_marks_app.coursemodulemapping.CourseModuleMapping;
 import com.example.student_marks_app.dtos.CourseDTO;
 import com.example.student_marks_app.dtos.ModuleDTO;
+import com.example.student_marks_app.models.department.Department;
 import com.example.student_marks_app.models.module.CourseModule;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.util.HashSet;
 import java.util.List;
@@ -33,10 +37,13 @@ public class Course {
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<CourseModuleMapping> courseModules = new HashSet<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "dept_code")
+    private Department department;
+    
     public Course() {
     }
-
-    
+   
     public Course(String code, String courseName) {
         this.code = code;
         this.courseName = courseName;
@@ -74,4 +81,14 @@ public class Course {
     public void removeModule(CourseModule module){
         courseModules.removeIf(mapping -> mapping.getModule().equals(module));
     }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+    
+    
 }
