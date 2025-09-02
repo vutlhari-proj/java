@@ -52,6 +52,10 @@ public class Department {
         this.deptName = deptName;
     }
 
+    public long getCode() {
+        return code;
+    }
+
     public String getDeptName() {
         return deptName;
     }
@@ -77,12 +81,16 @@ public class Department {
     }
 
     public void addCourse(Course course) {
-        courses.add(course);
-        course.setDepartment(this);
+        if (!courses.contains(course)) {
+            courses.add(course);
+            course.setDepartment(this);
+        }    
     }
 
     public void removeCourse(Course course) {
-        courses.remove(course);
-        course.setDepartment(null);
+        if (courses.contains(course)) {
+            courses.remove(course);
+            course.setDepartment(null);
+        }       
     }
 }

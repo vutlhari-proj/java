@@ -44,6 +44,10 @@ public class Faculty {
         this.facName = facName;
     }
 
+    public long getCode() {
+        return code;
+    }
+
     public String getFacName() {
         return facName;
     }
