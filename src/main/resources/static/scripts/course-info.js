@@ -78,25 +78,16 @@ const render ={
     if(module) module.remove();
   },
 
-  moduleTable(courseCode){
-    // Map year numbers to captions
-    const yearLabels = {
-    1: "First Year",
-    2: "Second Year",
-    3: "Third Year",
-    4: "Fourth Year"
-    };
+  async moduleTable(courseCode){
+    const config = await courseFunctions.loadConfig();
 
     // Decide how many years this course should display
     let maxYears = 1; // default
-
-    // Diploma (dp) → 3 years
-    if (courseCode.toLowerCase().includes("dp") && !courseCode.toLowerCase().includes("f0")) {
-      maxYears = 3;
-    }
-    // Degree with F0 (f0) → 4 years
-    else if (courseCode.toLowerCase().includes("f0")) {
-      maxYears = 4;
+    for (const [yr, patterns] of Object.entries(config.yearRules)) {
+      if (patterns.some(p => courseCode.toLowerCase().includes(p.toLowerCase()))) {
+        maxYears = yr;
+        break;
+      }
     }
 
     // Render tables dynamically
@@ -104,7 +95,7 @@ const render ={
     for (let year = 1; year <= maxYears; year++) {
       content += `
         <table class="display" border="0">
-          <caption>${yearLabels[year]}</caption>
+          <caption>${config.yearLabels[year]}</caption>
           <thead class="modules-head">
             <tr>
               <th>Code</th>

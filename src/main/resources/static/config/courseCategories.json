@@ -1,0 +1,19 @@
+{
+  "categories": [
+    { "id": "dp", "name": "Diploma" },
+    { "id": "ad", "name": "Advanced Diploma" },
+    { "id": "pd", "name": "Postgraduate Diploma" },
+    { "id": "f0", "name": "Four-Year Program" }
+  ],
+  "yearLabels": {
+    "1": "First Year",
+    "2": "Second Year",
+    "3": "Third Year",
+    "4": "Fourth Year"
+  },
+  "yearRules": {
+    "1": ["ad", "pd", "dd"],
+    "3": ["dp"],
+    "4": ["f0"]
+  }
+}

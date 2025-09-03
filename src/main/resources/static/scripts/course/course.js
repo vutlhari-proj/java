@@ -116,7 +116,9 @@ export const courseFunctions = {
     this.renderModules();
   },
 
-  renderModules() {
+  async renderModules() {
+    const config = await this.loadModConfig();
+
     const modulesContainer = document.querySelectorAll(".modules");
 
     if (!this.course.modules || this.course.modules.length === 0) {
@@ -140,14 +142,11 @@ export const courseFunctions = {
       `;
 
       let targetBody;
-      if (/11|105|125/.test(module.code)) {
-        targetBody = document.querySelector(".year-1");
-      } else if (/21/.test(module.code)) {
-        targetBody = document.querySelector(".year-2");
-      } else if (/31/.test(module.code)) {
-        targetBody = document.querySelector(".year-3");
-      } else {
-        targetBody = document.querySelector(".year-4");
+      for (const [yr, patterns] of Object.entries(config.yearRules)) {
+        if (patterns.some(p => module.code.toLowerCase().includes(p.toLowerCase()))) {
+          targetBody = document.querySelector(`.year-${yr}`);
+          break;
+        }
       }
 
       targetBody?.insertAdjacentHTML("beforeend", moduleHtml);
@@ -229,6 +228,16 @@ export const courseFunctions = {
     courses = coursesJson.map((course) => new Course(course));
   },
 
+  async loadConfig(){
+    const res = await fetch("/config/courseCategories.json")
+    return await res.json();
+  },
+
+  async loadModConfig() {
+    const res = await fetch("/config/moduleMapping.json")
+    return await res.json();
+  },
+  
   courseEventListeners(){
     const rows = document.querySelectorAll("tr.course");
     rows.forEach((row) => {
@@ -268,7 +277,7 @@ export const courseFunctions = {
     if (inputWrapper.querySelector(`.code-pill[data-code="${code}"]`)) {
       return; // do nothing if duplicate
     }
-    
+
     const pill = document.createElement("div");
     pill.classList.add("code-pill");
 
