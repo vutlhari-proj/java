@@ -107,6 +107,7 @@ const render ={
           }finally{
             moduleFunction.addCourses(addCourseCodes);
             moduleFunction.removeCourses(removeCourseCodes);
+            courseFunctions.courseEventListeners();
           }
           
         }
@@ -151,10 +152,18 @@ const render ={
             const course = document.querySelector(".courses-container");
             const addImg = document.querySelector(".edit-img");
 
-            if (course && !course.contains(e.target) && e.target !== addImg && !item.contains(e.target)) {
-              render.removeTable();
-              document.removeEventListener("click", handleClickOutside);
-            }
+            // if click is inside the course container, ignore
+            if (course && course.contains(e.target)) return;
+
+            // if click is on the edit image, ignore
+            if (e.target === addImg) return;
+
+            // if click is inside a pill, ignore
+            if (e.target.closest(".code-pill")) return;
+
+            // otherwise it's truly outside
+            render.removeTable();
+            document.removeEventListener("click", handleClickOutside);
           }
 
           setTimeout(() => {
@@ -325,57 +334,11 @@ document.querySelector(".edit-img")
   render.dropDownMenu();
 });
 
-document.body.addEventListener("keydown", (e)=>{
+document.body.addEventListener("keydown", (e) => {
   const container = document.querySelector(".courses-container");
-  if (container) {
-    const inputWrapper = container.querySelector(".input-wrapper");
-    if (inputWrapper) {
-      const search = inputWrapper.querySelector("input");
-      if (document.activeElement !== search) {
-        if (e.key === "Backspace" && search.value === "") {
-          const pills = inputWrapper.querySelectorAll(".code-pill");
-          if (pills.length > 0) {
-            pills[pills.length - 1].remove();
-          }
-
-          search.focus();
-        }
-
-        if (e.key === "Enter") {
-          search.value = "";
-          const pills = inputWrapper.querySelectorAll(".code-pill");
-          if (pills.length > 0) {
-            const addCourseCodes = [];
-            const removeCourseCodes = [];
-            pills.forEach((pill) =>{
-              if (pill.classList.contains("to-remove")) {
-                removeCourseCodes.push(pill.dataset.code);
-              } else {
-                addCourseCodes.push(pill.dataset.code);
-              }
-
-              pill.remove();
-            });
-
-            try {
-              (removeCourseCodes.length > 0) && moduleFunction.removeFromCourse(moduleCode, removeCourseCodes);
-              (addCourseCodes.length > 0) && moduleFunction.addToCourse(moduleCode, addCourseCodes);
-            } catch (error) {
-              alert("add coursetbale error");
-            }finally{
-              moduleFunction.addCourses(addCourseCodes);
-              moduleFunction.removeCourses(removeCourseCodes);
-            }
-            
-          }
-        }
-      }
-    }
-  }
-
   const info = document.querySelector(".js-info");
   if (e.key === "Escape") {
     info && info.remove();
     container && container.remove();
   }
-})
+});

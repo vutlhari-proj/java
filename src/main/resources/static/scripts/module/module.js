@@ -173,7 +173,7 @@ export const moduleFunction = {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
-      this.courses = response.json();
+      this.courses = await response.json();
       this.removeCourses();
     } catch (error) {
       console.log(error.message());
@@ -232,7 +232,7 @@ export const moduleFunction = {
       }
     });
 
-    this.renderCourses;
+    this.renderCourses();
   },
 
   removeCourses(courseCodes){

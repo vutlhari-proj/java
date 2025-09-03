@@ -232,11 +232,13 @@ export const courseFunctions = {
   courseEventListeners(){
     const rows = document.querySelectorAll("tr.course");
     rows.forEach((row) => {
+      let isProccessing = false
       row.addEventListener("click", async () => {
-        if (row.classList.contains("loading")) return; // prevent double click
+        if(isProccessing) return;
+        isProccessing = true;
+
         row.classList.add("loading");
         row.style.pointerEvents = "none";
-
         try {
           const courseCode = row.dataset.code;
 
@@ -251,8 +253,9 @@ export const courseFunctions = {
           console.error(err);
           alert("Error updating course modules");
         } finally {
+          isProccessing = false;
+          row.style.pointerEvents = "";
           row.classList.remove("loading");
-          row.style.pointerEvents = "auto";
         }
       });
     });
@@ -262,6 +265,10 @@ export const courseFunctions = {
     const input = document.getElementById("courseSearch");
     const inputWrapper = document.querySelector(".input-wrapper");
 
+    if (inputWrapper.querySelector(`.code-pill[data-code="${code}"]`)) {
+      return; // do nothing if duplicate
+    }
+    
     const pill = document.createElement("div");
     pill.classList.add("code-pill");
 
@@ -270,11 +277,14 @@ export const courseFunctions = {
 
     exists && pill.classList.add("to-remove");
 
-    pill.querySelector("span").addEventListener("click", () => {
+    pill.querySelector("span").addEventListener("click", (e) => {
+      e.stopPropagation();
       pill.remove();
     });
 
     inputWrapper.insertBefore(pill, input);
+
+    input.focus();
   }
   
 }
