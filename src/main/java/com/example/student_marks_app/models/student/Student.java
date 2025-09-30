@@ -5,6 +5,8 @@
 package com.example.student_marks_app.models.student;
 
 import com.example.student_marks_app.models.course.Course;
+import com.example.student_marks_app.models.person.Person;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
@@ -14,33 +16,19 @@ import jakarta.persistence.ManyToOne;
  * @author vutlh
  */
 @Entity
-public class Student {
+public class Student extends Person{
 
     @Id
     private String studNum;
 
-    private String name;
-    private String surname;
-
     @ManyToOne
     private Course course;
 
-    public Student() {
-    }
-
-    public Student(String name, String surname, String studNum, Course course) {
-        this.name = name;
-        this.surname = surname;
+    public Student(String name, String surname, String cellphone, String email,String studNum, Course course) {
+        super(name, surname, cellphone, email);
+        
         this.studNum = studNum;
         this.course = course;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getSurname() {
-        return surname;
     }
 
     public String getStudNum() {
