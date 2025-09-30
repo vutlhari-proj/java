@@ -2,15 +2,18 @@ package com.example.student_marks_app.models.person;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.MappedSuperclass;
+
+@MappedSuperclass
 public abstract class Person {
 
-    String name;
-    String surname;
-    String idNum;
-    String cellphone;
+    protected String name;
+    protected String surname;
+    protected String idNum;
+    protected String cellphone;
 
-    LocalDate dob;
-    String email;
+    protected LocalDate dob;
+    protected String email;
 
     public Person(String name, String surname, String idNum, String cellphone, String seq) {
         this.name = name;

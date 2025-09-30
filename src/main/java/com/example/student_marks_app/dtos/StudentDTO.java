@@ -4,8 +4,6 @@
  */
 package com.example.student_marks_app.dtos;
 
-import com.example.student_marks_app.models.student.Student;
-
 /**
  *
  * @author vutlh
@@ -15,13 +13,15 @@ public class StudentDTO {
     private String studNum;
     private String name;
     private String surname;
+    private String id;
     private String courseCode;
 
-    public StudentDTO(Student student) {
-        this.studNum = student.getStudNum();
-        this.name = student.getName();
-        this.surname = student.getSurname();
-        this.courseCode = student.getCourse() != null ? student.getCourse().getCode() : null;
+    public StudentDTO(String studNum, String name, String surname, String id, String courseCode) {
+        this.studNum = studNum;
+        this.name = name;
+        this.surname = surname;
+        this.id = id;
+        this.courseCode = courseCode;
     }
 
     public String getStudNum() {
@@ -36,6 +36,10 @@ public class StudentDTO {
         return surname;
     }
 
+    public String getId(){
+        return id;
+    }
+    
     public String getCourseName() {
         return courseCode;
     }  

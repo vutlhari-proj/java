@@ -1,0 +1,55 @@
+package com.example.student_marks_app.controllers;
+
+import java.util.List;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.student_marks_app.dtos.StaffDTO;
+import com.example.student_marks_app.models.staff.Staff;
+import com.example.student_marks_app.models.user.User;
+import com.example.student_marks_app.repositories.StaffRepository;
+import com.example.student_marks_app.repositories.UserRepository;
+import com.example.student_marks_app.services.PersonService;
+
+@RestController
+@RequestMapping("/api/staff")
+public class StaffRestController {
+    private final StaffRepository staffRepository;
+    private final PersonService personService;
+    private final UserRepository userRepository;
+
+    public StaffRestController(StaffRepository staffRepository,
+                               PersonService personService,
+                               UserRepository userRepository) {
+        this.staffRepository = staffRepository;
+        this.personService = personService;
+        this.userRepository = userRepository;
+    }
+    
+    @GetMapping()
+    public List<StaffDTO> getAllStaff(){
+        return staffRepository.findAll().stream()
+                .map(Staff::toDTO).toList();
+    }
+
+    @PostMapping
+    public Staff addStaff(@RequestBody Staff st){
+        st = personService.createStaff(st.getName(), st.getSurname(), st.getIdNum(), 
+                st.getCellphone(), st.getPosition());
+
+        // Create a new User for the staff
+         User user = new User(
+            st.getStaffNum(), // userId
+            st.getEmail(),   // username
+            st.getStaffNum(), // password (default, you may want to change this)
+            st.getPosition()       // role
+        );
+        userRepository.save(user);
+
+        return staffRepository.save(st);
+    }
+}

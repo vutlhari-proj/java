@@ -4,6 +4,7 @@
  */
 package com.example.student_marks_app.models.student;
 
+import com.example.student_marks_app.dtos.StudentDTO;
 import com.example.student_marks_app.models.course.Course;
 import com.example.student_marks_app.models.person.Person;
 
@@ -43,5 +44,13 @@ public class Student extends Person{
     }
     
     
-
+    public StudentDTO toDTO() {
+        return new StudentDTO(
+                this.studNum,
+                this.name,
+                this.surname,
+                this.idNum,
+                this.course != null ? this.course.getCode() : null
+        );
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.student_marks_app.models.staff;
 
+import com.example.student_marks_app.dtos.StaffDTO;
 import com.example.student_marks_app.models.person.Person;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -35,4 +36,15 @@ public class Staff extends Person {
   }
   
   
+  public StaffDTO toDTO() {
+      return new StaffDTO(
+          this.staffNum,
+          this.name,
+          this.surname,
+          this.idNum,
+          this.cellphone,
+          this.email,
+          this.position
+      );
+  }
 }
