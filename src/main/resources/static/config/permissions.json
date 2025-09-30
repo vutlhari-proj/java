@@ -1,0 +1,48 @@
+{
+  "permissions": {
+    "ADMINISTRATOR": {
+      "faculty":    ["CREATE", "READ", "UPDATE", "DELETE"],
+      "department": ["CREATE", "READ", "UPDATE", "DELETE"],
+      "course":     ["CREATE", "READ", "UPDATE", "DELETE"],
+      "module":     ["CREATE", "READ", "UPDATE", "DELETE"],
+      "staff":      ["CREATE", "READ", "UPDATE", "DELETE"],
+      "student":    ["READ", "UPDATE"]
+    },
+
+    "ADMIN": {
+      "faculty":    ["READ"],
+      "department": ["READ"],
+      "course":     ["READ"],
+      "module":     ["READ"],
+      "staff":      ["READ", "UPDATE"],
+      "student":    ["CREATE", "READ", "UPDATE", "DELETE"]
+    },
+
+    "HOD": {
+      "faculty":    ["READ"],
+      "department": ["READ", "UPDATE"],
+      "course":     ["READ"],
+      "module":     ["CREATE", "READ", "UPDATE", "DELETE"],
+      "staff":      ["READ", "UPDATE"],
+      "student":    []
+    },
+
+    "LECTURER": {
+      "faculty":    ["READ"],
+      "department": ["READ"],
+      "course":     ["READ"],
+      "module":     ["READ", "UPDATE"],
+      "staff":      ["READ", "UPDATE"],
+      "student":    []
+    },
+
+    "STUDENT": {
+      "faculty":    ["READ"],
+      "department": ["READ"],
+      "course":     ["READ"],
+      "module":     ["READ"],
+      "staff":      [],
+      "student":    ["READ", "UPDATE", "DELETE"]
+    }
+  }
+}
