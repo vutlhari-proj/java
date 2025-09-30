@@ -24,9 +24,8 @@ public class Student extends Person{
     @ManyToOne
     private Course course;
 
-    public Student(String name, String surname, String cellphone, String email,String studNum, Course course) {
-        super(name, surname, cellphone, email);
-        
+    public Student(String name, String surname, String  id, String cellphone, String studNum, Course course) {
+        super(name, surname, id, cellphone, studNum);
         this.studNum = studNum;
         this.course = course;
     }

@@ -13,11 +13,11 @@ public class Staff extends Person {
   private String position;
 
   public Staff() {
-    super("", "", "", "");
+    super("", "", "", "", "");
   }
 
-  public Staff(String name, String surname, String cellphone, String email,String staffNum, String position) {
-    super(name, surname, cellphone, email);
+  public Staff(String name, String surname,String id, String cellphone,String staffNum, String position) {
+    super(name, surname, id, cellphone, staffNum);
     this.staffNum = staffNum;
     this.position = position;
   }

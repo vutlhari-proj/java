@@ -18,13 +18,13 @@ public class PersonService {
         this.globalIdGenerator = globalIdGenerator;
     }
 
-    public Student createStudent(String name, String surname, String cellphone, String email, Course course) {
+    public Student createStudent(String name, String surname, String id, String cellphone, Course course) {
         String studNum = globalIdGenerator.generateId();
-        return new Student(name, surname, cellphone, email, studNum, course);
+        return new Student(name, surname, id, cellphone, studNum, course);
     }
 
-    public Staff createStaff(String name, String surname, String cellphone, String email, String position) {
+    public Staff createStaff(String name, String surname, String id, String cellphone, String position) {
         String staffNum = globalIdGenerator.generateId();
-        return new Staff(name, surname, cellphone, email, staffNum, position);
+        return new Staff(name, surname, id, cellphone, staffNum, position);
     }
 }
