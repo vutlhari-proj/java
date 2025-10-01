@@ -17,8 +17,11 @@ document.querySelector("#login-form").addEventListener("submit", async (e) => {
 
   const data = await response.json();
   if (data.message === "Login successful") {
-    localStorage.setItem("role", data.role); // Save role
-    localStorage.setItem("username", data.username); // Optionally save username
-    window.location.href = "index.html";
+    window.location.href = "../pages/home.html";
+  }
+  else {
+    const errorMessageDiv = document.getElementById("error-message");
+    errorMessageDiv.style.display = "block";
+    errorMessageDiv.textContent = data.message || "Login failed. Please try again.";
   }
 });
