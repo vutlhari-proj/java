@@ -23,11 +23,11 @@ public class GlobalIdGenerator {
     if (globalSequence == null) {
         globalSequence = new GlobalSequence();
         globalSequence.setYearKey(yearKey);
-        globalSequence.setLastValue(0L);
+        globalSequence.setSequenceValue(0L);
     }
 
-    long newValue = globalSequence.getLastValue() + 1;
-    globalSequence.setLastValue(newValue);
+    long newValue = globalSequence.getSequenceValue() + 1;
+    globalSequence.setSequenceValue(newValue);
     globalSequenceRepository.save(globalSequence);
 
     return year + String.format("%07d", newValue);

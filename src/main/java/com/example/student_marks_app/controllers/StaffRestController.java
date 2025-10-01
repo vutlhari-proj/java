@@ -3,6 +3,7 @@ package com.example.student_marks_app.controllers;
 import java.util.List;
 
 import org.springframework.context.annotation.Role;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,13 +23,16 @@ public class StaffRestController {
     private final StaffRepository staffRepository;
     private final PersonService personService;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder; // Add this
 
     public StaffRestController(StaffRepository staffRepository,
                                PersonService personService,
-                               UserRepository userRepository) {
+                               UserRepository userRepository,
+                               PasswordEncoder passwordEncoder) { // Add this
         this.staffRepository = staffRepository;
         this.personService = personService;
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder; // Add this
     }
     
     @GetMapping()
@@ -42,11 +46,14 @@ public class StaffRestController {
         st = personService.createStaff(st.getName(), st.getSurname(), st.getIdNum(), 
                 st.getCellphone(), st.getEmail(), st.getPosition());
 
-        // Create a new User for the staff
-         User user = new User(
+        // Create a new User for the staff with a default password
+        String encodedPassword = passwordEncoder.encode("changeme");
+        String username = st.getStaffNum() + "@tut4life.ac.za";
+        User user = new User(
             st.getStaffNum(), // userId
-            st.getStaffNum(), // password (default, you may want to change this)
-            st.getPosition()       // role
+            username,         // username
+            encodedPassword,  // encoded default password
+            st.getPosition()  // role
         );
         userRepository.save(user);
 

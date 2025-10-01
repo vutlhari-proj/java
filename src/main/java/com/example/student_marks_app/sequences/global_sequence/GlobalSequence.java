@@ -8,7 +8,8 @@ public class GlobalSequence {
   
   @Id
   private String yearKey;
-  private long lastValue;
+  // Change from 'lastValue' to 'sequenceValue'
+  private long sequenceValue;
 
   public GlobalSequence() {
   }
@@ -18,12 +19,12 @@ public class GlobalSequence {
     return yearKey;
   }
 
-  public long getLastValue() {
-    return lastValue;
+  public long getSequenceValue() {
+    return sequenceValue;
   }
 
-  public void setLastValue(long lastValue) {
-    this.lastValue = lastValue;
+  public void setSequenceValue(long sequenceValue) {
+    this.sequenceValue = sequenceValue;
   }
 
   public void setYearKey(String yearKey) {

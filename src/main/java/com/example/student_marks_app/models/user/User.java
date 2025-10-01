@@ -21,19 +21,16 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+
     public User() {}
 
-    public User(String userId, String password, Role role) {
+    public User(String userId, String username, String password, Role role) {
         this.userId = userId;
+        this.username = username;
         this.password = password;
         this.role = role;
-
-        this.setUsername(userId);
     }
 
-    private void setUsername(String userId) {
-        this.username = userId + "@tut4life.ac.za";
-    }
     public String getUserId() {
         return userId;
     }

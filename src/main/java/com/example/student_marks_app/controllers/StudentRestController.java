@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  *
@@ -32,15 +33,18 @@ public class StudentRestController {
     private final CourseRepository courseRepository;
     private final PersonService personService;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public StudentRestController(StudentRepository studentRepository,
                                  CourseRepository courseRepository,
                                  PersonService personService,
-                                 UserRepository userRepository) {
+                                 UserRepository userRepository,
+                                 PasswordEncoder passwordEncoder) {
         this.studentRepository = studentRepository;
         this.courseRepository = courseRepository;
         this.personService = personService;
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
             
     @GetMapping()
@@ -60,11 +64,14 @@ public class StudentRestController {
             st.setCourse(course);
         }
 
-        // Create a new User for the student
+        // Create a new User for the student with a default password
+        String encodedPassword = passwordEncoder.encode("changeme");
+        String username = st.getStudNum() + "@tut4life.ac.za";
         User user = new User(
             st.getStudNum(), // userId
-            st.getStudNum(), // password (default, you may want to change this)
-            Role.STUDENT       // role
+            username,        // username
+            encodedPassword, // encoded default password
+            Role.STUDENT     // role
         );
         userRepository.save(user);
 

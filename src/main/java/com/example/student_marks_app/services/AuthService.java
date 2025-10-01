@@ -3,7 +3,6 @@ package com.example.student_marks_app.services;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.example.student_marks_app.models.user.Role;
 import com.example.student_marks_app.models.user.User;
 import com.example.student_marks_app.records.LoginRequest;
 import com.example.student_marks_app.records.LoginResponse;
@@ -22,17 +21,19 @@ public class AuthService {
   }
 
   public String register(RegisterRequest request) {
-    // Check if the username doesn't exists
-    if (!userRepository.findByUsername(request.username()).isPresent()) {
-      throw new IllegalArgumentException("Username doesn't exist");
+    // Check if the username already exists
+    if (userRepository.findByUsername(request.username()).isPresent()) {
+      throw new IllegalArgumentException("Username already exists");
     }
 
-    User user = userRepository.findByUsername(request.username()).get();
-    user.setPassword(request.password());
-    
-    // Save the user to the database
+    String encodedPassword = passwordEncoder.encode(request.password());
+    User user = new User(
+        request.userId(),
+        request.username(),
+        encodedPassword,
+        request.role()
+    );
     userRepository.save(user);
-
     return "User registered successfully";
   }
 
