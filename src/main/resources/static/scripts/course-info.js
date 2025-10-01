@@ -290,6 +290,13 @@ async function initPage() {
   render.moduleTable(courseCode);
   await courseFunctions.loadCourseInfo();
 
+  const permissions = await getPermissions();
+  const role = getUserRole();
+
+  if (!permissions.permissions[role].course.includes("UPDATE")) {
+    document.querySelector(".edit-img").style.display = "none";
+  }
+
   document.body.classList.remove("loading");
 }
 

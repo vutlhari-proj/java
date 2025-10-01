@@ -1,5 +1,6 @@
 import { moduleFunction } from "./module/module.js";
 import { capitalizeWords } from "./utility/utility.js";
+import { getPermissions, getUserRole } from "./utility/utility.js";
 moduleFunction.loadModules();
 
 document.querySelector(".add-img").addEventListener("click", ()=>{
@@ -65,6 +66,16 @@ document.querySelector(".js-body").addEventListener("click", (e) => {
   if (!row || row.classList.contains("input-row")) return; // clicked outside row
   
   window.location.href = `../pages/module-info.html?code=${encodeURIComponent(row.dataset.code)}`;
+});
+
+document.addEventListener("DOMContentLoaded", async () => {
+  const permissions = await getPermissions();
+  const role = getUserRole();
+
+  // Hide or show buttons based on permissions
+  if (!permissions.permissions[role].module.includes("CREATE")) {
+    document.querySelector(".add-img").style.display = "none";
+  }
 });
 
 const render = {

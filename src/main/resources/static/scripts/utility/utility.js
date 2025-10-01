@@ -28,3 +28,12 @@ export function capitalizeWords(str) {
     })
     .join("");
 }
+
+export async function getPermissions() {
+  const response = await fetch("/static/config/permissions.json");
+  return await response.json();
+}
+
+export function getUserRole() {
+  return localStorage.getItem("role");
+}

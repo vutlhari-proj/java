@@ -1,5 +1,6 @@
 import { Course, courseFunctions, courses } from "./course/course.js";
 import { capitalizeWords } from "./utility/utility.js";
+import { getPermissions, getUserRole } from "./utility/utility.js";
 courseFunctions.loadCourses();
 
 document.querySelector(".add-img").addEventListener("click", ()=>{
@@ -131,3 +132,13 @@ const render = {
     tooltip?.classList.add("tooltip");
   }
 }
+
+document.addEventListener("DOMContentLoaded", async () => {
+  const permissions = await getPermissions();
+  const role = getUserRole();
+
+  // Hide or show buttons based on permissions
+  if (!permissions.permissions[role].course.includes("CREATE")) {
+    document.querySelector(".add-img").style.display = "none";
+  }
+});

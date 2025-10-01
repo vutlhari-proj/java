@@ -21,7 +21,7 @@
     "HOD": {
       "faculty":    ["READ"],
       "department": ["READ", "UPDATE"],
-      "course":     ["READ"],
+      "course":     ["READ", "UPDATE"],
       "module":     ["CREATE", "READ", "UPDATE", "DELETE"],
       "staff":      ["READ", "UPDATE"],
       "student":    []
