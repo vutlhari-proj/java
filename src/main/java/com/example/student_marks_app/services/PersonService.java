@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.example.student_marks_app.sequences.global_sequence.GlobalIdGenerator;
 import com.example.student_marks_app.models.student.Student;
+import com.example.student_marks_app.models.user.Role;
 import com.example.student_marks_app.models.staff.Staff;
 import com.example.student_marks_app.models.course.Course;
 
@@ -18,13 +19,13 @@ public class PersonService {
         this.globalIdGenerator = globalIdGenerator;
     }
 
-    public Student createStudent(String name, String surname, String id, String cellphone, Course course) {
+    public Student createStudent(String name, String surname, String id, String cellphone, String email, Course course) {
         String studNum = globalIdGenerator.generateId();
-        return new Student(name, surname, id, cellphone, studNum, course);
+        return new Student(name, surname, id, cellphone, email, studNum, course);
     }
 
-    public Staff createStaff(String name, String surname, String id, String cellphone, String position) {
+    public Staff createStaff(String name, String surname, String id, String cellphone, String email, Role position) {
         String staffNum = globalIdGenerator.generateId();
-        return new Staff(name, surname, id, cellphone, staffNum, position);
+        return new Staff(name, surname, id, cellphone, email, staffNum, position);
     }
 }

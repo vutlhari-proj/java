@@ -2,6 +2,7 @@ package com.example.student_marks_app.controllers;
 
 import java.util.List;
 
+import org.springframework.context.annotation.Role;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,12 +40,11 @@ public class StaffRestController {
     @PostMapping
     public Staff addStaff(@RequestBody Staff st){
         st = personService.createStaff(st.getName(), st.getSurname(), st.getIdNum(), 
-                st.getCellphone(), st.getPosition());
+                st.getCellphone(), st.getEmail(), st.getPosition());
 
         // Create a new User for the staff
          User user = new User(
             st.getStaffNum(), // userId
-            st.getEmail(),   // username
             st.getStaffNum(), // password (default, you may want to change this)
             st.getPosition()       // role
         );

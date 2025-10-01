@@ -1,45 +1,60 @@
 package com.example.student_marks_app.models.user;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 
 @Entity
 public class User {
-  
-  @Id
-  private String userId;
-  private String username;
-  private String password;
-  private String role;
 
+    @Id
+    private String userId;
 
-  public User(String userId, String username, String password, String role) {
-    this.userId = userId;
-    this.username = username;
-    this.password = password;
-    this.role = role;
-  }
+    @Column(nullable = false, unique = true)
+    private String username;
 
-  public String getUserId() {
-    return userId;
-  }
-  public String getUsername() {
-    return username;
-  }
+    @Column(nullable = false)
+    private String password;
 
-  public String getPassword() {
-    return password;
-  }
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
-  public String getRole() {
-    return role;
-  }
+    public User() {}
 
-  public void setPassword(String password) {
-    this.password = password;
-  }
+    public User(String userId, String password, Role role) {
+        this.userId = userId;
+        this.password = password;
+        this.role = role;
 
-  public void setRole(String role) {
-    this.role = role;
-  }
+        this.setUsername(userId);
+    }
+
+    private void setUsername(String userId) {
+        this.username = userId + "@tut4life.ac.za";
+    }
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 }

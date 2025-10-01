@@ -15,12 +15,20 @@ public abstract class Person {
     protected LocalDate dob;
     protected String email;
 
-    public Person(String name, String surname, String idNum, String cellphone, String seq) {
+    public Person(String name, String surname, String idNum, String cellphone, String email) {
         this.name = name;
         this.surname = surname;
+        this.idNum = idNum;
         this.cellphone = cellphone;
+        this.email = email; 
+        
+        setDob(idNum);
+    }
 
-        setEmail(seq);
+    private void setDob(String id) {
+        this.dob = LocalDate.of(Integer.parseInt(id.substring(0, 1)),
+                Integer.parseInt(id.substring(2, 3)),
+                Integer.parseInt(id.substring(4, 5)));
     }
 
     public String getName() {
@@ -51,10 +59,6 @@ public abstract class Person {
         return dob;
     }
 
-    public void setDob(LocalDate dob) {
-        this.dob = dob;
-    }
-
     public void setCellphone(String cellphone) {
         this.cellphone = cellphone;
     }
@@ -71,9 +75,4 @@ public abstract class Person {
         this.surname = surname;
     }
 
-    public void setDob(String id) {
-        this.dob = LocalDate.of(Integer.parseInt(id.substring(0, 1)),
-                Integer.parseInt(id.substring(2, 3)),
-                Integer.parseInt(id.substring(4, 5)));
-    }
 }

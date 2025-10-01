@@ -7,6 +7,7 @@ package com.example.student_marks_app.controllers;
 import com.example.student_marks_app.dtos.StudentDTO;
 import com.example.student_marks_app.models.course.Course;
 import com.example.student_marks_app.models.student.Student;
+import com.example.student_marks_app.models.user.Role;
 import com.example.student_marks_app.models.user.User;
 import com.example.student_marks_app.repositories.UserRepository;
 import com.example.student_marks_app.repositories.CourseRepository;
@@ -51,7 +52,7 @@ public class StudentRestController {
     @PostMapping
     public Student addStudent(@RequestBody Student st){
         st = personService.createStudent(st.getName(), st.getSurname(), st.getIdNum(), 
-                st.getCellphone(), st.getCourse());
+                st.getCellphone(), st.getEmail(), st.getCourse());
 
         if (st.getCourse() != null && st.getCourse().getCode() != null) {
             Course course = courseRepository.findById(st.getCourse().getCode())
@@ -62,9 +63,8 @@ public class StudentRestController {
         // Create a new User for the student
         User user = new User(
             st.getStudNum(), // userId
-            st.getEmail(),   // username
             st.getStudNum(), // password (default, you may want to change this)
-            "STUDENT"       // role
+            Role.STUDENT       // role
         );
         userRepository.save(user);
 
