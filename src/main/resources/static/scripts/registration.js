@@ -8,8 +8,8 @@ import { courseFunctions } from "./course/course.js";
     register(){  
         document.querySelector(".register-btn").addEventListener("click", async (e) => {
             e.preventDefault(); // <-- Add this line!
-            alert("Submit event detected");
 
+            const courseInput = document.getElementById("course-input");
             // Build registerRequest with correct field names
             let type = "";
             document.getElementsByName("role").forEach((elem) => {
@@ -22,7 +22,7 @@ import { courseFunctions } from "./course/course.js";
             const idNum = document.getElementById("idNum").value;
             const cellphone = document.getElementById("cellphone").value;
             const email = document.getElementById("email").value;
-            const courseOrPosition = document.getElementById("course-input").value.toUpperCase().trim();
+            const courseOrPosition = (type === "STUDENT") ? courseInput.dataset.code : courseInput.value.toUpperCase().trim();
 
             const registerRequest = {
                 type,
@@ -58,7 +58,9 @@ import { courseFunctions } from "./course/course.js";
             }
 
             auth.register_step1(registerRequest)
-            window.location.href = "../pages/create-password.html";
+            .then(() => {
+                window.location.href = "../pages/create-password.html";
+            });
                 
         });
         
@@ -112,7 +114,6 @@ import { courseFunctions } from "./course/course.js";
         });
 
         document.querySelector(".btn").addEventListener("click", (e) => {
-            alert("Submit event detected");
             e.preventDefault();
             const errorMsg = document.getElementById('errorMsg');
 
@@ -130,10 +131,6 @@ import { courseFunctions } from "./course/course.js";
                             console.log("Registration successful:", response);
                             window.location.href = "../pages/home.html"; // Redirect to home page
                         })
-                        .catch(error => {
-                            console.error("Registration failed:", error);
-                            alert("Registration failed. Please try again.");
-                        });
                 }
                 else {
                     validationError.forEach(error => {
@@ -190,7 +187,6 @@ import { courseFunctions } from "./course/course.js";
                 if (a.startsWith('admin') && b.startsWith('admin') && a.length > b.length) return 1;
                 return a.localeCompare(b);
             });
-            alert(`Roles fetched: ${roles.join(", ")}`);
 
             newInput.addEventListener("input", () => {
                 const val = newInput.value.toLowerCase();
@@ -217,7 +213,6 @@ import { courseFunctions } from "./course/course.js";
         }
         // Student course suggestions
         else if (type === "student") {
-            alert("Searching backend for courses...");
             let debounceTimer;
             newInput.addEventListener("input", () => {
                 clearTimeout(debounceTimer);
@@ -235,10 +230,12 @@ import { courseFunctions } from "./course/course.js";
                     }
                     courses.forEach(course => {
                         const li = document.createElement("li");
-                        li.textContent = `${course.name} (${course.code})`;
+                        li.dataset.code = course.code;
+                        li.textContent = `${course.name}`;
                         li.classList.add("suggestion-item");
                         li.onclick = () => {
                             newInput.value = course.name;
+                            newInput.dataset.code = li.dataset.code;
                             suggestionsList.innerHTML = "";
                         };
                         suggestionsList.appendChild(li);

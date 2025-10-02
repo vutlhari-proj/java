@@ -84,7 +84,6 @@ export function validatePassword(password, confirmPassword) {
 }
 
 export async function getRoles() {
-  alert("Fetching roles from config...");
   const response = await fetch("/config/permissions.json");
   if (!response.ok) throw new Error("Failed to fetch roles: " + response.status);
   return await response.json();

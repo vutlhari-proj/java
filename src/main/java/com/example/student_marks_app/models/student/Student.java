@@ -25,6 +25,10 @@ public class Student extends Person{
     @ManyToOne
     private Course course;
 
+    public Student() {
+        super("", "", "", "", "");
+    }
+    
     public Student(String name, String surname, String  id, String cellphone, String email, String studNum, Course course) {
         super(name, surname, id, cellphone, email);
         this.studNum = studNum;
