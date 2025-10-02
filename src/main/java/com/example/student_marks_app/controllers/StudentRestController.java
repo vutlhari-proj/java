@@ -65,7 +65,7 @@ public class StudentRestController {
         }
 
         // Create a new User for the student with a default password
-        String encodedPassword = passwordEncoder.encode("changeme");
+        String encodedPassword = passwordEncoder.encode(st.getStudNum());
         String username = st.getStudNum() + "@tut4life.ac.za";
         User user = new User(
             st.getStudNum(), // userId

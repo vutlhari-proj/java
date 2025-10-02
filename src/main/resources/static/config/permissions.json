@@ -44,5 +44,7 @@
       "staff":      [],
       "student":    ["READ", "UPDATE", "DELETE"]
     }
-  }
+  },
+
+  "staff": ["ADMINISTRATOR", "ADMIN", "HOD", "LECTURER"]
 }

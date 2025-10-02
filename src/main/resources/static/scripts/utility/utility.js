@@ -37,3 +37,55 @@ export async function getPermissions() {
 export function getUserRole() {
   return localStorage.getItem("role");
 }
+
+// 1. Validate South African ID number: 13 digits, only numbers, no spaces
+export function validateIdNumber(idNum) {
+    const trimmed = idNum.replace(/\s+/g, '');
+    const isNumeric = /^\d{13}$/.test(trimmed);
+    return isNumeric;
+}
+
+// 2. Validate cellphone: 10 digits, only numbers, no spaces
+export function validateCellphone(cellphone) {
+    const trimmed = cellphone.replace(/\s+/g, '');
+    const isNumeric = /^\d{10}$/.test(trimmed);
+    return isNumeric;
+}
+
+// 3. Validate email address structure
+export function validateEmail(email) {
+    // Basic email regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email.trim());
+}
+
+export function validateLettersOnly(str) {
+    // Remove spaces and check for strictly letters (A-Z, a-z)
+    const trimmed = str.replace(/\s+/g, '');
+    return /^[A-Za-z]+$/.test(trimmed);
+}
+
+export function validatePassword(password, confirmPassword) {
+  const errors = [];
+  const minLength = 8;
+  if (password.length < minLength) {
+    errors.push('Password must be at least 8 characters.');
+  }
+  if (!/[A-Z]/.test(password)) {
+    errors.push('Password must contain at least one uppercase letter.');
+  }
+  if (!/[^A-Za-z0-9]/.test(password)) {
+    errors.push('Password must contain at least one special character.');
+  }
+  if (password !== confirmPassword) {
+    errors.push('Passwords do not match.');
+  }
+  return errors.length > 0 ? errors : null;
+}
+
+export async function getRoles() {
+  alert("Fetching roles from config...");
+  const response = await fetch("/config/permissions.json");
+  if (!response.ok) throw new Error("Failed to fetch roles: " + response.status);
+  return await response.json();
+}

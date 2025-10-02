@@ -19,7 +19,11 @@ public class SecurityConfig {
       http
               .csrf(csrf -> csrf.disable())
               .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/index.html", "/pages/student-registration.html", "/scripts/**", "/styles/**", "/api/auth/login", "/api/auth/register").permitAll()
+                .requestMatchers("/index.html", "/pages/student-registration.html", 
+                "/pages/staff-registration.html", "/pages/login.html", "/pages/create-password.html",
+                "/scripts/**", "/styles/**", 
+                "/api/auth/**", "/images/**",
+                "/api/courses/search", "/config/**").permitAll()
                 .anyRequest().authenticated()
               );
       // No .httpBasic() so no browser popup

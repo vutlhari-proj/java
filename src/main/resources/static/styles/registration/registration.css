@@ -50,3 +50,30 @@ select {
 .register-btn:hover {
     background: #0056b3;
 }
+
+.suggestions-list {
+    position: absolute;
+    background: #fff;
+    border: 1px solid #ccc;
+    margin-top: 2px;
+    list-style: none;
+    padding: 0;
+    width: 44%;
+    max-height: 150px;
+    overflow-y: auto;
+    z-index: 10;
+}
+.suggestion-item {
+    padding: 8px 12px;
+    cursor: pointer;
+}
+.suggestion-item:hover {
+    background: #f0f0f0;
+}
+.radio-group {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+    padding: 0;
+}

@@ -13,11 +13,14 @@ import com.example.student_marks_app.models.module.CourseModule;
 import com.example.student_marks_app.repositories.CourseModuleMappingRepository;
 import com.example.student_marks_app.repositories.CourseRepository;
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.student_marks_app.repositories.CourseModuleRepository;
 import com.example.student_marks_app.repositories.DepartmentRepository;
@@ -65,6 +68,16 @@ public class CourseRestController {
                 .toDTO();
     }
     
+    @GetMapping("/search")
+    public List<Map<String, String>> searchCourses(@RequestParam("query") String query) {
+        return courseRepository.findByCourseNameContainingIgnoreCase(query).stream()
+                .map(course -> Map.of(
+                    "courseCode", course.getCode(),
+                    "courseName", course.getCourseName()
+                ))
+                .toList();
+    }
+
     @PostMapping
     public CourseDTO addCourse(@RequestBody CourseDTO dto) {
         if (dto.getCode() == null || dto.getCode().trim().isEmpty()) {
@@ -159,6 +172,4 @@ public class CourseRestController {
         
         courseRepository.deleteById(code);
     }
-    
-    
 }

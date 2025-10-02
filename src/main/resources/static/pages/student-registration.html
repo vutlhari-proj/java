@@ -4,12 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Registration</title>
-    <link rel="stylesheet" href="../styles/registration/student-registration.css">
+    <link rel="stylesheet" href="../styles/registration/registration.css">
+
+    <script type="module" src="../scripts/registration.js" defer></script>
 </head>
 <body>
     <div class="registration-container">
-        <h2>Student Registration</h2>
-        <form action="/api/students" method="post">
+        <h2 id="registration-heading">Student Registration</h2>
+        <form id ="registration-form">
+            <div class="form-group">
+                <label>Register as:</label>
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" name="role" value="STUDENT" checked>
+                        Student
+                    </label>
+                    <label>
+                        <input type="radio" name="role" value="STAFF">
+                        Staff
+                    </label>
+                </div>
+            </div>
             <div class="form-group">
                 <label for="name">First Name</label>
                 <input type="text" id="name" name="name" required>
@@ -20,32 +35,37 @@
             </div>
             <div class="form-group">
                 <label for="idNum">ID Number</label>
-                <input type="text" id="idNum" name="idNum" required>
+                <input type="text" id="idNum" name="idNum" required autocomplete="off">
             </div>
             <div class="form-group">
                 <label for="cellphone">Cellphone</label>
                 <input type="tel" id="cellphone" name="cellphone" required>
             </div>
             <div class="form-group">
-                <label for="dob">Date of Birth</label>
-                <input type="date" id="dob" name="dob" required>
-            </div>
-            <div class="form-group">
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" required>
             </div>
             <div class="form-group">
-                <label for="course">Course</label>
-                <select id="course" name="course" required>
-                    <option value="">Select Course</option>
-                    <!-- Add course options dynamically or statically -->
-                    <option value="IT">Information Technology</option>
-                    <option value="ENG">Engineering</option>
-                    <option value="BUS">Business Management</option>
-                </select>
+                <label id="courseRole-label" for="course">Course</label>
+                <div style="position: relative;">
+                    <input type="text" id="course-input" name="course" autocomplete="off" required>
+                    <span id="role-suggestion" style="
+                        position: absolute;
+                        left: 8px;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        color: #aaa;
+                        pointer-events: none;
+                        font-size: 1em;
+                        z-index: 1;
+                        background: transparent;
+                    "></span>
+                </div>
+                <ul id="course-suggestions" class="suggestions-list"></ul>
             </div>
             <button type="submit" class="register-btn">Register</button>
         </form>
     </div>
+
 </body>
 </html>

@@ -26,9 +26,15 @@ public abstract class Person {
     }
 
     private void setDob(String id) {
-        this.dob = LocalDate.of(Integer.parseInt(id.substring(0, 1)),
-                Integer.parseInt(id.substring(2, 3)),
-                Integer.parseInt(id.substring(4, 5)));
+        if (id == null || id.length() < 6) {
+            this.dob = null;
+            return;
+        }
+        int year = Integer.parseInt(id.substring(0, 2));
+        int month = Integer.parseInt(id.substring(2, 4));
+        int day = Integer.parseInt(id.substring(4, 6));
+        year += (year >= 50) ? 1900 : 2000;
+        this.dob = LocalDate.of(year, month, day);
     }
 
     public String getName() {

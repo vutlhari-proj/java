@@ -167,6 +167,23 @@ export const courseFunctions = {
     this.renderModules();
   },
 
+  async searchCoursesBackend(query) {
+    try {
+      const response = await fetch(`/api/courses/search?query=${encodeURIComponent(query)}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const courses = await response.json();
+      // Normalize keys to { code, name }
+      return courses.map(c => ({
+        code: c.code || c.courseCode,
+        name: c.name || c.courseName
+      }));
+    } catch (err) {
+      alert("Failed to fetch courses: " + err.message);
+      return [];
+    }
+  },
 
   async updateCourse(course) {
     this.course = new Course(course);

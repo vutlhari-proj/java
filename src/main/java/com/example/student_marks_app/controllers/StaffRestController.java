@@ -47,7 +47,7 @@ public class StaffRestController {
                 st.getCellphone(), st.getEmail(), st.getPosition());
 
         // Create a new User for the staff with a default password
-        String encodedPassword = passwordEncoder.encode("changeme");
+        String encodedPassword = passwordEncoder.encode(st.getStaffNum());
         String username = st.getStaffNum() + "@tut4life.ac.za";
         User user = new User(
             st.getStaffNum(), // userId
