@@ -129,7 +129,7 @@ import { courseFunctions } from "./course/course.js";
                     auth.register_step2(passwordRequest)
                         .then(response => {
                             console.log("Registration successful:", response);
-                            window.location.href = "../pages/home.html"; // Redirect to home page
+                            window.location.href = "../pages/welcome.html"; // Redirect to welcome page
                         })
                 }
                 else {

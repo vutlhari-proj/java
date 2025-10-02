@@ -3,9 +3,11 @@ package com.example.student_marks_app.controllers;
 import com.example.student_marks_app.records.LoginRequest;
 import com.example.student_marks_app.records.LoginResponse;
 import com.example.student_marks_app.records.PasswordRequest;
+import com.example.student_marks_app.records.RegistrationResponse;
 import com.example.student_marks_app.records.StudentStaffRegisterRequest;
 import com.example.student_marks_app.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties.Registration;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
@@ -48,15 +50,12 @@ public class AuthController {
     }
 
     @PostMapping("/register-step2")
-    public ResponseEntity<?> registerStep2(@RequestBody PasswordRequest passwordRequest, HttpSession session) {
+    public RegistrationResponse registerStep2(@RequestBody PasswordRequest passwordRequest, HttpSession session) {
         StudentStaffRegisterRequest registerData = (StudentStaffRegisterRequest) session.getAttribute("registerData");
-        if (registerData == null) {
-            return ResponseEntity.badRequest().body("No registration data found");
-        }
-        authService.completeRegistration(registerData, passwordRequest.password());
+        
         session.removeAttribute("registerData"); // Clear session data
         System.out.println("Session data after removal: " + session.getAttribute("registerData"));
-        return ResponseEntity.ok().body("Step 2 registration successful");
+        return authService.completeRegistration(registerData, passwordRequest.password());
     }
 
 }

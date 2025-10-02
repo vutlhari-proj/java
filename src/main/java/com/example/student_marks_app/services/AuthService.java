@@ -7,6 +7,7 @@ import com.example.student_marks_app.models.user.User;
 import com.example.student_marks_app.records.LoginRequest;
 import com.example.student_marks_app.records.LoginResponse;
 import com.example.student_marks_app.records.RegisterRequest;
+import com.example.student_marks_app.records.RegistrationResponse;
 import com.example.student_marks_app.records.StudentStaffRegisterRequest;
 import com.example.student_marks_app.repositories.StudentRepository;
 import com.example.student_marks_app.repositories.CourseRepository;
@@ -71,7 +72,7 @@ public class AuthService {
   }
 
   @Transactional
-  public void completeRegistration(StudentStaffRegisterRequest registerData, String password) {
+  public RegistrationResponse completeRegistration(StudentStaffRegisterRequest registerData, String password) {
         String type = registerData.type();
 
         if (type.equalsIgnoreCase("STUDENT")) {
@@ -98,6 +99,7 @@ public class AuthService {
             );
             userRepository.save(user);
 
+            return new RegistrationResponse(student.getName(), student.getSurname(), user.getUsername());
         } else {
             // Create Staff entity
             Staff staff = personService.createStaff(
@@ -119,6 +121,9 @@ public class AuthService {
                 staff.getPosition()
             );
             userRepository.save(user);
+            return new RegistrationResponse(staff.getName(), staff.getSurname(), user.getUsername());
         }
+
+
     }
 }

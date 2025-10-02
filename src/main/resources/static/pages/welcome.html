@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome!</title>
+    <link rel="stylesheet" href="../styles/welcome-page/welcome.css">
+</head>
+<body>
+    <div class="welcome-container">
+        <h1>Welcome to Student Marks App!</h1>
+        <div class="username" id="username"></div>
+        <p>Your account has been created successfully.<br>
+        You can now log in using your username and password.</p>
+        <button onclick="window.location.href='../index.html'">Go to Login</button>
+    </div>
+    <script>
+        // Example: get username from localStorage or sessionStorage
+        const user = JSON.parse(localStorage.getItem("registeredUser"));
+        if (user) {
+            document.getElementById("username").textContent = `${user.name} ${user.surname}`;
+        }
+
+        document.querySelector(".welcome-container p").innerHTML += `<br>Your username is: <strong>${user.username}</strong>`;
+    </script>
+</body>
+</html>

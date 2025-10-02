@@ -1,18 +1,27 @@
 export const auth ={
   async login(loginRequest){
-    const response = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(loginRequest)
-    });
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(loginRequest),
+        credentials: "include" // <-- important!
+      });
 
-    return await response.json();
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const res = await response.json();
+      if(res.message === "Login successful"){
+        window.location.href = `../pages/home.html?username=${encodeURIComponent(res.username)}&role=${encodeURIComponent(res.role)}`;
+      }
+    } catch (error) {
+      console.error("Login failed:", error);
+      alert("Login failed. Please try again.");
+    }
   },
 
   async register_step1(registerRequest){
@@ -50,8 +59,9 @@ export const auth ={
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-      const message = await response.text();
-      console.log(message)
+
+      const user = await response.json();
+      localStorage.setItem("registeredUser", JSON.stringify(user));
     } catch (error) {
       console.error("Step 2 registration failed:", error);
       alert("Registration failed. Please try again.");

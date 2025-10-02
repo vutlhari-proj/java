@@ -1,27 +1,17 @@
-document.querySelector("#login-form").addEventListener("submit", async (e) => {
+import { auth } from "../Auth/auth.js";
+document.querySelector(".login-btn").addEventListener("click", async (e) => {
+  alert("Login button clicked"); // <-- This will show the alert
+  e.preventDefault();
   const loginRequest = {
     username: document.querySelector("#username").value,
     password: document.querySelector("#password").value
   };
 
-  const response = await fetch("/api/auth/login", { 
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(loginRequest)
-  });
-
-  if (!response.ok) {
-    alert("Login failed. Please check your credentials.");
-    return;
-  }
-
-  const data = await response.json();
-  if (data.message === "Login successful") {
-    window.location.href = "../pages/home.html";
-  }
-  else {
+  try {
+    await auth.login(loginRequest);
+  } catch (error) {
     const errorMessageDiv = document.getElementById("error-message");
     errorMessageDiv.style.display = "block";
-    errorMessageDiv.textContent = data.message || "Login failed. Please try again.";
+    errorMessageDiv.textContent = error.message || "Login failed. Please try again.";
   }
 });

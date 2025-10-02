@@ -7,13 +7,13 @@
 
   <link rel="stylesheet" href="styles/login/login_page.css">
 
-	<script defer src="scripts/login/login.js"></script>
+	<script type="module" src="scripts/login/login.js" defer></script>
 </head>
 <body>
 	<div class="login-container">
 		<a href="pages/student-registration.html" class="register-link" style="font-size: 12px;">Register</a>
 		<h2>Login</h2>
-		<form action="/login" method="post">
+		<form>
 			<div class="form-group">
 				<label for="username">Username</label>
 				<input type="text" id="username" name="username" required>
@@ -27,5 +27,13 @@
 
 		<div id="error-message" class="error-message" style="display: none;"></div>
 	</div>
+
+	<script type="module" defer>
+		const user = JSON.parse(localStorage.getItem("registeredUser"));
+		if (user) {
+			document.getElementById("username").value = user.username;
+			localStorage.clear(); // Clear the registered user data after login
+		}
+	</script>
 </body>
 </html>
