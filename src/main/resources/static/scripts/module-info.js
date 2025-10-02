@@ -297,7 +297,7 @@ const render ={
     confirm.addEventListener("click", async ()=>{
       await moduleFunction.deleteModule(moduleCode);
 
-      window.location.href = `../pages/modules.html`;
+      window.location.href = `/modules`;
     });
 
     const cancel = document.getElementById("cancelBtn");
@@ -324,12 +324,12 @@ const render ={
 
 async function initPage() {
   await moduleFunction.loadModuleInfo();
-  const permissions = await getPermissions();
-  const role = getUserRole();
+  // const permissions = await getPermissions();
+  // const role = getUserRole();
 
-  if (!permissions.permissions[role].module.includes("UPDATE")) {
-    document.querySelector(".edit-img").style.display = "none";
-  }
+  // if (!permissions.permissions[role].module.includes("UPDATE")) {
+  //   document.querySelector(".edit-img").style.display = "none";
+  // }
   
   document.body.classList.remove("loading");
 }

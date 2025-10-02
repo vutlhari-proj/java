@@ -65,7 +65,7 @@ document.querySelector(".js-body").addEventListener("click", (e) => {
   const row = e.target.closest("tr");
   if (!row || row.classList.contains("input-row")) return; // clicked outside row
   
-  window.location.href = `../pages/course-info.html?code=${encodeURIComponent(row.dataset.code)}`;
+  window.location.href = `/course-info?code=${encodeURIComponent(row.dataset.code)}`;
 });
 
 const render = {

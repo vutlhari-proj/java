@@ -1,5 +1,5 @@
 import { auth } from "../Auth/auth.js";
-document.querySelector(".login-btn").addEventListener("click", async (e) => {
+/*document.querySelector(".login-btn").addEventListener("click", async (e) => {
   alert("Login button clicked"); // <-- This will show the alert
   e.preventDefault();
   const loginRequest = {
@@ -14,4 +14,4 @@ document.querySelector(".login-btn").addEventListener("click", async (e) => {
     errorMessageDiv.style.display = "block";
     errorMessageDiv.textContent = error.message || "Login failed. Please try again.";
   }
-});
+});*/

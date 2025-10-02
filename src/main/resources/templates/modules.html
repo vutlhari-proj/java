@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.thymeleaf.org" lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Courses</title>
+    <title>Document</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -12,13 +12,13 @@
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="../styles/general.css" />
-    <link rel="stylesheet" href="../styles/main-page/header.css" />
-    <link rel="stylesheet" href="../styles/main-page/sidebar.css" />
-    <link rel="stylesheet" href="../styles/main-page/container-content.css" />
-    <link rel="stylesheet" href="../styles/table/table-container.css" />
+    <link rel="stylesheet" href="/styles/general.css" />
+    <link rel="stylesheet" href="/styles/main-page/header.css" />
+    <link rel="stylesheet" href="/styles/main-page/sidebar.css" />
+    <link rel="stylesheet" href="/styles/main-page/container-content.css" />
+    <link rel="stylesheet" href="/styles/table/table-container.css" />
 
-    <script type="module" src="../scripts/courses.js" defer></script>
+    <script type="module" src="/scripts/modules.js" defer></script>
   </head>
   <body>
     <header>
@@ -26,19 +26,19 @@
     </header>
 
     <aside class="sidebar">
-      <a class="sidebar-link" href="../index.html">
-        <img src="../images/home.svg" />
+      <a class="sidebar-link" href="/home">
+        <img src="/images/home.svg" />
         <p>Home</p>
       </a>
 
       <a class="sidebar-link">
-        <img src="../images/student.svg" />
+        <img src="/images/student.svg" />
         <p>Students</p>
       </a>
 
-      <a class="sidebar-link" href="modules.html">
-        <img src="../images/module.svg" />
-        <p>Modules</p>
+      <a class="sidebar-link" href="/courses">
+        <img src="/images/course.svg" />
+        <p>Courses</p>
       </a>
     </aside>
 
@@ -46,24 +46,24 @@
       <div class="table-wrapper">
         <table class="info-table">
           <caption>
-            Courses
+            Modules
           </caption>
           <thead>
             <tr>
-              <th>Course Code</th>
-              <th>Course Name</th>
+              <th>Module Code</th>
+              <th>Module Name</th>
             </tr>
           </thead>
           <tfoot>
             <tr>
               <td class="img-container" colspan="2">
                 <div class="search-container">
-                  <img class="search-img" src="../images/search.svg" />
-                  <span class="tooltip search-tooltip">search course</span>
+                  <img class="search-img" src="/images/search.svg" />
+                  <span class="tooltip search-tooltip">search module</span>
                 </div>
                 <div class="add-container">
-                  <img class="add-img" src="../images/add.svg" />
-                  <span class="tooltip search-tooltip">add course</span>
+                  <img class="add-img" src="/images/add.svg" />
+                  <span class="tooltip search-tooltip">add module</span>
                 </div>
               </td>
             </tr>
@@ -73,6 +73,10 @@
         <div class="table-scroll">
           <table class="info-table">
             <tbody class="js-body">
+              <tr>
+                <td>ADS216D</td>
+                <td>Advanced Discrete Structures</td>
+              </tr>
               <!-- more rows -->
             </tbody>
           </table>

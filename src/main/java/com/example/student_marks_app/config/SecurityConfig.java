@@ -18,22 +18,31 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
       http
-              .csrf(csrf -> csrf.disable())
-              .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/index.html", "/pages/student-registration.html", 
-                "/pages/staff-registration.html", "/pages/login.html", "/pages/create-password.html",
-                "/pages/welcome.html",
-                "/scripts/**", "/styles/**", 
-                "/api/auth/**", "/images/**",
-                "/api/courses/search", "/config/**").permitAll()
-                .requestMatchers("/pages/home.html", "/pages/courses.html", "/pages/course-info.html",
-                "/pages/modules.html", "/pages/module-info.html").authenticated()
-                .requestMatchers(HttpMethod.GET, "/api/courses/**", "/api/modules/**").authenticated()
-                .requestMatchers(HttpMethod.POST, "/api/courses/**", "/api/modules/**").hasAnyRole("ADMINISTRATOR", "HOD")
-                .requestMatchers(HttpMethod.PUT, "/api/courses/**", "/api/modules/**").hasAnyRole("ADMINISTRATOR", "HOD")
-                .requestMatchers(HttpMethod.DELETE, "/api/courses/**", "/api/modules/**").hasRole("ADMINISTRATOR")
-                .anyRequest().authenticated()
-              );
+          .csrf(csrf -> csrf.disable())
+          .authorizeHttpRequests(auth -> auth
+              .requestMatchers("/", "/index.html", "/login", "/pages/student-registration.html",
+                  "/pages/staff-registration.html", "/pages/login.html", "/pages/create-password.html",
+                  "/pages/welcome.html",
+                  "/scripts/**", "/styles/**", 
+                  "/api/auth/**", "/images/**",
+                  "/api/courses/search", "/config/**").permitAll()
+              .requestMatchers("/home", "/courses", "/course-info/**", "/modules", "/module-info/**").authenticated()
+              .requestMatchers(HttpMethod.GET, "/api/courses/**", "/api/modules/**").authenticated()
+              .requestMatchers(HttpMethod.POST, "/api/courses/**", "/api/modules/**").hasAnyRole("ADMINISTRATOR", "HOD")
+              .requestMatchers(HttpMethod.PUT, "/api/courses/**", "/api/modules/**").hasAnyRole("ADMINISTRATOR", "HOD")
+              .requestMatchers(HttpMethod.DELETE, "/api/courses/**", "/api/modules/**").hasRole("ADMINISTRATOR")
+              .anyRequest().authenticated()
+          )
+          .formLogin(form -> form
+              .loginPage("/login") // Use /login for custom login page
+              .defaultSuccessUrl("/home", true)
+              .permitAll()
+          )
+          .logout(logout -> logout
+              .logoutUrl("/logout")
+              .logoutSuccessUrl("/login?logout")
+              .permitAll()
+          );
       // No .httpBasic() so no browser popup
       return http.build();
   }

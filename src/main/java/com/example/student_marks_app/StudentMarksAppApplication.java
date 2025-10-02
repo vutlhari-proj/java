@@ -21,7 +21,7 @@ public class StudentMarksAppApplication {
         if (event.getApplicationContext() instanceof WebServerApplicationContext webContext) {
             int port = webContext.getWebServer().getPort();
 
-            String url = "http://localhost:" + port + "/index.html";
+            String url = "http://localhost:" + port + "/index";
 
             if (!openInBrowser(url)) {
                 System.out.println("Open manually: " + url);

@@ -27,7 +27,7 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
-    @PostMapping("/login")
+    /*@PostMapping("/login")
     public LoginResponse login(@RequestBody LoginRequest request, HttpServletRequest httpRequest) {
         Authentication authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(request.username(), request.password())
@@ -39,7 +39,7 @@ public class AuthController {
             request.username(),
             authentication.getAuthorities().iterator().next().getAuthority().replace("ROLE_", "")
         );
-    }
+    }*/
 
     @PostMapping("/register-step1")
     public ResponseEntity<?> registerStep1(@RequestBody StudentStaffRegisterRequest request, HttpSession session) {

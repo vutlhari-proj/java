@@ -1,5 +1,5 @@
 export const auth ={
-  async login(loginRequest){
+  /*async login(loginRequest){
     try {
       const response = await fetch("/api/auth/login", {
         method: "POST",
@@ -16,13 +16,14 @@ export const auth ={
 
       const res = await response.json();
       if(res.message === "Login successful"){
-        window.location.href = `../pages/home.html?username=${encodeURIComponent(res.username)}&role=${encodeURIComponent(res.role)}`;
+        //window.location.href = `../pages/home.html?username=${encodeURIComponent(res.username)}&role=${encodeURIComponent(res.role)}`;
+        window.location.href = `/home`;
       }
     } catch (error) {
       console.error("Login failed:", error);
       alert("Login failed. Please try again.");
     }
-  },
+  },*/
 
   async register_step1(registerRequest){
     try {

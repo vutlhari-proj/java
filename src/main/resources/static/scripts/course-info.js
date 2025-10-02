@@ -261,7 +261,7 @@ const render ={
     confirm.addEventListener("click", async ()=>{
       await courseFunctions.deleteCourse(courseCode);
 
-      window.location.href = `../pages/courses.html`;
+      window.location.href = `/courses`;
     });
 
     const cancel = document.getElementById("cancelBtn");
@@ -290,12 +290,12 @@ async function initPage() {
   render.moduleTable(courseCode);
   await courseFunctions.loadCourseInfo();
 
-  const permissions = await getPermissions();
-  const role = getUserRole();
+  // const permissions = await getPermissions();
+  // const role = getUserRole();
 
-  if (!permissions.permissions[role].course.includes("UPDATE")) {
-    document.querySelector(".edit-img").style.display = "none";
-  }
+  // if (!permissions.permissions[role].course.includes("UPDATE")) {
+  //   document.querySelector(".edit-img").style.display = "none";
+  // }
 
   document.body.classList.remove("loading");
 }
