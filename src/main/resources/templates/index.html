@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="/styles/login/login_page.css">
+    <link rel="stylesheet" href="/styles/registration/password.css">
 </head>
 <body>
     <div class="login-container">
@@ -16,7 +17,11 @@
                 <input type="text" id="username" name="username" required>
             </div>
             <div class="form-group">
-                <label for="password">Password</label>
+                <label for="password">Password
+                  <div class="img-container">
+                    <img id="togglePassword" src="/images/view.svg" alt="Toggle Password Visibility" title="Show/Hide Password">
+                  </div>
+                </label>
                 <input type="password" id="password" name="password" required>
             </div>
             <button type="submit" class="login-btn">Login</button>
@@ -24,5 +29,20 @@
         <div th:if="${param.error}" class="error-message">Invalid username or password.</div>
         <div th:if="${param.logout}" class="success-message">You have been logged out.</div>
     </div>
+
+    <script>
+        const imgContainer = document.querySelector(".img-container");
+        const passwordField = document.getElementById("password");
+        if (imgContainer && passwordField) {
+            // Show password while mouse/touch is held down
+            const showPassword = () => passwordField.setAttribute("type", "text");
+            const hidePassword = () => passwordField.setAttribute("type", "password");
+            imgContainer.addEventListener("mousedown", showPassword);
+            imgContainer.addEventListener("mouseup", hidePassword);
+            imgContainer.addEventListener("mouseleave", hidePassword);
+            imgContainer.addEventListener("touchstart", showPassword);
+            imgContainer.addEventListener("touchend", hidePassword);
+        }
+    </script>
 </body>
 </html>
