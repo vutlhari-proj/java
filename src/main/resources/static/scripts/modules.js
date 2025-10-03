@@ -1,7 +1,13 @@
 import { moduleFunction } from "./module/module.js";
 import { capitalizeWords } from "./utility/utility.js";
-import { getPermissions, getUserRole } from "./utility/utility.js";
-moduleFunction.loadModules();
+import { toggleElementByPermission } from "./utility/utility.js";
+async function initPage() {
+  await moduleFunction.loadModules();
+  toggleElementByPermission("module", "CREATE", ".add-img");
+}
+document.addEventListener("DOMContentLoaded", async () => {
+  await initPage();
+});
 
 document.querySelector(".add-img").addEventListener("click", ()=>{
   render.newModule();
@@ -66,16 +72,6 @@ document.querySelector(".js-body").addEventListener("click", (e) => {
   if (!row || row.classList.contains("input-row")) return; // clicked outside row
 
   window.location.href = `/module-info?code=${encodeURIComponent(row.dataset.code)}`;
-});
-
-document.addEventListener("DOMContentLoaded", async () => {
-  const permissions = await getPermissions();
-  const role = getUserRole();
-
-  // Hide or show buttons based on permissions
-  if (!permissions.permissions[role].module.includes("CREATE")) {
-    document.querySelector(".add-img").style.display = "none";
-  }
 });
 
 const render = {

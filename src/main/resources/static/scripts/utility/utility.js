@@ -1,3 +1,4 @@
+import {user} from "../user/user.js";
 export function capitalizeWords(str) {
   const exceptions = ["of", "to", "and"];
   const romanWithSuffixRegex = /^(M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3}))[A-Z]?$/i;
@@ -87,4 +88,22 @@ export async function getRoles() {
   const response = await fetch("/config/permissions.json");
   if (!response.ok) throw new Error("Failed to fetch roles: " + response.status);
   return await response.json();
+}
+
+export async function toggleElementByPermission(resource, action, elementId) {
+  const userRoles = await user.role(); // returns array, e.g. ["ROLE_ADMINISTRATOR"]
+  const permissions = await getRoles();
+
+  console.log("permissions:", permissions);
+  console.log("userRoles:", userRoles);
+  // Check if any role grants the permission
+  const allowed = userRoles.some(role => {
+    const cleanRole = role.replace("ROLE_", "");
+    return permissions.permissions[cleanRole] &&
+           permissions.permissions[cleanRole][resource] &&
+           permissions.permissions[cleanRole][resource].includes(action);
+  });
+
+  const el = document.querySelector(elementId);
+  if (el) el.style.display = allowed ? "" : "none";
 }

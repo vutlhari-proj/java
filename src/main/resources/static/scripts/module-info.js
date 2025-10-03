@@ -1,6 +1,6 @@
 import { moduleFunction } from "./module/module.js";
 import { courseFunctions } from "./course/course.js";
-import { capitalizeWords, getPermissions, getUserRole } from "./utility/utility.js";
+import { capitalizeWords, toggleElementByPermission } from "./utility/utility.js";
 
 const param = new URLSearchParams(window.location.search);
 const moduleCode = param.get("code");
@@ -324,13 +324,8 @@ const render ={
 
 async function initPage() {
   await moduleFunction.loadModuleInfo();
-  // const permissions = await getPermissions();
-  // const role = getUserRole();
-
-  // if (!permissions.permissions[role].module.includes("UPDATE")) {
-  //   document.querySelector(".edit-img").style.display = "none";
-  // }
   
+  toggleElementByPermission("module", "UPDATE", ".edit-img");
   document.body.classList.remove("loading");
 }
 document.addEventListener("DOMContentLoaded", initPage);

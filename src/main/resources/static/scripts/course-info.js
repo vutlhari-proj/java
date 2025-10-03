@@ -1,5 +1,6 @@
 import { courseFunctions } from "./course/course.js";
 import { moduleFunction } from "./module/module.js";
+import { toggleElementByPermission } from "./utility/utility.js";
 
 const params = new URLSearchParams(window.location.search);
 const courseCode = params.get("code");
@@ -290,13 +291,7 @@ async function initPage() {
   render.moduleTable(courseCode);
   await courseFunctions.loadCourseInfo();
 
-  // const permissions = await getPermissions();
-  // const role = getUserRole();
-
-  // if (!permissions.permissions[role].course.includes("UPDATE")) {
-  //   document.querySelector(".edit-img").style.display = "none";
-  // }
-
+  toggleElementByPermission("course", "UPDATE", ".edit-img");
   document.body.classList.remove("loading");
 }
 

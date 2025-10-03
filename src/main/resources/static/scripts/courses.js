@@ -1,7 +1,13 @@
 import { Course, courseFunctions, courses } from "./course/course.js";
-import { capitalizeWords } from "./utility/utility.js";
-import { getPermissions, getUserRole } from "./utility/utility.js";
-courseFunctions.loadCourses();
+import { capitalizeWords, toggleElementByPermission } from "./utility/utility.js";
+
+async function init() {
+  await courseFunctions.loadCourses();
+  await toggleElementByPermission("course", "CREATE", ".add-img");
+}
+document.addEventListener("DOMContentLoaded", async () => {
+  await init();
+});
 
 document.querySelector(".add-img").addEventListener("click", ()=>{
   render.newCourse();
@@ -132,13 +138,3 @@ const render = {
     tooltip?.classList.add("tooltip");
   }
 }
-
-document.addEventListener("DOMContentLoaded", async () => {
-  const permissions = await getPermissions();
-  const role = getUserRole();
-
-  // Hide or show buttons based on permissions
-  if (!permissions.permissions[role].course.includes("CREATE")) {
-    document.querySelector(".add-img").style.display = "none";
-  }
-});
