@@ -25,11 +25,11 @@ export const TextInput = ({ label, name, type, image, required }: TextInputProps
   };
 
   return (
-    <div className='form-group'>
+    <div className='form-group border-none'>
       {label && <label htmlFor={name}>{name.replace(/^\w/, (c) => c.toUpperCase()) + ":"}</label>}
       <div className='input_box'>
         <input
-          className='input_field'
+          className='input_field p-1 rounded-2 bg-dark text-light'
           type={type}
           id={name}
           name={name}

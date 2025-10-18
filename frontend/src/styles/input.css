@@ -12,10 +12,19 @@
 
 .input_field {
     width: 100%;
-    padding: 8px 32px 8px 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.input_field.bg-dark {
+  background-color: #3b3c3d !important;
+  border-color: #6c757d !important;
+}
+
+.input_field.bg-dark:focus {
+  background-color: #454748 !important;
+  border-color: #979b9e !important;
+  box-shadow: 0 0 0 0.1rem rgba(136, 139, 142, 0.25) !important;
 }
 
 .input_box img {
@@ -29,6 +38,7 @@
   cursor: pointer;
 
   transition: all 0.3s ease;
+  
 }
 
 .input_box img:hover {
