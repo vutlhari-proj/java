@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import '../styles/input.css'
+import './input.css'
 
 interface TextInputProps {
   label?: boolean;
@@ -29,7 +29,7 @@ export const TextInput = ({ label, name, type, image, required }: TextInputProps
       {label && <label htmlFor={name}>{name.replace(/^\w/, (c) => c.toUpperCase()) + ":"}</label>}
       <div className='input_box'>
         <input
-          className='input_field p-1 rounded-2 bg-dark text-light'
+          className='input_field p-1 rounded-2'
           type={type}
           id={name}
           name={name}

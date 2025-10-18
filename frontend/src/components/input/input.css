@@ -14,16 +14,11 @@
     width: 100%;
     outline: none;
     transition: all 0.3s ease;
+    background-color: var(--input-bg) !important;
+    border-width: 1px !important;
 }
 
-.input_field.bg-dark {
-  background-color: #3b3c3d !important;
-  border-color: #6c757d !important;
-}
-
-.input_field.bg-dark:focus {
-  background-color: #454748 !important;
-  border-color: #979b9e !important;
+.input_field:focus {
   box-shadow: 0 0 0 0.1rem rgba(136, 139, 142, 0.25) !important;
 }
 

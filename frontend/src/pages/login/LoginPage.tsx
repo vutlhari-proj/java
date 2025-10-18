@@ -20,7 +20,7 @@ function LoginForm() {
 
   return (
     <form
-      className="form py-5 px-5 bg-gray text-light d-flex flex-column align-items-center rounded-4"
+      className="form py-5 px-5 d-flex flex-column align-items-center rounded-4"
       onSubmit={handleSubmit}
     >
       <TextInput label={true} name="username" type="text" required={true} />

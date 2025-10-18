@@ -1,29 +1,44 @@
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* Default light theme */
+:root,
+html.light {
+  --bg-color: #ffffff;
+  --text-color: #212529;
+  --card-bg: #f8f9fa;
+  --btn-bg: #0d6efd;
+  --btn-text: #ffffff;
+  --border-color: #dee2e6;
+  --input-bg: #ffffff;
+  --input-text: #212529;
+  --navbar-bg: #f8f9fa;
 }
 
+/* Dark theme */
+html.dark {
+  --bg-color: #242424;
+  --text-color: #f8f9fa;
+  --card-bg: #343a40;
+  --btn-bg: #0d6efd;
+  --btn-text: #ffffff;
+  --border-color: #495057;
+  --input-bg: #464646; /* grayish background for inputs */
+  --input-text: #f8f9fa;
+  --navbar-bg: #343a40;
+}
+
+/* Apply globally */
 body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  justify-content: center;
-  min-width: 320px;
-  min-height: 100vh;
-  /* Force dark theme */
-  background-color: #242424;
-  color: rgba(255, 255, 255, 0.87);
+  background-color: var(--bg-color);
+  color: var(--text-color);
 }
 
-/* Remove the light theme media query or override it */
-@media (prefers-color-scheme: light) {
-  body {
-    background-color: #242424;
-    color: rgba(255, 255, 255, 0.87);
-  }
+/* Example for Bootstrap cards */
+.card {
+  background-color: var(--card-bg) !important;
+  color: var(--text-color) !important;
+}
+
+/* Example for buttons */
+.btn-custom {
+  background-color: var(--btn-bg);
+  color: var(--btn-text);
 }
