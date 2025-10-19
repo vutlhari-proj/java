@@ -1,11 +1,14 @@
-import {  useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { TextInput } from "@/components";
 import eyeIcon from "/images/icons/eye-icon.svg";
 import "./loginPage.css";
 import { Form } from "react-bootstrap";
+import { useAuth } from "@/context";
 
 function LoginForm() {
   const navigate = useNavigate();
+  const { setUser } = useAuth();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -14,10 +17,21 @@ function LoginForm() {
       .value;
     const password = (form.elements.namedItem("password") as HTMLInputElement)
       .value;
-    console.log("Username:", username);
-    console.log("Password:", password);
-    // After successful login logic, navigate to home
-    navigate("/home");
+
+    axios
+      .post("/api/auth/login", { username, password })
+      .then((response) => {
+        console.log("Login successful:", response.data);
+        setUser(response.data.userExpanded);
+        navigate("/home");
+      })
+      .catch((error) => {
+        if (error.response && error.response.status === 401) {
+          console.error("Invalid credentials:", error.response.data.error);
+        } else {
+          console.error("Login failed:", error);
+        }
+      });
   };
 
   return (

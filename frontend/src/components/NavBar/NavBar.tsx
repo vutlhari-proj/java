@@ -1,11 +1,13 @@
 import { Container, Navbar as NavbarBs } from "react-bootstrap";
 import "./navbar.css";
-import { useTheme } from "@/context";
+import { useTheme, useAuth } from "@/context";
 import { UserOffcanvas } from "./OffCanvas";
 
 export function Navbar() {
   const { darkTheme } = useTheme();
   const backgroundColor = darkTheme ? "dark" : "light";
+
+  const { user } = useAuth();
   return (
     <NavbarBs
       expand="lg"
@@ -20,16 +22,19 @@ export function Navbar() {
         </NavbarBs.Text>
 
         <div className="d-flex align-items-center ms-auto me-3">
-          <span className="me-3 fw-medium">Vutlhari Baloyi</span>
+          <span className="me-3 fw-medium">{user ? `${user.name} ${user.surname}` : "Guest"}</span>
           <NavbarBs.Toggle aria-controls="offcanvasUser" />
         </div>
 
-        <UserOffcanvas
+        <NavbarBs.Offcanvas
           id="offcanvasUser"
-          title="Students Marks App"
+          aria-labelledby="offcanvasUserLabel"
           placement="end"
-          backgroundColor={backgroundColor}
-        />
+          data-bs-theme={backgroundColor}>
+          <UserOffcanvas 
+          id="offcanvasUser"
+          title="User Menu" />
+        </NavbarBs.Offcanvas>
       </Container>
     </NavbarBs>
   );

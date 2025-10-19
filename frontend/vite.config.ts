@@ -14,6 +14,9 @@ export default defineConfig({
     proxy: {
       'image/': {
         target: 'http://localhost:5173'
+      },
+      '/api': { 
+        target: 'http://localhost:8081',
       }
     }
   }
