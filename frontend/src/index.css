@@ -1,7 +1,7 @@
 /* Default light theme */
 :root,
 html.light {
-  --bg-color: #ffffff;
+  --bg-color: #dddddd;
   --text-color: #212529;
   --card-bg: #f8f9fa;
   --btn-bg: #0d6efd;
@@ -10,6 +10,9 @@ html.light {
   --input-bg: #ffffff;
   --input-text: #212529;
   --navbar-bg: #f8f9fa;
+  --form-bg: #ffffff;
+  --shadow: #5a5a5a;
+  --input-shadow: rgba(128, 129, 130, 0.25);
 }
 
 /* Dark theme */
@@ -22,7 +25,10 @@ html.dark {
   --border-color: #495057;
   --input-bg: #464646; /* grayish background for inputs */
   --input-text: #f8f9fa;
-  --navbar-bg: #343a40;
+  --navbar-bg: #242424;
+  --form-bg: #252525;
+  --shadow: #f2f3f3;
+  --input-shadow: rgba(223, 223, 223, 0.916);
 }
 
 /* Apply globally */

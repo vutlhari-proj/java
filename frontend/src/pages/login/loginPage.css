@@ -6,7 +6,7 @@
 
   width: 28rem;
   height: 20rem;
-
+  background-color: var(--form-bg);
 }
 
 .form button {

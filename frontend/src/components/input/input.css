@@ -20,7 +20,7 @@
 }
 
 .input_field:focus {
-  box-shadow: 0 0 0 0.1rem rgba(128, 129, 130, 0.25) !important;
+  box-shadow: 0 0 0 0.1rem var(--input-shadow) !important;
 }
 
 .input_box img {
@@ -28,8 +28,8 @@
   right: 0px;
   margin-right: 8px;
 
-  width: 1.6rem;
-  height: 1.6rem;
+  width: 1rem;
+  height: 1rem;
 
   cursor: pointer;
 
@@ -38,7 +38,7 @@
 }
 
 .input_box img:hover {
-  opacity: 0.7;
+  opacity: 0.5;
 }
 
 .input_box img:active {

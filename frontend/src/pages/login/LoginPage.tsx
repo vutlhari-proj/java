@@ -1,7 +1,8 @@
-import { useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { TextInput } from "@/components";
 import eyeIcon from "/images/icons/eye-icon.svg";
 import "./loginPage.css";
+import { Form } from "react-bootstrap";
 
 function LoginForm() {
   const navigate = useNavigate();
@@ -21,8 +22,8 @@ function LoginForm() {
 
   return (
     <div className="login_page d-flex justify-content-center align-items-center vh-100">
-      <form
-        className="form py-5 px-5 rounded-4"
+      <Form
+        className="form py-5 px-5 rounded-4 d-flex flex-column gap-3 justify-content-center"
         onSubmit={handleSubmit}
       >
         <TextInput label={true} name="username" type="text" required={true} />
@@ -36,7 +37,7 @@ function LoginForm() {
         <button className="btn btn-primary p-2" type="submit">
           Submit
         </button>
-      </form>
+      </Form>
     </div>
   );
 }
