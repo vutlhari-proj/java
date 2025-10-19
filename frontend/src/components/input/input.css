@@ -15,11 +15,12 @@
     outline: none;
     transition: all 0.3s ease;
     background-color: var(--input-bg) !important;
+    color: var(--text-color) !important;
     border-width: 1px !important;
 }
 
 .input_field:focus {
-  box-shadow: 0 0 0 0.1rem rgba(136, 139, 142, 0.25) !important;
+  box-shadow: 0 0 0 0.1rem rgba(128, 129, 130, 0.25) !important;
 }
 
 .input_box img {
@@ -27,8 +28,8 @@
   right: 0px;
   margin-right: 8px;
 
-  width: 1rem;
-  height: 1rem;
+  width: 1.6rem;
+  height: 1.6rem;
 
   cursor: pointer;
 

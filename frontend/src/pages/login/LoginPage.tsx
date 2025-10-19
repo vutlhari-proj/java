@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { TextInput } from "@/components";
 import eyeIcon from "/images/icons/eye-icon.svg";
+import "./loginPage.css";
 
 function LoginForm() {
   const navigate = useNavigate();
@@ -19,22 +20,24 @@ function LoginForm() {
   };
 
   return (
-    <form
-      className="form py-5 px-5 d-flex flex-column align-items-center rounded-4"
-      onSubmit={handleSubmit}
-    >
-      <TextInput label={true} name="username" type="text" required={true} />
-      <TextInput
-        label={true}
-        name="password"
-        type="password"
-        image={{ src: eyeIcon, alt: "eye icon" }}
-        required={true}
-      />
-      <button className="btn btn-primary p-2" type="submit">
-        Submit
-      </button>
-    </form>
+    <div className="login_page d-flex justify-content-center align-items-center vh-100">
+      <form
+        className="form py-5 px-5 rounded-4"
+        onSubmit={handleSubmit}
+      >
+        <TextInput label={true} name="username" type="text" required={true} />
+        <TextInput
+          label={true}
+          name="password"
+          type="password"
+          image={{ src: eyeIcon, alt: "eye icon" }}
+          required={true}
+        />
+        <button className="btn btn-primary p-2" type="submit">
+          Submit
+        </button>
+      </form>
+    </div>
   );
 }
 
