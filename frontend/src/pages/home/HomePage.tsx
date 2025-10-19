@@ -1,7 +1,10 @@
+import { Navbar } from '@/components/NavBar/NavBar'
 import React from 'react'
 
-export const Home = () => {
+export function Home() {
   return (
-    <div>Home</div>
+    <>
+      <Navbar />
+    </>
   )
 }
