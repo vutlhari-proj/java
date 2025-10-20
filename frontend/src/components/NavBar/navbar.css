@@ -10,12 +10,9 @@
 }
 
 .offCanvasItem{
-  transition: opacity ease-in 0.3;
+  transition: background-color ease-in 0.3;
 }
 .offCanvasItem:hover{
-  opacity: 0.7;
+  background-color: var(--hover-bg);
 }
 
-.dropdown{
-  background-color: var(--navbar-bg) !important;
-}

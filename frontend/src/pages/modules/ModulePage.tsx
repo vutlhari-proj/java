@@ -3,6 +3,9 @@ import type { ModuleExtendedProp } from "@/types/module";
 import { useSearchParams } from "react-router-dom";
 import { courseModuleConfigs } from "@/config";
 import { Navbar } from "@/components";
+import { Card, Col, ListGroup, Row } from "react-bootstrap";
+import './modulePage.css';
+
 export function ModulePage() {
   const [searchParams] = useSearchParams();
   const code = searchParams.get("code");
@@ -60,7 +63,7 @@ export function ModulePage() {
       <title>{module?.code || 'Module'}</title>
       <Navbar />
       <div className="spacer" style={{ height: '80px' }}></div>
-      <div className="container">
+      <div className="container d-flex flex-column justify-content-center align-items-center gap-2 w-100 p-0 rounded-4">
         <h1>Module Information</h1>
         
         {isLoading ? (
@@ -70,33 +73,33 @@ export function ModulePage() {
             </div>
           </div>
         ) : hasData && module ? (
-          <div className="row">
-            <div className="col-md-8">
-              <div className="card">
-                <div className="card-header">
+          <Row className="row w-100 justify-content-center rounded-4 m-0">
+            <Col className="w-100 p-0">
+              <Card className="card">
+                <Card.Header>
                   <h2 className="mb-0">{module.moduleName}</h2>
-                  <small className="text-muted">Code: {module.code}</small>
-                </div>
-                <div className="card-body">
+                  <small className="small">Code: {module.code}</small>
+                </Card.Header>
+                <Card.Body>
                   <h4>Associated Courses</h4>
                   {module.courses && Array.isArray(module.courses) && module.courses.length > 0 ? (
-                    <div className="list-group">
+                    <ListGroup className="list-group">
                       {module.courses.map((course) => (
-                        <div key={course.code} className="list-group-item">
+                        <ListGroup.Item key={course.code} className="list-item">
                           <h6 className="mb-1">{course.courseName}</h6>
                           <small>Code: {course.code}</small>
-                        </div>
+                        </ListGroup.Item>
                       ))}
-                    </div>
+                    </ListGroup>
                   ) : (
                     <div className="alert alert-info">
                       No courses associated with this module.
                     </div>
                   )}
-                </div>
-              </div>
-            </div>
-          </div>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
         ) : (
           <div className="alert alert-warning">
             No module data available for code: {code}

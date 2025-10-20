@@ -1,0 +1,43 @@
+.card{
+  background-color: var(--form-color);
+  box-shadow: 0 0 0.4rem 0.2rem var(--card-shadow);
+  margin: 0;
+}
+
+.list-group{
+  overflow-y: auto;
+  max-height: 300px;
+}
+
+.list-group::-webkit-scrollbar {
+  width: 8px; /* width of vertical scrollbar */
+  height: 8px; /* height of horizontal scrollbar */
+}
+
+/* The draggable thumb */
+.list-group::-webkit-scrollbar-thumb {
+  background-color: #888; /* color of the thumb */
+  border-radius: 6px;
+  border: 1px solid #f0f0f0; /* padding around thumb */
+}
+
+/* The scrollbar track */
+.list-group::-webkit-scrollbar-track {
+  background: #f0f0f0; /* track color */
+  border-radius: 6px;
+}
+
+.list-item{
+  cursor: pointer;
+
+  transition: all ease 0.2s;
+}
+
+.list-item:hover{
+  opacity: .9;
+  background-color: #eaeaead0;
+}
+
+.small{
+  color: var(--text-color);
+}
