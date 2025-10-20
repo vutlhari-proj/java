@@ -5,6 +5,7 @@ import eyeIcon from "/images/icons/eye-icon.svg";
 import "./loginPage.css";
 import { Form } from "react-bootstrap";
 import { useAuth } from "@/context";
+import { userStorage } from "@/config";
 
 function LoginForm() {
   const navigate = useNavigate();
@@ -22,7 +23,19 @@ function LoginForm() {
       .post("/api/auth/login", { username, password })
       .then((response) => {
         console.log("Login successful:", response.data);
-        setUser(response.data.userExpanded);
+        
+        // Store user in context and session storage
+        const userData = response.data.userExpanded;
+        setUser(userData);
+        
+        // Also store using userStorage for additional functionality
+        userStorage.setUser({
+          username: userData.username,
+          name: userData.name,
+          surname: userData.surname,
+          role: userData.role
+        });
+        
         navigate("/home");
       })
       .catch((error) => {
@@ -48,8 +61,8 @@ function LoginForm() {
           image={{ src: eyeIcon, alt: "eye icon" }}
           required={true}
         />
-        <button className="btn btn-primary p-2" type="submit">
-          Submit
+        <button className="btn btn-primary py-2 px-3" type="submit">
+          Login
         </button>
       </Form>
     </div>
