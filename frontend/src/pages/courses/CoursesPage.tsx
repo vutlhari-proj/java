@@ -1,32 +1,23 @@
-import axios from "axios";
 import { Navbar, Table } from "@/components";
 import type { ShortCourseProp } from "@/types/course";
-import { useEffect, useState } from "react";
 import type { TableData } from "@/types";
+import { useCachedData } from "@/hooks/useCachedData";
+import { tableConfigs } from "@/config/tableConfigs";
 
 export function CoursesPage() {
-  const [courses, setCourses] = useState<ShortCourseProp[]>([]);
+  const { data: courses, isLoading, error } = useCachedData<ShortCourseProp>({
+    cacheKey: tableConfigs.courses.cacheKey,
+    apiEndpoint: tableConfigs.courses.apiEndpoint,
+    cacheDuration: 5 * 60 * 1000 // 5 minutes
+  });
 
-  const fetchCourses = async () => {
-    try {
-      const response = await axios.get<ShortCourseProp[]>("/api/courses");
-      console.log("API Response:", response.data);
-      console.log("Is array:", Array.isArray(response.data));
-      setCourses(response.data);
-    } catch (error) {
-      console.error("Error fetching courses:", error);
-      setCourses([]); // Set empty array on error
-    }
+  if (error) {
+    return (
+      <div className="d-flex justify-content-center align-items-center min-vh-100">
+        <div className="alert alert-danger">Error loading courses: {error}</div>
+      </div>
+    );
   }
-
-  useEffect(() => {
-    fetchCourses();
-  }, []);
-
-  const courseColumns = [
-    { key: 'code', header: 'Course Code' },
-    { key: 'courseName', header: 'Course Name' }
-  ];
 
   return (
     <>
@@ -35,12 +26,20 @@ export function CoursesPage() {
       <div className="spacer" style={{ height: '80px' }}></div>
       <div className="d-flex flex-column align-items-center gap-4">
         <h1>Courses</h1>
-        <Table 
-          data={courses as unknown as TableData[]}
-          columns={courseColumns}
-          entityName="course"
-          idKey="code"
-        />
+        {isLoading ? (
+          <div className="d-flex justify-content-center">
+            <div className="spinner-border" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        ) : (
+          <Table 
+            data={courses as unknown as TableData[]}
+            columns={tableConfigs.courses.columns}
+            entityName={tableConfigs.courses.entityName}
+            idKey={tableConfigs.courses.idKey}
+          />
+        )}
       </div>
     </>
   );

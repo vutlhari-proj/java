@@ -1,32 +1,22 @@
-import axios from "axios";
 import { Navbar, Table } from "@/components";
-import type { ModuleProp } from "@/types";
-import { useEffect, useState } from "react";
-import type { TableData } from "@/types";
+import type { ShortCourseProp, TableData } from "@/types";
+import { tableConfigs } from "@/config/tableConfigs";
+import { useCachedData } from "@/hooks/useCachedData";
 
 export function ModulesPage() {
-  const [modules, setModules] = useState<ModuleProp[]>([]);
+  const { data: modules, isLoading, error } = useCachedData<ShortCourseProp>({
+    cacheKey: tableConfigs.modules.cacheKey,
+    apiEndpoint: tableConfigs.modules.apiEndpoint,
+    cacheDuration: 5 * 60 * 1000 // 5 minutes
+  });
 
-  const fetchModules = async () => {
-    try {
-      const response = await axios.get<ModuleProp[]>("/api/modules");
-      console.log("API Response:", response.data);
-      console.log("Is array:", Array.isArray(response.data));
-      setModules(response.data);
-    } catch (error) {
-      console.error("Error fetching modules:", error);
-      setModules([]); // Set empty array on error
-    }
+  if (error) {
+    return (
+      <div className="d-flex justify-content-center align-items-center min-vh-100">
+        <div className="alert alert-danger">Error loading courses: {error}</div>
+      </div>
+    );
   }
-
-  useEffect(() => {
-    fetchModules();
-  }, []);
-
-  const moduleColumns = [
-    { key: 'code', header: 'Module Code' },
-    { key: 'moduleName', header: 'Module Name' }
-  ];
 
   return (
     <>
@@ -35,12 +25,23 @@ export function ModulesPage() {
       <div className="spacer" style={{ height: '80px' }}></div>
       <div className="d-flex flex-column align-items-center gap-4">
         <h1>Modules</h1>
-        <Table 
-          data={modules as unknown as TableData[]}
-          columns={moduleColumns}
-          entityName="module"
-          idKey="code"
-        />
+        {isLoading ? (
+          <div className="d-flex justify-content-center">
+            <div className="spinner-border" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        ) : (
+          <Table
+            data={modules as unknown as TableData[]}
+            columns={tableConfigs.modules.columns}
+            entityName={tableConfigs.modules.entityName}
+            idKey={tableConfigs.modules.entityName}
+          />
+        )
+
+        }
+
       </div>
     </>
   );
