@@ -47,10 +47,10 @@ public class ModuleRestController {
     }
     
     @GetMapping("/{code}")
-    public ModuleDTO getMOdule(@PathVariable String code){
+    public ModuleDTO getModule(@PathVariable String code){
         return moduleRepository.findById(code)
                 .orElseThrow(() -> new RuntimeException("unable to find module"))
-                .toDto();
+                .toExtended();
     }
     
     @GetMapping("/{code}/courses")

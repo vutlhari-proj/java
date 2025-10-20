@@ -7,6 +7,7 @@ package com.example.student_marks_app.controllers;
 import com.example.student_marks_app.coursemodulemapping.CourseModuleId;
 import com.example.student_marks_app.coursemodulemapping.CourseModuleMapping;
 import com.example.student_marks_app.dtos.CourseDTO;
+import com.example.student_marks_app.dtos.CourseSummaryDTO;
 import com.example.student_marks_app.dtos.ModuleDTO;
 import com.example.student_marks_app.models.course.Course;
 import com.example.student_marks_app.models.module.CourseModule;
@@ -55,7 +56,7 @@ public class CourseRestController {
     }
     
     @GetMapping
-    public List<CourseDTO> getAllCourse(){
+    public List<CourseSummaryDTO> getAllCourse(){
         return courseRepository.findAll().stream()
                 .map(Course::shortHand)
                 .toList();

@@ -3,14 +3,16 @@ import { useAuth } from "@/context";
 import { Role } from "@/services";
 import './table.css';
 import type { GenericTableProps, TableData } from "@/types/tables";
+import { useNavigate } from "react-router-dom";
 
 export function Table({ data, columns, entityName, idKey }: GenericTableProps) {
   console.log("Table received data:", data);
   console.log("data type:", typeof data);
   console.log("is array:", Array.isArray(data));
 
+  const navigate = useNavigate();
   const { user } = useAuth();
-  
+
   return (
     <div className="table-container d-flex flex-column align-items-center w-100 h-100">
       <TableBs striped bordered hover className="mb-0 custom-table-header" style={{ borderTopLeftRadius: '10px', borderTopRightRadius: '10px', width: '95%' }}>
@@ -27,7 +29,7 @@ export function Table({ data, columns, entityName, idKey }: GenericTableProps) {
                   <img src="images/icons/search.svg" alt="Search" className="img" />
                   <span className="tooltip">Search</span>
                 </div>
-                { user?.role === Role.ADMINISTRATOR && (
+                {user?.role === Role.ADMINISTRATOR && (
                   <div className="img-container width-100">
                     <img src="images/icons/add.svg" alt="Add" className="img" />
                     <span className="tooltip">Add {entityName}</span>
@@ -42,9 +44,10 @@ export function Table({ data, columns, entityName, idKey }: GenericTableProps) {
         <TableBs borderless hover className="mb-0 custom-table-body" style={{ borderBottomLeftRadius: '10px', borderBottomRightRadius: '10px' }}>
           <tbody>
             {data && data.length > 0 ? data.map((item: TableData, index) => (
-              <tr key={String(item[idKey])}>
+              <tr key={String(item[idKey])}
+                onClick={() => navigate(`${entityName}?code=${item[idKey]}`)}>
                 {columns.map((column, colIndex) => (
-                  <td 
+                  <td
                     key={column.key}
                     style={{
                       width: `${100 / columns.length}%`,
@@ -58,8 +61,8 @@ export function Table({ data, columns, entityName, idKey }: GenericTableProps) {
               </tr>
             )) : (
               <tr>
-                <td 
-                  colSpan={columns.length} 
+                <td
+                  colSpan={columns.length}
                   style={{ borderBottomLeftRadius: '10px', borderBottomRightRadius: '10px' }}
                 >
                   No {entityName}s available

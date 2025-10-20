@@ -5,6 +5,7 @@ import { AuthProvider, ThemeProvider } from "./context";
 import LoginForm from "./pages/login/LoginPage";
 import { CoursesPage } from "./pages/courses/CoursesPage";
 import { ModulesPage } from "./pages/modules/ModulesPage";
+import { ModulePage } from "./pages/modules/ModulePage";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/courses" element={<CoursesPage />} />
           <Route path="/modules" element={<ModulesPage />} />
+          <Route path="/modules/module" element={<ModulePage />} />
         </Routes>
       </AuthProvider>
     </ThemeProvider>

@@ -11,5 +11,5 @@ export interface GenericTableProps {
   data: TableData[];
   columns: TableColumn[];
   entityName: string; // "course" or "module"
-  idKey: string; // "code" for courses, "id" for modules
+  idKey: string; // "code" for courses, and modules
 }

@@ -6,6 +6,7 @@ package com.example.student_marks_app.models.course;
 
 import com.example.student_marks_app.coursemodulemapping.CourseModuleMapping;
 import com.example.student_marks_app.dtos.CourseDTO;
+import com.example.student_marks_app.dtos.CourseSummaryDTO;
 import com.example.student_marks_app.dtos.ModuleDTO;
 import com.example.student_marks_app.models.department.Department;
 import com.example.student_marks_app.models.module.CourseModule;
@@ -73,8 +74,8 @@ public class Course {
         return new CourseDTO(this.code, this.courseName, moduleList, department);
     }
     
-    public CourseDTO shortHand(){
-        return new CourseDTO(code, courseName);
+    public CourseSummaryDTO shortHand(){
+        return new CourseSummaryDTO(code, courseName);
     }
     
     public void addModule(CourseModule module){

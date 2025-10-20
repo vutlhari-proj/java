@@ -1,10 +1,16 @@
 import { Navbar, Table } from "@/components";
-import type { ShortCourseProp, TableData } from "@/types";
+import type { ModuleProp, TableData } from "@/types";
 import { tableConfigs } from "@/config/tableConfigs";
 import { useCachedData } from "@/hooks/useCachedData";
 
 export function ModulesPage() {
-  const { data: modules, isLoading, error } = useCachedData<ShortCourseProp>({
+  const { 
+    data: modules, 
+    isLoading, 
+    error, 
+    hasData, 
+    refetch 
+  } = useCachedData<ModuleProp>({
     cacheKey: tableConfigs.modules.cacheKey,
     apiEndpoint: tableConfigs.modules.apiEndpoint,
     cacheDuration: 5 * 60 * 1000 // 5 minutes
@@ -12,9 +18,22 @@ export function ModulesPage() {
 
   if (error) {
     return (
-      <div className="d-flex justify-content-center align-items-center min-vh-100">
-        <div className="alert alert-danger">Error loading courses: {error}</div>
-      </div>
+      <>
+        <title>Modules</title>
+        <Navbar />
+        <div className="spacer" style={{ height: '80px' }}></div>
+        <div className="d-flex justify-content-center align-items-center min-vh-100">
+          <div className="alert alert-danger d-flex flex-column align-items-center">
+            <p>Error loading modules: {error}</p>
+            <button 
+              className="btn btn-outline-danger btn-sm mt-2" 
+              onClick={() => refetch()}
+            >
+              Try Again
+            </button>
+          </div>
+        </div>
+      </>
     );
   }
 
@@ -31,17 +50,18 @@ export function ModulesPage() {
               <span className="visually-hidden">Loading...</span>
             </div>
           </div>
-        ) : (
+        ) : hasData() ? (
           <Table
             data={modules as unknown as TableData[]}
             columns={tableConfigs.modules.columns}
             entityName={tableConfigs.modules.entityName}
-            idKey={tableConfigs.modules.entityName}
+            idKey={tableConfigs.modules.idKey}
           />
-        )
-
-        }
-
+        ) : (
+          <div className="alert alert-info">
+            No modules available at the moment.
+          </div>
+        )}
       </div>
     </>
   );
