@@ -1,38 +1,38 @@
 /* Custom table styling */
 .custom-table-header {
-  background-color: #1a1a1a; /* Very dark gray header */
-  color: white;
+  background-color: var(--table-header-bg);
+  color: var(--text-color);
 }
 
 .custom-table-header th {
-  background-color: #2d2d2d; /* Dark gray for header cells */
-  color: white;
-  border-color: #404040;
+  background-color: var(--table-header-cell-bg);
+  color: var(--text-color);
+  border-color: var(--table-border-color);
 }
 
 .custom-table-header td {
-  background-color: #1a1a1a;
-  color: white;
-  border-color: #404040;
+  background-color: var(--table-header-bg);
+  color: var(--text-color);
+  border-color: var(--table-border-color);
 }
 
 .custom-table-body {
-  background-color: #2d2d2d; /* Main body color */
-  color: white;
+  background-color: var(--table-body-bg);
+  color: var(--text-color);
 }
 
 .custom-table-body td {
-  background-color: #2d2d2d;
-  color: white;
-  border-color: #404040;
+  background-color: var(--table-body-bg);
+  color: var(--text-color);
+  border-color: var(--table-border-color);
 }
 
 .custom-table-body tr:hover td {
-  background-color: #404040; /* Hover effect */
+  background-color: var(--table-hover-bg);
 }
 
 .custom-table-body tr:nth-of-type(odd) td {
-  background-color: #1a1a1a; /* Striped effect */
+  background-color: var(--table-body-odd-bg);
 }
 
 .table-scroll-container {
@@ -52,16 +52,16 @@
 }
 
 .table-scroll-container::-webkit-scrollbar-track {
-  background: #1a1a1a;
+  background: var(--scrollbar-track-bg);
 }
 
 .table-scroll-container::-webkit-scrollbar-thumb {
-  background: #404040;
+  background: var(--scrollbar-thumb-bg);
   border-radius: 4px;
 }
 
 .table-scroll-container::-webkit-scrollbar-thumb:hover {
-  background: #555555;
+  background: var(--scrollbar-thumb-hover-bg);
 }
 
 .img-container {
