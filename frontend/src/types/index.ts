@@ -1,4 +1,5 @@
 export * from './theme';
 export * from './auth';
 export * from './course';
-export * from './tables'
+export * from './tables';
+export * from './module';

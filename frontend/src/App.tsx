@@ -4,6 +4,7 @@ import { Home } from "./pages/home/HomePage";
 import { AuthProvider, ThemeProvider } from "./context";
 import LoginForm from "./pages/login/LoginPage";
 import { CoursesPage } from "./pages/courses/CoursesPage";
+import { ModulesPage } from "./pages/modules/ModulesPage";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           <Route index element={<LoginForm />} />
           <Route path="/home" element={<Home />} />
           <Route path="/courses" element={<CoursesPage />} />
+          <Route path="/modules" element={<ModulesPage />} />
         </Routes>
       </AuthProvider>
     </ThemeProvider>

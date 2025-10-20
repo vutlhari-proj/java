@@ -1,3 +1,5 @@
+import type { ModuleProp } from "./module";
+
 export interface CourseProp {
   code: string;
   courseName: string;
@@ -11,9 +13,4 @@ export interface ShortCourseProp {
 
 export interface CoursesProp{
   courses: CourseProp[] | ShortCourseProp[];
-}
-
-export interface ModuleProp{
-  code: string;
-  moduleName: string;
 }
