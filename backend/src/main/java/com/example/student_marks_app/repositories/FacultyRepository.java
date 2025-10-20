@@ -5,6 +5,7 @@
 package com.example.student_marks_app.repositories;
 
 import com.example.student_marks_app.models.faculty.Faculty;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -12,5 +13,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author vutlh
  */
 public interface FacultyRepository extends JpaRepository<Faculty, Long>{
-    
+    Optional<Faculty> findByFacNameIgnoreCase(String facName);
 }

@@ -1,5 +1,6 @@
 package com.example.student_marks_app;
 
+import com.example.student_marks_app.databaseloader.Databaseloader;
 import java.awt.Desktop;
 import java.net.URI;
 import org.springframework.boot.SpringApplication;
@@ -13,6 +14,7 @@ public class StudentMarksAppApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(StudentMarksAppApplication.class, args);
+        
     }
 
     @EventListener(ApplicationReadyEvent.class)
