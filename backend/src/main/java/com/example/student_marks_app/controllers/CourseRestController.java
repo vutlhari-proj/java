@@ -57,7 +57,7 @@ public class CourseRestController {
     @GetMapping
     public List<CourseDTO> getAllCourse(){
         return courseRepository.findAll().stream()
-                .map(Course::toDTO)
+                .map(Course::shortHand)
                 .toList();
     }
     

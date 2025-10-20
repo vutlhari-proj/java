@@ -20,11 +20,9 @@ export function UserOffcanvas({
           <Nav.Link className="offCanvasItem" as={Link} to={"/home"}>Home</Nav.Link>
           <Nav.Link className="offCanvasItem" as={Link} to={"/link"}>Link</Nav.Link>
 
-          <NavDropdown title="Dropdown" id={`${id}-dropdown`}>
-            <NavDropdown.Item as={Link} to={"/action3"}>Action</NavDropdown.Item>
-            <NavDropdown.Item as={Link} to={"/action4"}>Another action</NavDropdown.Item>
-            <NavDropdown.Divider />
-            <NavDropdown.Item href="#action5">Something else here</NavDropdown.Item>
+          <NavDropdown title="View" id={`${id}-dropdown`}>
+            <NavDropdown.Item as={Link} to={"/courses"}>Courses</NavDropdown.Item>
+            <NavDropdown.Item as={Link} to={"/modules"}>Modules</NavDropdown.Item>
           </NavDropdown>
         </Nav>
       </Offcanvas.Body>

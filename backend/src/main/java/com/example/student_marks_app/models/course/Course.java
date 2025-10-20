@@ -73,6 +73,10 @@ public class Course {
         return new CourseDTO(this.code, this.courseName, moduleList, department);
     }
     
+    public CourseDTO shortHand(){
+        return new CourseDTO(code, courseName);
+    }
+    
     public void addModule(CourseModule module){
         CourseModuleMapping mapping = new CourseModuleMapping(this, module);
         courseModules.add(mapping);

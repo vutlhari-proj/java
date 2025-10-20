@@ -25,6 +25,11 @@ public class CourseDTO {
         this.department = department;
     }
 
+    public CourseDTO(String code, String courseName) {
+        this.code = code;
+        this.courseName = courseName;
+    }
+    
     public String getCode() {
         return code;
     }
