@@ -35,7 +35,7 @@ public class CourseModuleService {
     public CourseModuleService(CourseModuleRepository moduleRepository,
             CourseRepository courseRepository) {
         this.moduleRepository = moduleRepository;
-        this.courseRepository = courseRepository;;
+        this.courseRepository = courseRepository;
     }
     
     public List<ModuleSummary> getAllModules(){
@@ -101,19 +101,19 @@ public class CourseModuleService {
             module.setModuleName(request.getModuleName());
         }
 
-        if (module.isElective() != request.isElective()) {
+        if ( module.isElective() != request.isElective()) {
             module.setElective(request.isElective());
         }
 
-        if (!module.getType().toString().equalsIgnoreCase(request.getType())) {
+        if (module.getType() == null || !module.getType().toString().equalsIgnoreCase(request.getType())) {
             module.setType(Type.valueOf(request.getType().toUpperCase()));
         }
 
-        if (module.getCredits().getValue() != request.getCredits()) {
+        if (module.getCredits() == null || (module.getCredits().getValue() != request.getCredits())) {
             module.setCredits(Credits.fromValue(request.getCredits()));
         }
 
-        if (module.getNqf_Level().getValue() != request.getNqf_level()) {
+        if (module.getNqf_Level() == null || module.getNqf_Level().getValue() != request.getNqf_level()) {
             module.setNqf_Level(Nqf_Level.fromValue(request.getNqf_level()));
         }
         Set<String> existingCourses = module.getCourseModules()
@@ -121,7 +121,8 @@ public class CourseModuleService {
                 .map(m -> m.getCourse().getCode())
                 .collect(Collectors.toSet());
         
-        Set<String> requestCourses = new HashSet<>(request.getCourseCodes());
+        Set<String> requestCourses = safeSet(request.getCourseCodes());
+        
         if (!existingCourses.equals(requestCourses)) {
             Set<CourseModuleMapping> mappings = requestCourses
                     .stream()
@@ -142,7 +143,7 @@ public class CourseModuleService {
                 .map(CourseModule::getCode)
                 .collect(Collectors.toSet());
         
-        Set<String> requestPrereqs = new HashSet<>(request.getPrerequisiteCodes());
+        Set<String> requestPrereqs = safeSet(request.getPrerequisiteCodes());
         
         if (!existingPrereqs.equals(requestPrereqs)) {
             Set<CourseModule> prereqs = requestPrereqs
@@ -184,5 +185,9 @@ public class CourseModuleService {
         }
 
         return false;
+    }
+    
+    private <T> Set<T> safeSet(List<T> list){
+        return list == null ? new HashSet<>() : new HashSet<>(list);
     }
 }

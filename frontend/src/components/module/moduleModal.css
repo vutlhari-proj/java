@@ -1,0 +1,102 @@
+/* Modal theme styling */
+.modal .modal-content {
+  background-color: var(--form-bg);
+  box-shadow: 0 0.5rem 1rem var(--card-shadow);
+  color: var(--text-color);
+}
+
+.modal .modal-header {
+  background-color: var(--form-bg);
+  color: var(--text-color);
+}
+
+.modal .modal-title {
+  color: var(--text-color);
+  font-weight: 600;
+}
+
+.modal .modal-body {
+  background-color: var(--form-bg);
+  color: var(--text-color);
+}
+
+.modal .modal-footer {
+  background-color: var(--form-bg);
+}
+
+/* Close button styling */
+.modal .btn-close {
+  filter: var(--filter);
+  opacity: 0.8;
+}
+
+.modal .btn-close:hover {
+  opacity: 1;
+}
+
+/* Button styling to match theme */
+.modal .btn-secondary {
+  background-color: var(--hover-bg);
+  border-color: var(--border-color);
+  color: var(--text-color);
+}
+
+.modal .btn-secondary:hover {
+  background-color: var(--border-color);
+  border-color: var(--text-color);
+  color: var(--text-color);
+}
+
+.modal .btn-primary {
+  background-color: var(--btn-bg);
+  border-color: var(--btn-bg);
+  color: var(--btn-text);
+}
+
+.modal .btn-primary:hover {
+  background-color: #0b5ed7;
+  border-color: #0a58ca;
+}
+
+/* Modal backdrop to match theme */
+.modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+/* Form inputs if you add them later */
+.modal .form-control {
+  background-color: var(--input-bg);
+  border-color: var(--border-color);
+  color: var(--input-text);
+}
+
+.modal .form-control:focus {
+  background-color: var(--input-bg);
+  border-color: var(--btn-bg);
+  color: var(--input-text);
+  box-shadow: 0 0 0 0.2rem var(--input-shadow);
+}
+
+/* Form select styling */
+.modal .form-select {
+  background-color: var(--input-bg);
+  border-color: var(--border-color);
+  color: var(--input-text);
+}
+
+.modal .form-select:focus {
+  background-color: var(--input-bg);
+  border-color: var(--btn-bg);
+  color: var(--input-text);
+  box-shadow: 0 0 0 0.2rem var(--input-shadow);
+}
+
+.modal .form-select option {
+  background-color: var(--input-bg);
+  color: var(--input-text);
+}
+
+.modal .form-label {
+  color: var(--text-color);
+  font-weight: 500;
+}

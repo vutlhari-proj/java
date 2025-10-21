@@ -3,7 +3,7 @@ interface moduleDataConfig {
 }
 export const moduleDataConfig = () : Record<string, moduleDataConfig> => ({
   nqf_levels: {
-    data: [5, 6, 7, 8, 8, 9 , 10]
+    data: [5, 6, 7, 8, 9 , 10]
   },
 
   credits: {

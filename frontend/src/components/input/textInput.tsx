@@ -5,11 +5,12 @@ interface TextInputProps {
   label?: boolean;
   name: string;
   type: string;
+  value?: string;
   image?: {src: string; alt: string};
   required?: boolean;
   onchange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
-export const TextInput = ({ label, name, type, image, required, onchange }: TextInputProps) => {
+export const TextInput = ({ label, name, type, value, image, required, onchange }: TextInputProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   // Only add handlers if type is password and image is provided
@@ -35,6 +36,7 @@ export const TextInput = ({ label, name, type, image, required, onchange }: Text
           id={name}
           name={name}
           ref={inputRef}
+          value={value}
           required={required}
           onChange={onchange}
         />

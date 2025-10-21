@@ -71,6 +71,7 @@ export function useSessionData<T>({
       // Cache the data in sessionStorage
       sessionStorage.setItem(cacheKey, JSON.stringify(response.data));
       
+      console.log(response.data);
       setData(response.data);
     } catch (err) {
       console.error(`Error fetching ${cacheKey}:`, err);

@@ -26,6 +26,7 @@ public class ModuleDTO {
         this.moduleName = moduleName;
         this.type = type;
         this.credits = credits;
+        this.nqf_level = nqf_level;
         this.courses = courses;
         this.prerequisiteCodes = prerequisiteCodes;
     }

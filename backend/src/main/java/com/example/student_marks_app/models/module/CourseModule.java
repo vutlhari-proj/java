@@ -9,6 +9,7 @@ import com.example.student_marks_app.dtos.CourseSummaryDTO;
 import com.example.student_marks_app.dtos.ModuleDTO;
 import com.example.student_marks_app.dtos.ModuleSummary;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -34,16 +35,18 @@ public class CourseModule {
 
     private String moduleName;
 
+    @Column(length = 50)
     @Enumerated(EnumType.STRING)
-    private Type type;
+    private Type type = Type.FIRST_SEMESTER;
             
     @Enumerated(EnumType.STRING)
-    private Credits credits;
+    private Credits credits = Credits.TWO;
     
+    @Column(name = "nqf_level", length = 10)
     @Enumerated(EnumType.STRING)
-    private Nqf_Level nqf_Level;
+    private Nqf_Level nqf_level = Nqf_Level.FIVE;
     
-    private boolean elective;
+    private boolean elective = false;
     
     @ManyToMany
     @JoinTable(
@@ -65,7 +68,7 @@ public class CourseModule {
         this.moduleName = moduleName;
         this.type = type;
         this.credits = credits;
-        this.nqf_Level = nqf_level;
+        this.nqf_level = nqf_level;
     }
 
     
@@ -109,11 +112,11 @@ public class CourseModule {
     }
 
     public Nqf_Level getNqf_Level() {
-        return nqf_Level;
+        return nqf_level;
     }
 
     public void setNqf_Level(Nqf_Level nqf_Level) {
-        this.nqf_Level = nqf_Level;
+        this.nqf_level = nqf_Level;
     }
 
     public boolean isElective() {
@@ -154,7 +157,11 @@ public class CourseModule {
                 .stream()
                 .map(mapping -> mapping.toDto())
                 .collect(Collectors.toSet());
-        return new ModuleDTO(code, moduleName, type.toString(), credits.getValue(),
-                nqf_Level.getValue() ,courses, prereqs);
+        return new ModuleDTO(code, moduleName, 
+                type != null? type.toString() : "UNKNWON" , 
+                credits != null ? credits.getValue() : 0,
+                nqf_level != null ? nqf_level.getValue() : 0,
+                courses, 
+                prereqs);
     }
 }

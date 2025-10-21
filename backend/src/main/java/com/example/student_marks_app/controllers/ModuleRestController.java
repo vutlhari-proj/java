@@ -86,9 +86,10 @@ public class ModuleRestController {
     }
     
     @PutMapping("/update")
-    public ResponseEntity<?> updateModule(@RequestBody ModuleRequestDTO reuest){
+    public ResponseEntity<?> updateModule(@RequestBody ModuleRequestDTO request){
         try{
-            CourseModule module = moduleService.updateModule(reuest);
+            System.out.println(request);
+            CourseModule module = moduleService.updateModule(request);
             return ResponseEntity.ok("module updated successfully "+ module.getCode());
         }
         catch(IllegalArgumentException e){

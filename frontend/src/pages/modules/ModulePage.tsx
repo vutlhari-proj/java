@@ -98,6 +98,7 @@ export function ModulePage() {
         module={module} 
         show={showModal} 
         onHide={handleModalClose} 
+        refetch={refetch}
       />
     </>
   );

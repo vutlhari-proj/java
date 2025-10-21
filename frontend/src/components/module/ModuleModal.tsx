@@ -1,34 +1,197 @@
-import type { ModuleExtendedProp } from "@/types";
+import type { ModuleExtendedProp, ModuleRequest } from "@/types";
 import { Modal } from "react-bootstrap";
-
+import './moduleModal.css';
+import { moduleDataConfig } from "@/config/moduleDataConfig";
+import { ModuleConfigs } from "@/types";
+import { useState, useEffect } from "react";
+import { usePutData } from "@/hooks";
 interface ModuleModalProps {
   module: ModuleExtendedProp | null;
   show: boolean;
   onHide: () => void;
+  refetch: () => Promise<void>;
 }
 
-export function ModuleModal({ module, show, onHide }: ModuleModalProps) {
+export function ModuleModal({ module, show, onHide, refetch }: ModuleModalProps) {
+  const config = moduleDataConfig();
+
+  const [code, setCode] = useState(module?.code || '');
+  const [name, setName] = useState(module?.moduleName || '');
+  const [type, setType] = useState(module?.type || '');
+  const [nqf, setNqf] = useState(module?.nqf_level || 0);
+  const [credits, setCredits] = useState(module?.credits || 0);
+  const [preReqs, setPreReqs] = useState(module?.prerequisiteCodes || []);
+  const [courses, setCourses] = useState(module?.courses || []);
+
+  // Initialize the PUT hook at component level
+  const { mutateData: updateModule, isLoading } = usePutData<ModuleRequest>({
+    apiEndpoint: ModuleConfigs().module.put.apiEndpoint,
+    onSuccess: (data) => {
+      console.log('Module updated successfully:', data);
+      refetch();
+      onHide(); // Close modal on success
+    },
+    onError: (error) => {
+      console.error('Failed to update module:', error);
+    }
+  });
+
+  // Update state when module prop changes
+  useEffect(() => {
+    if (module) {
+      setCode(module.code || '');
+      setName(module.moduleName || '');
+      setType(module.type || '');
+      setNqf(module.nqf_level || 0);
+      setCredits(module.credits || 0);
+      setPreReqs(module.prerequisiteCodes || []);
+      setCourses(module.courses || []);
+    }
+  }, [module]);
+
+  const handleOnclickSave = () => {
+    updateModule({
+      code,
+      moduleName: name,
+      type: type.replaceAll(' ', '_').trim(),
+      nqf_level: nqf,
+      credits,
+      prerequisiteCodes: preReqs.map(pr => pr.code),
+      courseCodes: courses.map(c => c.code)
+    });
+  };
+
+
   return (
     <Modal 
+      className="modal"
       show={show} 
       onHide={onHide}
-      centered // This centers the modal vertically and horizontally
-      size="lg"
+      centered
+      size="xl"
     >
-      <Modal.Header closeButton>
-        <Modal.Title>Edit Module: {module?.code}</Modal.Title>
+      <Modal.Header closeButton className="border-bottom">
+        <Modal.Title>
+          <i className="bi bi-pencil-square me-2"></i>
+          Edit Module: {module?.code}
+        </Modal.Title>
       </Modal.Header>
-      <Modal.Body>
-        <p>Module Name: {module?.moduleName}</p>
-        <p>Code: {module?.code}</p>
-        {/* Add your form content here */}
+      
+      <Modal.Body className="p-4">
+        <div className="row g-3">
+          <div className="col-md-6">
+            <label className="form-label">Module Code</label>
+            <input 
+              type="text" 
+              className="form-control" 
+              value={code}
+              placeholder="Enter module code"
+              onChange={(e) => setCode(e.target.value)}
+            />
+          </div>
+          <div className="col-md-6">
+            <label className="form-label">Module Name</label>
+            <input 
+              type="text" 
+              className="form-control" 
+              defaultValue={module?.moduleName}
+              placeholder="Enter module name"
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
+          <div className="col-md-6">
+            <label className="form-label">Module Type</label>
+            <select 
+              className="form-select" 
+              defaultValue={module?.type || ''}
+              onChange={(e) => setType(e.target.value)}
+            >
+              <option value="">Select module type</option>
+              {config.module_types.data.map((type) => (
+                <option key={type} value={type}>
+                  {type}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="col-md-6">
+            <label className="form-label">NQF Level</label>
+            <select 
+              className="form-select" 
+              defaultValue={module?.nqf_level?.toString() || ''}
+              onChange={(e) =>{ setNqf(Number(e.target.value)); console.log(e.target.value)}}
+            >
+              <option value="">Select NQF level</option>
+              {config.nqf_levels.data.map((level) => (
+                <option key={level} value={level}>
+                  Level {level}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="col-md-6">
+            <label className="form-label">Credits</label>
+            <select 
+              className="form-select" 
+              defaultValue={module?.credits?.toString() || ''}
+              onChange={(e) => setCredits(Number(e.target.value))}
+            >
+              <option value="">Select credits</option>
+              {config.credits.data.map((credit) => (
+                <option key={credit} value={credit}>
+                  {credit} credits
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="col-12">
+            <label className="form-label">Associated Courses</label>
+            <div className="border rounded p-3" style={{ backgroundColor: 'var(--card-bg)' }}>
+              {module?.courses && module?.courses?.length > 0 ? (
+                <div className="d-flex flex-wrap gap-2">
+                  {module?.courses?.map((course) => (
+                    <span 
+                      key={course.code} 
+                      className="badge text-bg-secondary"
+                      style={{ 
+                        backgroundColor: 'var(--hover-bg)', 
+                        color: 'var(--text-color)',
+                        border: '1px solid var(--border-color)'
+                      }}
+                    >
+                      {course.code} - {course.courseName}
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-muted mb-0">No associated courses</p>
+              )}
+            </div>
+          </div>
+        </div>
       </Modal.Body>
+      
       <Modal.Footer>
-        <button className="btn btn-secondary" onClick={onHide}>
-          Close
+        <button className="btn btn-secondary" onClick={onHide} disabled={isLoading}>
+          <i className="bi bi-x-lg me-2"></i>
+          Cancel
         </button>
-        <button className="btn btn-primary">
-          Save Changes
+        <button 
+          className="btn btn-primary" 
+          onClick={handleOnclickSave}
+          disabled={isLoading}
+        >
+          {isLoading ? (
+            <>
+              <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              Saving...
+            </>
+          ) : (
+            <>
+              <i className="bi bi-check-lg me-2"></i>
+              Save Changes
+            </>
+          )}
         </button>
       </Modal.Footer>
     </Modal>
