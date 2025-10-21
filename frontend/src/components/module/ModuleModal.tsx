@@ -5,6 +5,7 @@ import { moduleDataConfig } from "@/config/moduleDataConfig";
 import { ModuleConfigs } from "@/types";
 import { useState, useEffect } from "react";
 import { usePutData } from "@/hooks";
+import { formatModuleType } from "./moduleUtil";
 interface ModuleModalProps {
   module: ModuleExtendedProp | null;
   show: boolean;
@@ -83,10 +84,11 @@ export function ModuleModal({ module, show, onHide, refetch }: ModuleModalProps)
             <label className="form-label">Module Code</label>
             <input 
               type="text" 
-              className="form-control" 
+              className="form-control opacity-50" 
+              style={{ border: 'none', boxShadow: 'none' }}
               value={code}
               placeholder="Enter module code"
-              onChange={(e) => setCode(e.target.value)}
+              readOnly
             />
           </div>
           <div className="col-md-6">
@@ -103,7 +105,7 @@ export function ModuleModal({ module, show, onHide, refetch }: ModuleModalProps)
             <label className="form-label">Module Type</label>
             <select 
               className="form-select" 
-              defaultValue={module?.type || ''}
+              defaultValue={formatModuleType(module?.type) || ''}
               onChange={(e) => setType(e.target.value)}
             >
               <option value="">Select module type</option>
