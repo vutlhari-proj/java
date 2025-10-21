@@ -1,4 +1,4 @@
-import { Navbar, Table } from "@/components";
+import { Loading, Navbar, Table } from "@/components";
 import type { ModuleProp, TableData } from "@/types";
 import { tableConfigs } from "@/config/tableConfigs";
 import { useCachedData } from "@/hooks/useCachedData";
@@ -45,11 +45,7 @@ export function ModulesPage() {
       <div className="d-flex flex-column align-items-center gap-4">
         <h1>Modules</h1>
         {isLoading ? (
-          <div className="d-flex justify-content-center">
-            <div className="spinner-border" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </div>
-          </div>
+          <Loading />
         ) : hasData() ? (
           <Table
             data={modules as unknown as TableData[]}

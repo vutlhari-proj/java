@@ -41,3 +41,43 @@
 .small{
   color: var(--text-color);
 }
+
+.img-container{
+  position: relative;
+  height: 40px;
+  width: 40px;
+  background-color: var(--hover-bg);
+  border-radius: var(--circle-border-radius);
+  transition: background-color ease 0.2s, 
+  opacity ease 0.2s;
+}
+
+.img-container:hover{
+  background-color: var(--hover-bg);
+}
+
+.img-container .img{
+  filter: var(--filter);
+  transition: all ease 0.4s;
+}
+
+.img-container:active{
+  opacity: .8;
+  transform: scale(.95);
+}
+
+.img-container:active .img{
+  transform: scale(.8);
+}
+
+.img-container:active .tooltip{
+  opacity: 0;
+  visibility: hidden;
+}
+
+.tooltip{
+  position: absolute;
+  z-index: 100000;
+  transform-origin: center;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+}

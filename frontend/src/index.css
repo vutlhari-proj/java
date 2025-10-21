@@ -24,6 +24,7 @@ html.light {
   --scrollbar-track-bg: #f1f3f4;
   --scrollbar-thumb-bg: #c1c1c1;
   --scrollbar-thumb-hover-bg: #a8a8a8;
+  --filter: invert(1);
 }
 
 /* Dark theme */
@@ -51,8 +52,12 @@ html.dark {
   --scrollbar-track-bg: #1a1a1a;
   --scrollbar-thumb-bg: #404040;
   --scrollbar-thumb-hover-bg: #555555;
+  --filter: invert(0);
 }
 
+html{
+  --circle-border-radius: 100px;
+}
 /* Apply globally */
 body {
   background-color: var(--bg-color);

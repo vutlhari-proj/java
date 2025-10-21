@@ -13,5 +13,6 @@ public enum Type {
     FIRST_SEMESTER,
     SECOND_SEMESTER,
     BLOCK,
-    EXTENDED
+    EXTENDED,
+    YEAR
 }
