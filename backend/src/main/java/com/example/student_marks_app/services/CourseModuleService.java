@@ -11,8 +11,8 @@ import com.example.student_marks_app.dtos.ModuleSummary;
 import com.example.student_marks_app.models.course.Course;
 import com.example.student_marks_app.models.module.CourseModule;
 import com.example.student_marks_app.models.module.Credits;
+import com.example.student_marks_app.models.module.Nqf_Level;
 import com.example.student_marks_app.models.module.Type;
-import com.example.student_marks_app.repositories.CourseModuleMappingRepository;
 import com.example.student_marks_app.repositories.CourseModuleRepository;
 import com.example.student_marks_app.repositories.CourseRepository;
 import java.util.HashSet;
@@ -58,7 +58,8 @@ public class CourseModuleService {
                 request.getCode(),
                 request.getModuleName(),
                 Type.valueOf(request.getType()),
-                Credits.fromValue(request.getCredits())
+                Credits.fromValue(request.getCredits()),
+                Nqf_Level.fromValue(request.getNqf_level())
         );
 
         if (request.getPrerequisiteCodes() != null) {
@@ -112,6 +113,9 @@ public class CourseModuleService {
             module.setCredits(Credits.fromValue(request.getCredits()));
         }
 
+        if (module.getNqf_Level().getValue() != request.getNqf_level()) {
+            module.setNqf_Level(Nqf_Level.fromValue(request.getNqf_level()));
+        }
         Set<String> existingCourses = module.getCourseModules()
                 .stream()
                 .map(m -> m.getCourse().getCode())

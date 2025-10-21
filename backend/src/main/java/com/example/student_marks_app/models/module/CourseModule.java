@@ -40,6 +40,9 @@ public class CourseModule {
     @Enumerated(EnumType.STRING)
     private Credits credits;
     
+    @Enumerated(EnumType.STRING)
+    private Nqf_Level nqf_Level;
+    
     private boolean elective;
     
     @ManyToMany
@@ -56,11 +59,13 @@ public class CourseModule {
     public CourseModule() {
     }
 
-    public CourseModule(String code, String moduleName, Type type, Credits Credits) {
+    public CourseModule(String code, String moduleName, Type type,
+            Credits credits, Nqf_Level nqf_level) {
         this.code = code;
         this.moduleName = moduleName;
         this.type = type;
-        this.credits = Credits;
+        this.credits = credits;
+        this.nqf_Level = nqf_level;
     }
 
     
@@ -103,6 +108,14 @@ public class CourseModule {
         this.credits = credits;
     }
 
+    public Nqf_Level getNqf_Level() {
+        return nqf_Level;
+    }
+
+    public void setNqf_Level(Nqf_Level nqf_Level) {
+        this.nqf_Level = nqf_Level;
+    }
+
     public boolean isElective() {
         return elective;
     }
@@ -142,6 +155,6 @@ public class CourseModule {
                 .map(mapping -> mapping.toDto())
                 .collect(Collectors.toSet());
         return new ModuleDTO(code, moduleName, type.toString(), credits.getValue(),
-                courses, prereqs);
+                nqf_Level.getValue() ,courses, prereqs);
     }
 }

@@ -16,10 +16,11 @@ public class ModuleDTO {
     private String moduleName;
     private String type;
     private int credits;
+    private int nqf_level;
     private Set<ModuleSummary> prerequisiteCodes;
     private List<CourseSummaryDTO> courses;
 
-    public ModuleDTO(String code, String moduleName, String type, int credits,
+    public ModuleDTO(String code, String moduleName, String type, int credits, int nqf_level,
             List<CourseSummaryDTO> courses, Set<ModuleSummary> prerequisiteCodes) {
         this.code = code;
         this.moduleName = moduleName;
@@ -75,6 +76,14 @@ public class ModuleDTO {
 
     public void setCredits(int credits) {
         this.credits = credits;
+    }
+
+    public int getNqf_level() {
+        return nqf_level;
+    }
+
+    public void setNqf_level(int nqf_level) {
+        this.nqf_level = nqf_level;
     }
 
     public Set<ModuleSummary> getPrerequisites() {
