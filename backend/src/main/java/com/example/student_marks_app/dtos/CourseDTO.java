@@ -15,10 +15,10 @@ public class CourseDTO {
     
     private String code;
     private String courseName;
-    private List<ModuleDTO> modules;
+    private List<ModuleSummary> modules;
     private Department department;
 
-    public CourseDTO(String code, String courseName, List<ModuleDTO> modules, Department department) {
+    public CourseDTO(String code, String courseName, List<ModuleSummary> modules, Department department) {
         this.code = code;
         this.courseName = courseName;
         this.modules = modules;
@@ -46,11 +46,11 @@ public class CourseDTO {
         this.courseName = courseName;
     }
 
-    public List<ModuleDTO> getModules() {
+    public List<ModuleSummary> getModules() {
         return modules;
     }
 
-    public void setModules(List<ModuleDTO> modules) {
+    public void setModules(List<ModuleSummary> modules) {
         this.modules = modules;
     }
 

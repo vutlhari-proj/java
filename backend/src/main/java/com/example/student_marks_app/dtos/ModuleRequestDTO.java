@@ -11,31 +11,27 @@ import java.util.Set;
  *
  * @author vutlh
  */
-public class ModuleDTO {
+public class ModuleRequestDTO {
     private String code;
     private String moduleName;
     private String type;
+    private boolean elective;
     private int credits;
-    private Set<ModuleSummary> prerequisiteCodes;
-    private List<CourseSummaryDTO> courses;
+    private Set<String> prerequisiteCodes;
+    private List<String> courseCodes;
 
-    public ModuleDTO(String code, String moduleName, String type, int credits,
-            List<CourseSummaryDTO> courses, Set<ModuleSummary> prerequisiteCodes) {
+    public ModuleRequestDTO(String code, String moduleName, String type, boolean elective, 
+            int credits, Set<String> prerequisiteCodes, List<String> courseCodes) {
         this.code = code;
         this.moduleName = moduleName;
         this.type = type;
+        this.elective = elective;
         this.credits = credits;
-        this.courses = courses;
         this.prerequisiteCodes = prerequisiteCodes;
+        this.courseCodes = courseCodes;
     }
+
     
-
-    public ModuleDTO(String code, String moduleName, List<CourseSummaryDTO> courses) {
-        this.code = code;
-        this.moduleName = moduleName;
-        this.courses = courses;
-    }
-
     
     public String getCode() {
         return code;
@@ -53,16 +49,16 @@ public class ModuleDTO {
         this.moduleName = moduleName;
     }
 
-    public List<CourseSummaryDTO> getCourses() {
-        return courses;
-    }
-
-    public void setCourses(List<CourseSummaryDTO> courses) {
-        this.courses = courses;
-    }
-
     public String getType() {
         return type;
+    }
+
+    public boolean isElective() {
+        return elective;
+    }
+
+    public void setElective(boolean elective) {
+        this.elective = elective;
     }
 
     public void setType(String type) {
@@ -77,14 +73,21 @@ public class ModuleDTO {
         this.credits = credits;
     }
 
-    public Set<ModuleSummary> getPrerequisites() {
+    public Set<String> getPrerequisiteCodes() {
         return prerequisiteCodes;
     }
 
-    public void setPrerequisites(Set<ModuleSummary> prerequisiteCodes) {
+    public void setPrerequisiteCodes(Set<String> prerequisiteCodes) {
         this.prerequisiteCodes = prerequisiteCodes;
     }
-    
-    
-    
+
+    public List<String> getCourseCodes() {
+        return courseCodes;
+    }
+
+    public void setCourseCodes(List<String> courseCodes) {
+        this.courseCodes = courseCodes;
+    }
+
+   
 }

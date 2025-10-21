@@ -9,6 +9,7 @@ import com.example.student_marks_app.coursemodulemapping.CourseModuleMapping;
 import com.example.student_marks_app.dtos.CourseDTO;
 import com.example.student_marks_app.dtos.CourseSummaryDTO;
 import com.example.student_marks_app.dtos.ModuleDTO;
+import com.example.student_marks_app.dtos.ModuleSummary;
 import com.example.student_marks_app.models.course.Course;
 import com.example.student_marks_app.models.module.CourseModule;
 import com.example.student_marks_app.repositories.CourseModuleMappingRepository;
@@ -89,7 +90,7 @@ public class CourseRestController {
         courseRepository.save(course);
         
         if (dto.getModules() != null && !dto.getModules().isEmpty()) {
-            for (ModuleDTO moduleDTO : dto.getModules()) {
+            for (ModuleSummary moduleDTO : dto.getModules()) {
                 CourseModule module = moduleRepository.findById(moduleDTO.getCode())
                                         .orElseThrow(() -> 
                                         new ResponseStatusException(HttpStatus.NOT_FOUND, "MOdule not found"));
@@ -144,7 +145,7 @@ public class CourseRestController {
         
         mappingRepository.deleteAll(mappingRepository.findByCourse_Code(course.getCode()));
         if (dto.getModules()!= null) { 
-            for (ModuleDTO moduleDTO : dto.getModules()) {
+            for (ModuleSummary moduleDTO : dto.getModules()) {
                 CourseModule module = moduleRepository.findById(moduleDTO.getCode())
                         .orElseThrow(() ->
                                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Module not found" + moduleDTO.getCode()));

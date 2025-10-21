@@ -8,6 +8,7 @@ import com.example.student_marks_app.coursemodulemapping.CourseModuleMapping;
 import com.example.student_marks_app.dtos.CourseDTO;
 import com.example.student_marks_app.dtos.CourseSummaryDTO;
 import com.example.student_marks_app.dtos.ModuleDTO;
+import com.example.student_marks_app.dtos.ModuleSummary;
 import com.example.student_marks_app.models.department.Department;
 import com.example.student_marks_app.models.module.CourseModule;
 import jakarta.persistence.CascadeType;
@@ -67,8 +68,8 @@ public class Course {
     }
 
     public CourseDTO toDTO(){
-        List<ModuleDTO> moduleList = this.courseModules.stream()
-                .map(mapping -> new ModuleDTO(mapping.getModule().getCode(), mapping.getModule().getModuleName()))
+        List<ModuleSummary> moduleList = this.courseModules.stream()
+                .map(mapping -> new ModuleSummary(mapping.getModule().getCode(), mapping.getModule().getModuleName()))
                 .toList();
         
         return new CourseDTO(this.code, this.courseName, moduleList, department);

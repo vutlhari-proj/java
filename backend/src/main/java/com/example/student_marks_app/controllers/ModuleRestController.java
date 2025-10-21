@@ -8,15 +8,21 @@ import com.example.student_marks_app.coursemodulemapping.CourseModuleId;
 import com.example.student_marks_app.coursemodulemapping.CourseModuleMapping;
 import com.example.student_marks_app.dtos.CourseDTO;
 import com.example.student_marks_app.dtos.ModuleDTO;
+import com.example.student_marks_app.dtos.ModuleRequestDTO;
+import com.example.student_marks_app.dtos.ModuleSummary;
 import com.example.student_marks_app.models.course.Course;
 import com.example.student_marks_app.models.module.CourseModule;
 import com.example.student_marks_app.repositories.CourseModuleMappingRepository;
 import com.example.student_marks_app.repositories.CourseModuleRepository;
 import com.example.student_marks_app.repositories.CourseRepository;
+import com.example.student_marks_app.services.CourseModuleService;
 import java.util.List;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,113 +34,65 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/modules")
 public class ModuleRestController {
-    
-    private final CourseModuleRepository moduleRepository;
-    private final CourseRepository courseRepository;
-    private final CourseModuleMappingRepository mappingRepository;
 
-    public ModuleRestController(CourseModuleRepository moduleRepository,
-                                CourseRepository courseRepository,
-                                CourseModuleMappingRepository mappingRepository) {
-        this.moduleRepository = moduleRepository;
-        this.courseRepository = courseRepository;
-        this.mappingRepository = mappingRepository;
+    private final CourseModuleService moduleService;
+    
+    public ModuleRestController(CourseModuleService moduleService) {
+        this.moduleService = moduleService;
     }
     
     @GetMapping
-    public List<CourseModule> getAllModules(){
-        return moduleRepository.findAll();
+    public ResponseEntity<?> getAllModules(){
+        try{
+            List<ModuleSummary> modules = moduleService.getAllModules();
+            return ResponseEntity.ok(modules);
+        }
+        catch(IllegalArgumentException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
     
     @GetMapping("/{code}")
-    public ModuleDTO getModule(@PathVariable String code){
-        return moduleRepository.findById(code)
-                .orElseThrow(() -> new RuntimeException("unable to find module"))
-                .toExtended();
-    }
-    
-    @GetMapping("/{code}/courses")
-    public List<CourseDTO> inCourses(@PathVariable String code){
-        return mappingRepository.findByModule_Code(code).stream()
-                .map(CourseModuleMapping::getCourse)
-                .map(course ->{
-                    CourseDTO dto = new CourseDTO(course.getCode(),course.getCourseName(), null, null);
-                    return dto;
-                })
-                .toList();
-    }
-    
-    @PostMapping("/{code}/addToCourses")
-    public List<CourseDTO> addToCourses(@PathVariable String code, @RequestBody List<String> courseCodes){
-        CourseModule module = moduleRepository.findById(code)
-                .orElseThrow(() -> new RuntimeException("Module not found"));
-        
-        for (String courseCode : courseCodes) {
-            Course course = courseRepository.findById(courseCode)
-                    .orElseThrow(() -> new RuntimeException("course not found"));
-            
-            CourseModuleMapping mapping = new CourseModuleMapping(course, module);
-            if (!mappingRepository.existsById(mapping.getId())) {
-                mappingRepository.save(mapping);
-            }
+    public ResponseEntity<?> getModule(@PathVariable String code){
+        try{
+            ModuleDTO module = moduleService.getModule(code);
+            return ResponseEntity.ok(module);
         }
-        
-        return mappingRepository.findByModule_Code(module.getCode()).stream()
-                .map(CourseModuleMapping::getCourse)
-                .map(course ->{
-                    CourseDTO dto = new CourseDTO(course.getCode(),course.getCourseName(), null, null);
-                    return dto;
-                })
-                .toList();
-    }
-    
-    @PostMapping("/{code}/removeFromCourses")
-    public void removeFromCourses(@PathVariable String code, @RequestBody List<String> courseCodes){
-        CourseModule module = moduleRepository.findById(code)
-                .orElseThrow(() -> new RuntimeException("Module not found"));
-        
-        for (String courseCode : courseCodes) {
-            Course course = courseRepository.findById(courseCode)
-                    .orElseThrow(() -> new RuntimeException("course not found"));
-            
-            CourseModuleMapping mapping = new CourseModuleMapping(course, module);
-            if (mappingRepository.existsById(mapping.getId())) {
-                mappingRepository.deleteById(mapping.getId());
-            }
+        catch(IllegalArgumentException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    
+  
     @PostMapping
-    public CourseModule addModule(@RequestBody CourseModule module){
-        if (module.getCode() == null || module.getCode().trim().isEmpty()) {
-            throw new RuntimeException("Module code is required");
+    public ResponseEntity<?> createModule(@RequestBody ModuleRequestDTO request){
+        try{
+            CourseModule module = moduleService.createModule(request);
+            return ResponseEntity.ok("module created successfully "+ module.getCode());
         }
-        
-        return moduleRepository.save(module);
+        catch(IllegalArgumentException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
     
-    @PostMapping("/{code}/delete")
-    public void deleteModule(@PathVariable String code){
-        CourseModule module = moduleRepository.findById(code)
-                .orElseThrow(() -> new RuntimeException("Module doesn't exist"));
-        
-        moduleRepository.deleteById(module.getCode());
+    @DeleteMapping("/{code}/delete")
+    public ResponseEntity<?> deleteModule(@PathVariable String code){
+        try{
+            moduleService.deleteModule(code);
+            return ResponseEntity.ok("module deleted successfully");
+        }
+        catch(IllegalArgumentException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
     
-    @PostMapping("/{code}/update")
-    public ModuleDTO updateModule(@PathVariable String code, @RequestBody ModuleDTO dto){
-        CourseModule module = moduleRepository.findById(code)
-                .orElseThrow(() -> new RuntimeException("unable to find module " + code));
-        
-        if (dto.getModuleName() != null &&
-                !module.getModuleName().equals(dto.getModuleName())) {
-            module.setModuleName(dto.getModuleName());
+    @PutMapping("/update")
+    public ResponseEntity<?> updateModule(@RequestBody ModuleRequestDTO reuest){
+        try{
+            CourseModule module = moduleService.updateModule(reuest);
+            return ResponseEntity.ok("module updated successfully "+ module.getCode());
         }
-        
-        moduleRepository.save(module);
-        
-        return moduleRepository.findById(code)
-                    .orElseThrow(() -> new RuntimeException("module not found after updating"))
-                .toDto();
+        catch(IllegalArgumentException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }
