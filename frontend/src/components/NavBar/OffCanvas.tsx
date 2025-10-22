@@ -1,3 +1,5 @@
+import { AuthContext } from "@/context";
+import { useContext } from "react";
 import { Offcanvas, Nav, NavDropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
@@ -10,6 +12,7 @@ export function UserOffcanvas({
   id,
   title
 }: OffcanvasProp) {
+  const { logout } = useContext(AuthContext);
   return (
     <>
       <Offcanvas.Header closeButton>
@@ -33,6 +36,12 @@ export function UserOffcanvas({
             to={"/settings"}
           >
             Edit profile
+          </Nav.Link>
+
+          <Nav.Link 
+            className="offCanvasItem d-flex align-items-center mt-2"
+            onClick={() => {logout()}}>
+            Logout
           </Nav.Link>
         </Nav>
       </Offcanvas.Body>

@@ -26,8 +26,18 @@ export function AuthProvider({ children }: {children: ReactNode}) {
     authenticate();
   }, []);
 
+  const logout = async (): Promise<void> => {
+    try {
+      await axios.post("/api/auth/logout", {}, { withCredentials: true });
+    } catch (error) {
+      console.error("Logout failed:", error);
+    } finally {
+      setUser(null);
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, setUser, loading }}>
+    <AuthContext.Provider value={{ user, setUser, loading, logout }}>
       { !loading && children}
     </AuthContext.Provider>
   );
