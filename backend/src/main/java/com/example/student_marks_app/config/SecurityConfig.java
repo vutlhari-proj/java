@@ -12,6 +12,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.configurers.CorsConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -27,9 +28,9 @@ public class SecurityConfig {
             CorsConfiguration config = new CorsConfiguration();
             config.setAllowedOrigins(List.of("http://localhost:5173"));
             config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE",
-                    "OPTION"));
+                    "OPTIONS"));
             config.setAllowedHeaders(List.of("*"));
-            config.setAllowCredentials(Boolean.TRUE);
+            config.setAllowCredentials(true);
             return config;
         }))
                 .csrf(csrf -> csrf.disable())
@@ -38,7 +39,7 @@ public class SecurityConfig {
                         "/pages/student-registration.html", "/pages/staff-registration.html",
                         "/pages/login.html", "/pages/create-password.html",
                         "/pages/welcome.html", "/scripts/**", "/styles/**",
-                        "/api/auth/**", "/images/**",
+                        "/api/auth/**", "/api/auth/me","/images/**",
                         "/api/courses/search", "/config/**").permitAll()
                 .requestMatchers("/home", "/courses", "/course-info/**",
                         "/modules", "/module-info/**").authenticated()
@@ -50,16 +51,17 @@ public class SecurityConfig {
                         "/api/modules/**").hasAnyRole("ADMINISTRATOR", "HOD")
                 .requestMatchers(HttpMethod.DELETE, "/api/courses/**",
                         "/api/modules/**").hasRole("ADMINISTRATOR")
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
                 )
-                .formLogin(form -> form
-                .loginPage("/login") // Use /login for custom login page
-                .defaultSuccessUrl("/home", true)
-                .permitAll()
+                .formLogin(form -> form.disable()) // Use /login for custom login page
+                .httpBasic(httpBasic -> httpBasic.disable())
+                .sessionManagement(session -> session
+                    .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 )
                 .logout(logout -> logout
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/login?logout")
+                .logoutUrl("/api/auth/logout")
+                .deleteCookies("JSESSIONID")
+                .invalidateHttpSession(true)
                 .permitAll()
                 );
         // No .httpBasic() so no browser popup

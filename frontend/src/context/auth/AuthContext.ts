@@ -1,12 +1,13 @@
-import { createContext, useContext } from "react";
-import type { LoginResponseProp } from "@/types";
+import { createContext } from "react";
+import type { User } from "@/types";
+interface AuthContextType {
+  user: User | null;
+  setUser: (user: User | null) => void;
+  loading: boolean;
+}
 
-export const AuthContext = createContext<LoginResponseProp | null>(null);
-
-export function useAuth(): LoginResponseProp {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return context;
-};
+export const AuthContext = createContext<AuthContextType>({
+  user: null,
+  setUser: () => {},
+  loading: true,
+});

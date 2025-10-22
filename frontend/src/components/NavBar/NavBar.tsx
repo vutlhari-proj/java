@@ -1,13 +1,20 @@
 import { Container, Navbar as NavbarBs } from "react-bootstrap";
 import "./navbar.css";
-import { useTheme, useAuth } from "@/context";
+import { AuthContext, useTheme } from "@/context";
 import { UserOffcanvas } from "./OffCanvas";
+import { useContext } from "react";
 
 export function Navbar() {
   const { darkTheme } = useTheme();
   const backgroundColor = darkTheme ? "dark" : "light";
 
-  const { user } = useAuth();
+  const { user, loading } = useContext(AuthContext);
+  console.log("Navbar render, user:", user);
+  
+  if (loading) {
+    return null;
+  }
+  
   return (
     <NavbarBs
       expand="lg"
@@ -32,8 +39,8 @@ export function Navbar() {
           placement="end"
           data-bs-theme={backgroundColor}>
           <UserOffcanvas 
-          id="offcanvasUser"
-          title="User Menu" />
+            id="offcanvasUser"
+            title="User Menu" />
         </NavbarBs.Offcanvas>
       </Container>
     </NavbarBs>

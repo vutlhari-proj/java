@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import axios from 'axios';
+import axios from '@/config/axios';
 
 type HttpMethod = 'POST' | 'PUT' | 'DELETE';
 
@@ -51,10 +51,10 @@ export function useMutateData<TRequest = unknown, TResponse = unknown>({
       
       switch (method) {
         case 'POST':
-          response = await axios.post(apiEndpoint, payload);
+          response = await axios.post(apiEndpoint, payload, { withCredentials: true });
           break;
         case 'PUT':
-          response = await axios.put(apiEndpoint, payload);
+          response = await axios.put(apiEndpoint, payload, { withCredentials: true });
           break;
         case 'DELETE':
           response = await axios.delete(apiEndpoint, payload ? { data: payload } : undefined);

@@ -6,17 +6,19 @@ import LoginForm from "./pages/login/LoginPage";
 import { CoursesPage } from "./pages/courses/CoursesPage";
 import { ModulesPage } from "./pages/modules/ModulesPage";
 import { ModulePage } from "./pages/modules/ModulePage";
+import { PrivateRoute } from "./services";
 
 function App() {
   return (
     <ThemeProvider>
       <AuthProvider>
         <Routes>
-          <Route index element={<LoginForm />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/courses" element={<CoursesPage />} />
-          <Route path="/modules" element={<ModulesPage />} />
-          <Route path="/modules/module" element={<ModulePage />} />
+          <Route path="/" element={<LoginForm />} />
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />
+          <Route path="/courses" element={<PrivateRoute><CoursesPage /></PrivateRoute>} />
+          <Route path="/modules" element={<PrivateRoute><ModulesPage /></PrivateRoute>} />
+          <Route path="/modules/module" element={<PrivateRoute><ModulePage /></PrivateRoute>} />
         </Routes>
       </AuthProvider>
     </ThemeProvider>

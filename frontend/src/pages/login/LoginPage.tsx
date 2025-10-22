@@ -1,16 +1,16 @@
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TextInput } from "@/components";
 import eyeIcon from "/images/icons/eye-icon.svg";
 import "./loginPage.css";
 import { Form, Spinner } from "react-bootstrap";
-import { useAuth } from "@/context";
 import { userStorage } from "@/config";
+import { AuthContext } from "@/context";
 
 function LoginForm() {
   const navigate = useNavigate();
-  const { setUser } = useAuth();
+  const { setUser } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -31,7 +31,7 @@ function LoginForm() {
     }
 
     try {
-      const response = await axios.post("/api/auth/login", { username, password });
+      const response = await axios.post("/api/auth/login", { username, password }, { withCredentials: true });
       console.log("Login successful:", response.data);
 
       /* Validate response structure
@@ -40,7 +40,7 @@ function LoginForm() {
       }*/
 
       // Store user in context and session storage
-      const userData = response.data.userExpanded;
+      const userData = response.data;
       setUser(userData);
 
       // Also store using userStorage for additional functionality

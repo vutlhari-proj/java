@@ -1,9 +1,10 @@
 import { Table as TableBs } from "react-bootstrap";
-import { useAuth } from "@/context";
 import { Role } from "@/services";
 import './table.css';
 import type { GenericTableProps, TableData } from "@/types/tables";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "@/context/auth/AuthContext";
 
 export function Table({ data, columns, entityName, idKey }: GenericTableProps) {
   console.log("Table received data:", data);
@@ -11,7 +12,7 @@ export function Table({ data, columns, entityName, idKey }: GenericTableProps) {
   console.log("is array:", Array.isArray(data));
 
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user } = useContext(AuthContext);
 
   return (
     <div className="table-container d-flex flex-column align-items-center w-100 h-100">
@@ -65,7 +66,7 @@ export function Table({ data, columns, entityName, idKey }: GenericTableProps) {
                   colSpan={columns.length}
                   style={{ borderBottomLeftRadius: '10px', borderBottomRightRadius: '10px' }}
                 >
-                  No {entityName}s available
+                  No {entityName}'s available
                 </td>
               </tr>
             )}

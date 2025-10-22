@@ -16,8 +16,18 @@ import com.example.student_marks_app.models.course.Course;
 import com.example.student_marks_app.records.UserExpanded;
 import org.springframework.transaction.annotation.Transactional;
 import com.example.student_marks_app.repositories.UserRepository;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,17 +39,117 @@ public class AuthService {
     private final StaffRepository staffRepository;
     private final CourseRepository courseRepository;
     private final PersonService personService;
+    private final AuthenticationManager authManager;
 
     @Autowired
     public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder,
             StudentRepository studentRepository, StaffRepository staffRepository,
-            CourseRepository courseRepository, PersonService personService) {
+            CourseRepository courseRepository, PersonService personService,
+            AuthenticationManager authManager) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.studentRepository = studentRepository;
         this.staffRepository = staffRepository;
         this.courseRepository = courseRepository;
         this.personService = personService;
+        this.authManager = authManager;
+    }
+
+    public UserExpanded login(LoginRequest request, HttpServletRequest httpRequest,
+            HttpServletResponse response) {
+
+        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(request.username(),
+                request.password());
+
+        Authentication authentication = authManager.authenticate(authToken);
+
+        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+        securityContext.setAuthentication(authentication);
+        SecurityContextHolder.setContext(securityContext);
+
+        HttpSession session = httpRequest.getSession(true);
+        session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, securityContext);
+        // Find the user by username
+        User user = userRepository.findByUsername(request.username())
+                .orElseThrow(() -> new RuntimeException("Invalid username or password"));
+
+        // Check if the password matches
+        if (!passwordEncoder.matches(request.password(), user.getPassword())) {
+            throw new IllegalArgumentException("Invalid username or password");
+        }
+
+        String username = user.getUsername();
+        String name, surname;
+        if (user.getRole() == Role.STUDENT) {
+            Student student = studentRepository.findById(user.getUserId())
+                    .orElseThrow(() -> new RuntimeException("Student id not found"));
+
+            name = student.getName();
+            surname = student.getSurname();
+        } else {
+            Staff staff = staffRepository.findById(user.getUserId())
+                    .orElseThrow(() -> new RuntimeException("Student id not found"));
+
+            name = staff.getName();
+            surname = staff.getSurname();
+        }
+
+        return new UserExpanded(username, name, surname, user.getRole().name());
+    }
+
+    public UserExpanded refresh(HttpServletRequest request) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (auth == null || !auth.isAuthenticated() ||
+                auth.getPrincipal().equals("anonymousUser")) {
+            throw new RuntimeException("No active session");
+        }
+
+        String username = auth.getName();
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        String name, surname;
+        if (user.getRole() == Role.STUDENT) {
+            Student student = studentRepository.findById(user.getUserId())
+                    .orElseThrow(() -> new RuntimeException("Student id not found"));
+
+            name = student.getName();
+            surname = student.getSurname();
+        } else {
+            Staff staff = staffRepository.findById(user.getUserId())
+                    .orElseThrow(() -> new RuntimeException("Student id not found"));
+
+            name = staff.getName();
+            surname = staff.getSurname();
+        }
+        return new UserExpanded(username, name, surname, user.getRole().name());
+    }
+
+    public UserExpanded getCurrentUser(Authentication auth) {
+        if (auth == null || !auth.isAuthenticated() || auth.getPrincipal().equals("anonymousUser")) {
+            throw new IllegalArgumentException("session not found");
+        }
+
+        String username = auth.getName();
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        String name, surname;
+        if (user.getRole() == Role.STUDENT) {
+            Student student = studentRepository.findById(user.getUserId())
+                    .orElseThrow(() -> new IllegalArgumentException("Student id not found"));
+
+            name = student.getName();
+            surname = student.getSurname();
+        } else {
+            Staff staff = staffRepository.findById(user.getUserId())
+                    .orElseThrow(() -> new IllegalArgumentException("Student id not found"));
+
+            name = staff.getName();
+            surname = staff.getSurname();
+        }
+        return new UserExpanded(username, name, surname, user.getRole().name());
     }
 
     public String register(RegisterRequest request) {
@@ -52,39 +162,9 @@ public class AuthService {
                 request.userId(),
                 request.username(),
                 encodedPassword,
-                request.role()
-        );
+                request.role());
         userRepository.save(user);
         return "User registered successfully";
-    }
-
-    public LoginResponse login(LoginRequest request) {
-        // Find the user by username
-        User user = userRepository.findByUsername(request.username())
-                .orElseThrow(() -> new RuntimeException("Invalid username or password"));
-
-        // Check if the password matches
-        if (!passwordEncoder.matches(request.password(), user.getPassword())) {
-            throw new IllegalArgumentException("Invalid username or password");
-        }
-
-        String username = user.getUsername(), role = user.getRole().name(), name ="", surname = "";
-        if (user.getRole() == Role.STUDENT) {
-            Student student = studentRepository.findById(user.getUserId())
-                    .orElseThrow(() -> new RuntimeException("Student id not found"));
-            
-            name = student.getName();
-            surname = student.getSurname();
-        }
-        else{
-            Staff staff = staffRepository.findById(user.getUserId())
-                    .orElseThrow(() -> new RuntimeException("Student id not found"));
-            
-            name = staff.getName();
-            surname = staff.getSurname();
-        }
-        
-        return new LoginResponse("Login successful", new UserExpanded(username, name, surname, role));
     }
 
     @Transactional
@@ -102,8 +182,7 @@ public class AuthService {
                     registerData.idNum(),
                     registerData.cellphone(),
                     registerData.email(),
-                    course
-            );
+                    course);
             studentRepository.save(student);
 
             // Create User entity for student
@@ -111,8 +190,7 @@ public class AuthService {
                     student.getStudNum(),
                     student.getStudNum() + "@tut4life.ac.za",
                     passwordEncoder.encode(password),
-                    Role.STUDENT
-            );
+                    Role.STUDENT);
             userRepository.save(user);
 
             return new RegistrationResponse(student.getName(), student.getSurname(), user.getUsername());
@@ -134,8 +212,7 @@ public class AuthService {
                     staff.getStaffNum(),
                     staff.getStaffNum() + "@tut4life.ac.za",
                     passwordEncoder.encode(password),
-                    staff.getPosition()
-            );
+                    staff.getPosition());
             userRepository.save(user);
             return new RegistrationResponse(staff.getName(), staff.getSurname(), user.getUsername());
         }

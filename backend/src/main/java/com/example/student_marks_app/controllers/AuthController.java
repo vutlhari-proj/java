@@ -5,7 +5,10 @@ import com.example.student_marks_app.records.LoginResponse;
 import com.example.student_marks_app.records.PasswordRequest;
 import com.example.student_marks_app.records.RegistrationResponse;
 import com.example.student_marks_app.records.StudentStaffRegisterRequest;
+import com.example.student_marks_app.records.UserExpanded;
 import com.example.student_marks_app.services.AuthService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpSession;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -21,11 +25,35 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
+    @GetMapping("/me")
+    public ResponseEntity<?> currentUser(Authentication auth){
+        try{
+            return ResponseEntity.ok(authService.getCurrentUser(auth));
+        }
+        catch (IllegalArgumentException e) {
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", e.getMessage()));
+        }
+    }
+    
+    @GetMapping("/refresh")
+    public ResponseEntity<?> refresh(HttpServletRequest req){
+        try{
+            return ResponseEntity.ok(authService.refresh(req));
+        }
+        catch (IllegalArgumentException e) {
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", e.getMessage()));
+        }
+    }
+    
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest, HttpSession session){
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest, HttpServletRequest req
+            ,HttpServletResponse rep){
         try {
-            LoginResponse user = authService.login(loginRequest);
-            return ResponseEntity.ok(user);
+            return ResponseEntity.ok(authService.login(loginRequest, req, rep));
         } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
