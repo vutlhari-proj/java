@@ -67,9 +67,18 @@
 .img-container {
   display: flex;
   justify-content: center;
-  display: inline-block;
+  align-items: center;
   position: relative;
   cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: transparent !important;
+  transition: background-color 0.2s ease;
+}
+
+.img-container:hover {
+  background-color: var(--hover-bg) !important;
 }
 
 .img-container:hover .tooltip {
@@ -98,4 +107,9 @@
 
 tr {
   text-align: center;
+}
+
+.table-row:hover{
+  opacity: .5;
+  cursor: pointer;
 }

@@ -45,7 +45,9 @@ export function Table({ data, columns, entityName, idKey }: GenericTableProps) {
         <TableBs borderless hover className="mb-0 custom-table-body" style={{ borderBottomLeftRadius: '10px', borderBottomRightRadius: '10px' }}>
           <tbody>
             {data && data.length > 0 ? data.map((item: TableData, index) => (
-              <tr key={String(item[idKey])}
+              <tr 
+              key={String(item[idKey])}
+              className="table-row"
                 onClick={() => navigate(`${entityName}?code=${item[idKey]}`)}>
                 {columns.map((column, colIndex) => (
                   <td
