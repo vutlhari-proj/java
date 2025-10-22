@@ -1,6 +1,8 @@
 import type { ModuleExtendedProp, ModuleRequest } from "@/types";
 import { Modal } from "react-bootstrap";
 import './moduleModal.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css'; // Add this line
 import { moduleDataConfig } from "@/config/moduleDataConfig";
 import { ModuleConfigs } from "@/types";
 import { useState, useEffect } from "react";
@@ -23,6 +25,7 @@ export function ModuleModal({ module, show, onHide, refetch }: ModuleModalProps)
   const [credits, setCredits] = useState(module?.credits || 0);
   const [preReqs, setPreReqs] = useState(module?.prerequisiteCodes || []);
   const [courses, setCourses] = useState(module?.courses || []);
+  const [isDirty, setIsDirty] = useState(false); 
 
   // Initialize the PUT hook at component level
   const { mutateData: updateModule, isLoading } = usePutData<ModuleRequest>({
@@ -30,6 +33,7 @@ export function ModuleModal({ module, show, onHide, refetch }: ModuleModalProps)
     onSuccess: (data) => {
       console.log('Module updated successfully:', data);
       refetch();
+      setIsDirty(false);
       onHide(); // Close modal on success
     },
     onError: (error) => {
@@ -48,7 +52,7 @@ export function ModuleModal({ module, show, onHide, refetch }: ModuleModalProps)
       setPreReqs(module.prerequisiteCodes || []);
       setCourses(module.courses || []);
     }
-  }, [module]);
+  }, [module, onHide]);
 
   const handleOnclickSave = () => {
     updateModule({
@@ -63,10 +67,15 @@ export function ModuleModal({ module, show, onHide, refetch }: ModuleModalProps)
   };
 
 
+  const removeCourse = (code: string) =>{
+    setCourses(courses.filter(c => c.code !== code));
+    setIsDirty(true);
+  }
+
   return (
-    <Modal 
+    <Modal
       className="modal"
-      show={show} 
+      show={show}
       onHide={onHide}
       centered
       size="xl"
@@ -77,14 +86,14 @@ export function ModuleModal({ module, show, onHide, refetch }: ModuleModalProps)
           Edit Module: {module?.code}
         </Modal.Title>
       </Modal.Header>
-      
+
       <Modal.Body className="p-4">
         <div className="row g-3">
           <div className="col-md-6">
             <label className="form-label">Module Code</label>
-            <input 
-              type="text" 
-              className="form-control opacity-50" 
+            <input
+              type="text"
+              className="form-control opacity-50"
               style={{ border: 'none', boxShadow: 'none' }}
               value={code}
               placeholder="Enter module code"
@@ -93,20 +102,20 @@ export function ModuleModal({ module, show, onHide, refetch }: ModuleModalProps)
           </div>
           <div className="col-md-6">
             <label className="form-label">Module Name</label>
-            <input 
-              type="text" 
-              className="form-control" 
-              defaultValue={module?.moduleName}
+            <input
+              type="text"
+              className="form-control"
+              value={name}
               placeholder="Enter module name"
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => { setName(e.target.value); setIsDirty(true); }}
             />
           </div>
           <div className="col-md-6">
             <label className="form-label">Module Type</label>
-            <select 
-              className="form-select" 
+            <select
+              className="form-select"
               defaultValue={formatModuleType(module?.type) || ''}
-              onChange={(e) => setType(e.target.value)}
+              onChange={(e) => { setType(e.target.value); setIsDirty(true); }}
             >
               <option value="">Select module type</option>
               {config.module_types.data.map((type) => (
@@ -118,10 +127,10 @@ export function ModuleModal({ module, show, onHide, refetch }: ModuleModalProps)
           </div>
           <div className="col-md-6">
             <label className="form-label">NQF Level</label>
-            <select 
-              className="form-select" 
+            <select
+              className="form-select"
               defaultValue={module?.nqf_level?.toString() || ''}
-              onChange={(e) =>{ setNqf(Number(e.target.value)); console.log(e.target.value)}}
+              onChange={(e) => { setNqf(Number(e.target.value)); setIsDirty(true); console.log(e.target.value) }}
             >
               <option value="">Select NQF level</option>
               {config.nqf_levels.data.map((level) => (
@@ -133,10 +142,10 @@ export function ModuleModal({ module, show, onHide, refetch }: ModuleModalProps)
           </div>
           <div className="col-md-6">
             <label className="form-label">Credits</label>
-            <select 
-              className="form-select" 
+            <select
+              className="form-select"
               defaultValue={module?.credits?.toString() || ''}
-              onChange={(e) => setCredits(Number(e.target.value))}
+              onChange={(e) => { setCredits(Number(e.target.value)); setIsDirty(true); }}
             >
               <option value="">Select credits</option>
               {config.credits.data.map((credit) => (
@@ -147,21 +156,40 @@ export function ModuleModal({ module, show, onHide, refetch }: ModuleModalProps)
             </select>
           </div>
           <div className="col-12">
-            <label className="form-label">Associated Courses</label>
+            <div className="d-flex align-items-center gap-2 mb-2">
+              <label className="form-label m-0">Associated Courses</label>
+
+              <button
+                type="button"
+                className="btn btn-link p-0 d-inline-flex align-items-center justify-content-center"
+                aria-label="Add course"
+                onClick={() => {/* open add-course UI */}}
+              >
+                <i className="bi bi-plus icon-small" />
+              </button>
+            </div>
+
             <div className="border rounded p-3" style={{ backgroundColor: 'var(--card-bg)' }}>
-              {module?.courses && module?.courses?.length > 0 ? (
+              {courses && courses.length > 0 ? (
                 <div className="d-flex flex-wrap gap-2">
-                  {module?.courses?.map((course) => (
-                    <span 
-                      key={course.code} 
-                      className="badge text-bg-secondary"
-                      style={{ 
-                        backgroundColor: 'var(--hover-bg)', 
+                  {courses.map((course) => (
+                    <span
+                      key={course.code}
+                      className="badge text-bg-secondary d-inline-flex align-items-center"
+                      style={{
                         color: 'var(--text-color)',
                         border: '1px solid var(--border-color)'
                       }}
                     >
-                      {course.code} - {course.courseName}
+                      <span className="me-2">{course.code} - {course.courseName}</span>
+                      <button
+                        type="button"
+                        className="btn p-0 d-inline-flex align-items-center justify-content-center ms-1"
+                        aria-label={`Remove ${course.code}`}
+                        onClick={() => { removeCourse(course.code) }}
+                      >
+                        <i className="bi bi-dash icon-small" />
+                      </button>
                     </span>
                   ))}
                 </div>
@@ -172,16 +200,18 @@ export function ModuleModal({ module, show, onHide, refetch }: ModuleModalProps)
           </div>
         </div>
       </Modal.Body>
-      
+
       <Modal.Footer>
-        <button className="btn btn-secondary" onClick={onHide} disabled={isLoading}>
+        <button
+         className="btn btn-secondary" onClick={onHide} disabled={isLoading}>
           <i className="bi bi-x-lg me-2"></i>
           Cancel
         </button>
-        <button 
-          className="btn btn-primary" 
+        <button
+          className="btn btn-primary"
           onClick={handleOnclickSave}
-          disabled={isLoading}
+          disabled={!isDirty || isLoading}
+          title={!isDirty && !isLoading ? 'No changes to save' : undefined}
         >
           {isLoading ? (
             <>

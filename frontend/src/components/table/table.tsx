@@ -27,12 +27,12 @@ export function Table({ data, columns, entityName, idKey }: GenericTableProps) {
             <td colSpan={columns.length}>
               <div className="d-flex justify-content-center gap-3">
                 <div className="img-container width-100">
-                  <img src="images/icons/search.svg" alt="Search" className="img" />
+                  <i className="bi bi-search icon-medium"></i>
                   <span className="tooltip">Search</span>
                 </div>
                 {user?.role === Role.ADMINISTRATOR && (
                   <div className="img-container width-100">
-                    <img src="images/icons/add.svg" alt="Add" className="img" />
+                    <i className="bi bi-plus-circle-fill icon-medium"></i>
                     <span className="tooltip">Add {entityName}</span>
                   </div>
                 )}

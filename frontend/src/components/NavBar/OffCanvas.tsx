@@ -2,7 +2,6 @@ import { AuthContext } from "@/context";
 import { useContext } from "react";
 import { Offcanvas, Nav, NavDropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
-
 interface OffcanvasProp {
   id: string;
   title: string;
@@ -41,6 +40,7 @@ export function UserOffcanvas({
           <Nav.Link 
             className="offCanvasItem d-flex align-items-center mt-2"
             onClick={() => {logout()}}>
+              <i className="bi bi-box-arrow-right me-2"></i>
             Logout
           </Nav.Link>
         </Nav>

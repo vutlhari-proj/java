@@ -3,18 +3,20 @@ import "./navbar.css";
 import { AuthContext, useTheme } from "@/context";
 import { UserOffcanvas } from "./OffCanvas";
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 export function Navbar() {
   const { darkTheme } = useTheme();
   const backgroundColor = darkTheme ? "dark" : "light";
+  const navigate = useNavigate();
 
   const { user, loading } = useContext(AuthContext);
   console.log("Navbar render, user:", user);
-  
+
   if (loading) {
     return null;
   }
-  
+
   return (
     <NavbarBs
       expand="lg"
@@ -24,7 +26,10 @@ export function Navbar() {
       className="navbar mb-3"
     >
       <Container fluid>
-        <NavbarBs.Text className="ms-3 fw-semibold">
+        <NavbarBs.Text
+          className="ms-3 fw-semibold"
+          style={{cursor: "pointer"}}
+          onClick={() => { navigate("/home") }}>
           Student Marks App
         </NavbarBs.Text>
 
@@ -38,7 +43,7 @@ export function Navbar() {
           aria-labelledby="offcanvasUserLabel"
           placement="end"
           data-bs-theme={backgroundColor}>
-          <UserOffcanvas 
+          <UserOffcanvas
             id="offcanvasUser"
             title="User Menu" />
         </NavbarBs.Offcanvas>

@@ -7,6 +7,8 @@ import { CoursesPage } from "./pages/courses/CoursesPage";
 import { ModulesPage } from "./pages/modules/ModulesPage";
 import { ModulePage } from "./pages/modules/ModulePage";
 import { PrivateRoute } from "./services";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 function App() {
   return (
