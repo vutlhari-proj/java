@@ -9,7 +9,7 @@ export interface ModuleExtendedProp extends ModuleProp {
   type: string;
   nqf_level: number;
   credits: number;
-  prerequisiteCodes: ModuleProp[];
+  prerequisites: ModuleProp[];
   courses: ShortCourseProp[];
 }
 
@@ -17,7 +17,7 @@ export interface ModuleRequest extends ModuleProp {
   type: string;
   nqf_level: number;
   credits: number;
-  prerequisiteCodes: string[];
+  prerequisites: string[];
   courseCodes: string[];
 }
 

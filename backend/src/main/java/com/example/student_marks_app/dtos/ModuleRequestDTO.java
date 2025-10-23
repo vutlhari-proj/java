@@ -18,18 +18,18 @@ public class ModuleRequestDTO {
     private boolean elective;
     private int credits;
     private int nqf_level;
-    private List<String> prerequisiteCodes;
+    private List<String> prerequisites;
     private List<String> courseCodes;
 
     public ModuleRequestDTO(String code, String moduleName, String type, boolean elective, 
-            int credits, int nqf_level, List<String> prerequisiteCodes, List<String> courseCodes) {
+            int credits, int nqf_level, List<String> prerequisites, List<String> courseCodes) {
         this.code = code;
         this.moduleName = moduleName;
         this.type = type;
         this.elective = elective;
         this.credits = credits;
         this.nqf_level = nqf_level;
-        this.prerequisiteCodes = prerequisiteCodes;
+        this.prerequisites = prerequisites;
         this.courseCodes = courseCodes;
     }
 
@@ -81,12 +81,12 @@ public class ModuleRequestDTO {
         this.nqf_level = nqf_level;
     }
 
-    public List<String> getPrerequisiteCodes() {
-        return prerequisiteCodes;
+    public List<String> getprerequisites() {
+        return prerequisites;
     }
 
-    public void setPrerequisiteCodes(List<String> prerequisiteCodes) {
-        this.prerequisiteCodes = prerequisiteCodes;
+    public void setprerequisites(List<String> prerequisites) {
+        this.prerequisites = prerequisites;
     }
 
     public List<String> getCourseCodes() {
@@ -99,7 +99,7 @@ public class ModuleRequestDTO {
 
     @Override
     public String toString() {
-        return "ModuleRequestDTO{" + "code=" + code + ", moduleName=" + moduleName + ", type=" + type + ", elective=" + elective + ", credits=" + credits + ", nqf_level=" + nqf_level + ", prerequisiteCodes=" + prerequisiteCodes + ", courseCodes=" + courseCodes + '}';
+        return "ModuleRequestDTO{" + "code=" + code + ", moduleName=" + moduleName + ", type=" + type + ", elective=" + elective + ", credits=" + credits + ", nqf_level=" + nqf_level + ", prerequisites=" + prerequisites + ", courseCodes=" + courseCodes + '}';
     }
 
    

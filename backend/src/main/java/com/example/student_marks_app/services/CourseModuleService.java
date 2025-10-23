@@ -62,8 +62,8 @@ public class CourseModuleService {
                 Nqf_Level.fromValue(request.getNqf_level())
         );
 
-        if (request.getPrerequisiteCodes() != null) {
-            Set<CourseModule> prereqs = request.getPrerequisiteCodes()
+        if (request.getprerequisites() != null) {
+            Set<CourseModule> prereqs = request.getprerequisites()
                     .stream()
                     .map(code -> moduleRepository.findById(code)
                     .orElseThrow(() -> new IllegalArgumentException("Prereq code not found: " + code))
@@ -143,7 +143,7 @@ public class CourseModuleService {
                 .map(CourseModule::getCode)
                 .collect(Collectors.toSet());
         
-        Set<String> requestPrereqs = safeSet(request.getPrerequisiteCodes());
+        Set<String> requestPrereqs = safeSet(request.getprerequisites());
         
         if (!existingPrereqs.equals(requestPrereqs)) {
             Set<CourseModule> prereqs = requestPrereqs

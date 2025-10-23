@@ -17,18 +17,18 @@ public class ModuleDTO {
     private String type;
     private int credits;
     private int nqf_level;
-    private Set<ModuleSummary> prerequisiteCodes;
+    private Set<ModuleSummary> prerequisites;
     private List<CourseSummaryDTO> courses;
 
     public ModuleDTO(String code, String moduleName, String type, int credits, int nqf_level,
-            List<CourseSummaryDTO> courses, Set<ModuleSummary> prerequisiteCodes) {
+            List<CourseSummaryDTO> courses, Set<ModuleSummary> prerequisites) {
         this.code = code;
         this.moduleName = moduleName;
         this.type = type;
         this.credits = credits;
         this.nqf_level = nqf_level;
         this.courses = courses;
-        this.prerequisiteCodes = prerequisiteCodes;
+        this.prerequisites = prerequisites;
     }
     
 
@@ -88,11 +88,11 @@ public class ModuleDTO {
     }
 
     public Set<ModuleSummary> getPrerequisites() {
-        return prerequisiteCodes;
+        return prerequisites;
     }
 
-    public void setPrerequisites(Set<ModuleSummary> prerequisiteCodes) {
-        this.prerequisiteCodes = prerequisiteCodes;
+    public void setPrerequisites(Set<ModuleSummary> prerequisites) {
+        this.prerequisites = prerequisites;
     }
     
     

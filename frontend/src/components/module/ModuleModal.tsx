@@ -23,7 +23,7 @@ export function ModuleModal({ module, show, onHide, refetch }: ModuleModalProps)
   const [type, setType] = useState(module?.type || '');
   const [nqf, setNqf] = useState(module?.nqf_level || 0);
   const [credits, setCredits] = useState(module?.credits || 0);
-  const [preReqs, setPreReqs] = useState(module?.prerequisiteCodes || []);
+  const [preReqs, setPreReqs] = useState(module?.prerequisites || []);
   const [courses, setCourses] = useState(module?.courses || []);
   const [isDirty, setIsDirty] = useState(false); 
 
@@ -49,7 +49,7 @@ export function ModuleModal({ module, show, onHide, refetch }: ModuleModalProps)
       setType(module.type || '');
       setNqf(module.nqf_level || 0);
       setCredits(module.credits || 0);
-      setPreReqs(module.prerequisiteCodes || []);
+      setPreReqs(module.prerequisites || []);
       setCourses(module.courses || []);
     }
   }, [module, onHide]);
@@ -61,13 +61,13 @@ export function ModuleModal({ module, show, onHide, refetch }: ModuleModalProps)
       type: type.replaceAll(' ', '_').trim(),
       nqf_level: nqf,
       credits,
-      prerequisiteCodes: preReqs.map(pr => pr.code),
+      prerequisites: preReqs.map(pr => pr.code),
       courseCodes: courses.map(c => c.code)
     });
   };
 
 
-  const removeCourse = (code: string) =>{
+  const removeCourse = (code: string) => {
     setCourses(courses.filter(c => c.code !== code));
     setIsDirty(true);
   }
