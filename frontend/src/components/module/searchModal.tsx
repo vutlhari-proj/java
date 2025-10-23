@@ -97,7 +97,7 @@ function SearchModal({
                 <span className="me-2">{item.code} - {name}</span>
                 <button
                   type="button"
-                  className="btn p-0 d-inline-flex align-items-center justify-content-center ms-1"
+                  className="btn p-1 d-inline-flex align-items-center justify-content-center ms-1"
                   aria-label={`Add ${item.code}`}
                   onClick={() => { add(item.code, name); input.current?.focus() }}
                 >

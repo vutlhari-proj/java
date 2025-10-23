@@ -73,22 +73,38 @@ export function ModulePage() {
       <title>{module?.code || 'Module'}</title>
       <Navbar />
       <div className="spacer" style={{ height: '80px' }}></div>
-      <div className="container d-flex flex-column justify-content-center align-items-center gap-2 w-100 p-0 rounded-4">
-        <div className="d-flex align-items-center gap-3">
-          <h1>Module Information</h1>
-          <div className="img-container pointer d-flex align-items-center" onClick={handleEditClick}>
-            <img src="/images/icons/pencil.svg" alt="Edit Module Info" className="img" />
-            <span className="tooltip">Edit Module</span>
+      <div className="container-fluid d-flex flex-column justify-content-center align-items-center gap-2 w-100 p-0 rounded-4">
+        <div className="w-100 d-flex justify-content-center">
+          <div style={{ width: 'min(1200px, 95vw)' }}>
+            <div className="d-flex align-items-center gap-3">
+              <h1>Module Information</h1>
+              <div className="img-container pointer d-flex align-items-center" onClick={handleEditClick}>
+                <img src="/images/icons/pencil.svg" alt="Edit Module Info" className="img" />
+                <span className="tooltip">Edit Module</span>
+              </div>
+            </div>
           </div>
         </div>
 
         {isLoading ? (
-          <Loading />
+          <div className="w-100 d-flex justify-content-center">
+            <div style={{ width: 'min(1200px, 95vw)' }}>
+              <Loading />
+            </div>
+          </div>
         ) : hasData && module ? (
-          <ModuleCard module={module} />
+          <div className="w-100 d-flex justify-content-center">
+            <div style={{ width: 'min(1200px, 95vw)' }}>
+              <ModuleCard module={module} />
+            </div>
+          </div>
         ) : (
-          <div className="alert alert-warning">
-            No module data available for code: {code}
+          <div className="w-100 d-flex justify-content-center">
+            <div style={{ width: 'min(1200px, 95vw)' }}>
+              <div className="alert alert-warning">
+                No module data available for code: {code}
+              </div>
+            </div>
           </div>
         )}
       </div>

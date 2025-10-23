@@ -19,23 +19,23 @@ export function Navbar() {
 
   return (
     <NavbarBs
-      expand="lg"
+      expand={false} // always show the offcanvas toggle button
       fixed="top"
       bg={backgroundColor}
       data-bs-theme={backgroundColor}
-      className="navbar mb-3"
+      className="navbar mb-3 py-2"
     >
       <Container fluid>
         <NavbarBs.Text
-          className="ms-3 fw-semibold"
+          className="ms-3 fw-semibold text-nowrap"
           style={{cursor: "pointer"}}
           onClick={() => { navigate("/home") }}>
           Student Marks App
         </NavbarBs.Text>
 
-        <div className="d-flex align-items-center ms-auto me-3">
-          <span className="me-3 fw-medium">{user ? `${user.name} ${user.surname}` : "Guest"}</span>
-          <NavbarBs.Toggle aria-controls="offcanvasUser" />
+        <div className="d-flex align-items-center ms-auto me-3 gap-2">
+          <span className="fw-medium text-nowrap">{user ? `${user.name} ${user.surname}` : "Guest"}</span>
+          <NavbarBs.Toggle aria-controls="offcanvasUser" className="ms-1" />
         </div>
 
         <NavbarBs.Offcanvas

@@ -8,7 +8,7 @@ import { ModuleConfigs } from "@/types";
 import { useState, useEffect } from "react";
 import { usePutData } from "@/hooks";
 import { formatModuleType } from "./moduleUtil";
-import { SearchModal } from "./searchModal";
+import { RelatedListSection } from "./RelatedListSection";
 interface ModuleModalProps {
   module: ModuleExtendedProp | null;
   show: boolean;
@@ -83,6 +83,14 @@ export function ModuleModal({ module, show, onHide, refetch }: ModuleModalProps)
     setCourses(courses.filter(c => c.code !== code));
     setIsDirty(true);
   };
+
+  const removePrereq = (code: string) => {
+    setPreReqs(preReqs.filter(p => p.code !== code));
+    setIsDirty(true);
+  };
+
+  const prereqItems = preReqs.map(p => ({ code: p.code, name: p.moduleName }));
+  const courseItems = courses.map(c => ({ code: c.code, name: c.courseName }));
 
   return (
     <>
@@ -170,108 +178,27 @@ export function ModuleModal({ module, show, onHide, refetch }: ModuleModalProps)
               </select>
             </div>
 
-            <div className="col-12">
-              <div className="d-flex align-items-center gap-2 mb-2 position-relative">
-                <label className="form-label m-0">Prerequisite Modules</label>
+            <RelatedListSection
+              title="Prerequisite Modules"
+              items={prereqItems}
+              openSearch={showModuleSearch}
+              onOpenSearch={() => setShowModuleSearch(true)}
+              onCloseSearch={() => setShowModuleSearch(false)}
+              searchType="module"
+              onAddFromSearch={(code, name) => addPreq({ code, moduleName: name })}
+              onRemove={removePrereq}
+            />
 
-                <button
-                  type="button"
-                  className="btn btn-link p-0 d-inline-flex align-items-center justify-content-center"
-                  aria-label="Add course"
-                  onClick={() => { setShowModuleSearch(true); }}
-                >
-                  <i className="bi bi-plus icon-small" />
-                </button>
-
-                {showModuleSearch && (
-                  <SearchModal
-                    add={(code: string, name: string) => addPreq({ code, moduleName: name })}
-                    onClose={() => setShowModuleSearch(false)}
-                    type="module" />
-                )}
-              </div>
-
-              <div className="border rounded p-3" style={{ backgroundColor: 'var(--card-bg)' }}>
-                {preReqs && preReqs.length > 0 ? (
-                  <div className="d-flex flex-wrap gap-2">
-                    {preReqs.map((prereq) => (
-                      <span
-                        key={prereq.code}
-                        className="badge text-bg-secondary d-inline-flex align-items-center"
-                        style={{
-                          color: 'var(--text-color)',
-                          border: '1px solid var(--border-color)'
-                        }}
-                      >
-                        <span className="me-2">{prereq.code} - {prereq.moduleName}</span>
-                        <button
-                          type="button"
-                          className="btn p-0 d-inline-flex align-items-center justify-content-center ms-1"
-                          aria-label={`Remove ${prereq.code}`}
-                          onClick={() => { }}
-                        >
-                          <i className="bi bi-dash icon-small" />
-                        </button>
-                      </span>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="text-muted mb-0">No prerequisite modules</p>
-                )}
-              </div>
-            </div>
-
-            <div className="col-12">
-              <div className="d-flex align-items-center gap-2 mb-2">
-                <label className="form-label m-0">Associated Courses</label>
-
-                <button
-                  type="button"
-                  className="btn btn-link p-0 d-inline-flex align-items-center justify-content-center"
-                  aria-label="Add course"
-                  onClick={() => {setShowCourseSearch(true)}}
-                >
-                  <i className="bi bi-plus icon-small" />
-                </button>
-
-                {showCourseSearch && (
-                  <SearchModal
-                    add={(code: string, name: string) => addCourse({ code, courseName: name })}
-                    onClose={() => setShowCourseSearch(false)}
-                    type="course" />
-                )}
-
-              </div>
-
-              <div className="border rounded p-3" style={{ backgroundColor: 'var(--card-bg)' }}>
-                {courses && courses.length > 0 ? (
-                  <div className="d-flex flex-wrap gap-2">
-                    {courses.map((course) => (
-                      <span
-                        key={course.code}
-                        className="badge text-bg-secondary d-inline-flex align-items-center"
-                        style={{
-                          color: 'var(--text-color)',
-                          border: '1px solid var(--border-color)'
-                        }}
-                      >
-                        <span className="me-2">{course.code} - {course.courseName}</span>
-                        <button
-                          type="button"
-                          className="btn p-0 d-inline-flex align-items-center justify-content-center ms-1"
-                          aria-label={`Remove ${course.code}`}
-                          onClick={() => { removeCourse(course.code) }}
-                        >
-                          <i className="bi bi-dash icon-small" />
-                        </button>
-                      </span>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="text-muted mb-0">No associated courses</p>
-                )}
-              </div>
-            </div>
+            <RelatedListSection
+              title="Associated Courses"
+              items={courseItems}
+              openSearch={showCourseSearch}
+              onOpenSearch={() => setShowCourseSearch(true)}
+              onCloseSearch={() => setShowCourseSearch(false)}
+              searchType="course"
+              onAddFromSearch={(code, name) => addCourse({ code, courseName: name })}
+              onRemove={removeCourse}
+            />
           </div>
         </Modal.Body>
 

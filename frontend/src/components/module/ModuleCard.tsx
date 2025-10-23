@@ -1,5 +1,5 @@
 import type { ModuleExtendedProp } from "@/types";
-import { Row, Col, Card, ListGroup } from "react-bootstrap";
+import { Card, ListGroup } from "react-bootstrap";
 
 export function ModuleCard({ module }: { module: ModuleExtendedProp }) {
   // Format module type: "FIRST_SEMESTER" -> "First Semester"
@@ -11,22 +11,28 @@ export function ModuleCard({ module }: { module: ModuleExtendedProp }) {
   };
 
   return (
-    <Row className="row w-100 justify-content-center rounded-4 m-0">
-      <Col className="w-100 p-0">
-        <Card className="card">
-          <Card.Header>
-            <h2 className="mb-0">{module.moduleName}</h2>
-            <div className="d-flex gap-3">
-              <small className="small">Code: {module.code}</small>
-              <small className="small">Type: {formatModuleType(module.type)}</small>
-              <small className="small">NQF Level: {module.nqf_level}</small>
-              <small className="small">Credits: {module.credits}</small>
-              <small className="small">Prerequisites: {
-                (module.prerequisites) ? module.prerequisites.map(pr => pr.code).join(", ") : 'none'}</small>
+    <div className="w-100 d-flex justify-content-center">
+      <Card className="w-100" style={{ maxWidth: '1200px' }}>
+        <div className="d-flex flex-column flex-lg-row">
+          {/* Card Header - Module Information */}
+          <Card.Header className="flex-fill">
+            <h2 className="mb-3">{module.moduleName}</h2>
+            <div className="d-flex flex-column gap-2">
+              <div><strong>Code:</strong> {module.code}</div>
+              <div><strong>Type:</strong> {formatModuleType(module.type)}</div>
+              <div><strong>NQF Level:</strong> {module.nqf_level}</div>
+              <div><strong>Credits:</strong> {module.credits}</div>
+              <div><strong>Prerequisites:</strong> {
+                (module.prerequisites && module.prerequisites.length > 0) 
+                  ? module.prerequisites.map(pr => pr.code).join(", ") 
+                  : 'None'
+              }</div>
             </div>
           </Card.Header>
-          <Card.Body>
-            <h4>Associated Courses</h4>
+
+          {/* Card Body - Associated Courses */}
+          <Card.Body className="flex-fill border-start">
+            <h4 className="mb-3">Associated Courses</h4>
             {module.courses && Array.isArray(module.courses) && module.courses.length > 0 ? (
               <ListGroup className="list-group">
                 {module.courses.map((course) => (
@@ -37,13 +43,13 @@ export function ModuleCard({ module }: { module: ModuleExtendedProp }) {
                 ))}
               </ListGroup>
             ) : (
-              <div className="alert alert-info">
+              <div className="alert alert-info mb-0">
                 No courses associated with this module.
               </div>
             )}
           </Card.Body>
-        </Card>
-      </Col>
-    </Row>
+        </div>
+      </Card>
+    </div>
   );
 }
