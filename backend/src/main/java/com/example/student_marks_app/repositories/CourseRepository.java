@@ -9,6 +9,9 @@ import com.example.student_marks_app.models.course.Course;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -17,4 +20,28 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface CourseRepository extends JpaRepository<Course, String>{
     
     List<Course> findByCourseNameContainingIgnoreCase(String courseNamePart);
+    
+    @Transactional(readOnly = true)     
+    @Query(
+            value = """
+                        SELECT * FROM course
+                        WHERE LOWER(code) LIKE LOWER(CONCAT('%', :query, '%'))
+                        OR LOWER(course_name) LIKE LOWER(CONCAT('%', :query, '%')) 
+                    """,
+            nativeQuery = true
+    )
+    List<Course> search(@Param("query") String code);
+    
+    @Query(
+            value = """
+                        SELECT DISTINCT c
+                        FROM course
+                        WHERE dept_code = :deptCode
+                        AND (LOWER(code) LIKE LOWER(CONCAT('%', :query, '%'))
+                            OR LOWER(course_name) LIKE LOWER(CONCAT('%', :query, '%')))
+                    """,
+            nativeQuery = true
+    )
+    List<Course> searchModulesInDepartment(@Param("deptCode") long deptCode,
+                                                 @Param("query") String query);
 }

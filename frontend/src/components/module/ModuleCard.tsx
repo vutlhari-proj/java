@@ -22,7 +22,7 @@ export function ModuleCard({ module }: { module: ModuleExtendedProp }) {
               <small className="small">NQF Level: {module.nqf_level}</small>
               <small className="small">Credits: {module.credits}</small>
               <small className="small">Prerequisites: {
-                (module.prerequisites) ? module.prerequisites.join(", ") : 'none'}</small>
+                (module.prerequisites) ? module.prerequisites.map(pr => pr.code).join(", ") : 'none'}</small>
             </div>
           </Card.Header>
           <Card.Body>

@@ -97,6 +97,7 @@ public class CourseModuleService {
         CourseModule module = moduleRepository.findById(request.getCode())
                 .orElseThrow(() -> new RuntimeException("Course code not found: " + request.getCode()));
 
+        System.out.println(module.toString());
         if (!module.getModuleName().equals(request.getModuleName())) {
             module.setModuleName(request.getModuleName());
         }
@@ -144,7 +145,6 @@ public class CourseModuleService {
                 .collect(Collectors.toSet());
         
         Set<String> requestPrereqs = safeSet(request.getprerequisites());
-        
         if (!existingPrereqs.equals(requestPrereqs)) {
             Set<CourseModule> prereqs = requestPrereqs
                     .stream()
@@ -157,10 +157,13 @@ public class CourseModuleService {
             module.getPrerequisites().addAll(prereqs);
         }
         
+        System.out.println("module before check: " + module.toString());
         if (hasCircularPrerequisites(module, new HashSet<>())) {
+            System.err.println("Circular detected");
             throw new IllegalArgumentException("Circular prerequisites detected");
         }
         
+        System.out.println("updated module: " + module.toString());
         return moduleRepository.save(module);
     }
 
@@ -173,13 +176,15 @@ public class CourseModuleService {
     
     private boolean hasCircularPrerequisites(CourseModule module, Set<CourseModule> visited) {
         if (visited.contains(module)) {
+            System.err.println("circular link foun at: " + module.getCode());
             return true;
         }
 
         visited.add(module);
 
         for (CourseModule prereq : module.getPrerequisites()) {
-            if (hasCircularPrerequisites(module, new HashSet<>(visited))) {
+            if (hasCircularPrerequisites(prereq, new HashSet<>(visited))) {
+                System.err.println("cycle path: " + module.getCode() + " -> " + prereq.getCode());
                 return true;
             }
         }

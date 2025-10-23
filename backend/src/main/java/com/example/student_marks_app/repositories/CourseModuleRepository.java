@@ -5,6 +5,7 @@
 package com.example.student_marks_app.repositories;
 
 import com.example.student_marks_app.models.module.CourseModule;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -24,4 +25,28 @@ public interface CourseModuleRepository extends JpaRepository<CourseModule, Stri
             nativeQuery = true
     )
     void removeAsPrerequisite(@Param("code") String code); 
+    
+    @Transactional(readOnly = true)     
+    @Query(
+            value = """
+                        SELECT * FROM course_module
+                        WHERE LOWER(code) LIKE LOWER(CONCAT('%', :query, '%'))
+                        OR LOWER(module_name) LIKE LOWER(CONCAT('%', :query, '%')) 
+                    """,
+            nativeQuery = true
+    )
+    List<CourseModule> search(@Param("query") String code);
+    
+    @Query("""
+            SELECT DISTINCT m
+            FROM CourseModule m
+            JOIN CourseModuleMapping cmm ON cmm.module = m
+            JOIN cmm.course c
+            WHERE c.department.code = :deptCode
+            AND (LOWER(m.code) LIKE LOWER(CONCAT('%', :query, '%'))
+                OR LOWER(m.moduleName) LIKE LOWER(CONCAT('%', :query, '%')))
+           """
+    )
+    List<CourseModule> searchModulesInDepartment(@Param("deptCode") long deptCode,
+                                                 @Param("query") String query);
 }

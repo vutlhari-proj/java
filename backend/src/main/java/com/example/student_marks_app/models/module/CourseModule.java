@@ -164,4 +164,11 @@ public class CourseModule {
                 courses, 
                 prereqs);
     }
+
+    @Override
+    public String toString() {
+        return "CourseModule{" + "code=" + code + ", moduleName=" + moduleName + ", type=" + type + ", credits=" + credits + ", nqf_level=" + nqf_level + ", elective=" + elective + ", prerequisites=" + prerequisites + ", courseModules=" + courseModules + '}';
+    }
+    
+    
 }

@@ -8,6 +8,7 @@ import { ModuleConfigs } from "@/types";
 import { useState, useEffect } from "react";
 import { usePutData } from "@/hooks";
 import { formatModuleType } from "./moduleUtil";
+import { SearchModal } from "./searchModal";
 interface ModuleModalProps {
   module: ModuleExtendedProp | null;
   show: boolean;
@@ -25,8 +26,9 @@ export function ModuleModal({ module, show, onHide, refetch }: ModuleModalProps)
   const [credits, setCredits] = useState(module?.credits || 0);
   const [preReqs, setPreReqs] = useState(module?.prerequisites || []);
   const [courses, setCourses] = useState(module?.courses || []);
-  const [isDirty, setIsDirty] = useState(false); 
-
+  const [isDirty, setIsDirty] = useState(false);
+  const [showModuleSearch, setShowModuleSearch] = useState(false);
+  const [showCourseSearch, setShowCourseSearch] = useState(false);
   // Initialize the PUT hook at component level
   const { mutateData: updateModule, isLoading } = usePutData<ModuleRequest>({
     apiEndpoint: ModuleConfigs().module.put.apiEndpoint,
@@ -66,166 +68,240 @@ export function ModuleModal({ module, show, onHide, refetch }: ModuleModalProps)
     });
   };
 
+  const addPreq = (prereq: {code: string, moduleName: string}) =>{
+    setPreReqs([...preReqs, prereq]);
+    setIsDirty(true);
+  }
+
+
+  const addCourse = (course: { code: string; courseName: string }) => {
+    setCourses([...courses, course]);
+    setIsDirty(true);
+  };
 
   const removeCourse = (code: string) => {
     setCourses(courses.filter(c => c.code !== code));
     setIsDirty(true);
-  }
+  };
 
   return (
-    <Modal
-      className="modal"
-      show={show}
-      onHide={onHide}
-      centered
-      size="xl"
-    >
-      <Modal.Header closeButton className="border-bottom">
-        <Modal.Title>
-          <i className="bi bi-pencil-square me-2"></i>
-          Edit Module: {module?.code}
-        </Modal.Title>
-      </Modal.Header>
+    <>
+      <Modal
+        className="modal"
+        show={show}
+        onHide={onHide}
+        centered
+        size="xl"
+        keyboard={false}
+      >
+        <Modal.Header closeButton className="border-bottom">
+          <Modal.Title>
+            <i className="bi bi-pencil-square me-2"></i>
+            Edit Module: {module?.code}
+          </Modal.Title>
+        </Modal.Header>
 
-      <Modal.Body className="p-4">
-        <div className="row g-3">
-          <div className="col-md-6">
-            <label className="form-label">Module Code</label>
-            <input
-              type="text"
-              className="form-control opacity-50"
-              style={{ border: 'none', boxShadow: 'none' }}
-              value={code}
-              placeholder="Enter module code"
-              readOnly
-            />
-          </div>
-          <div className="col-md-6">
-            <label className="form-label">Module Name</label>
-            <input
-              type="text"
-              className="form-control"
-              value={name}
-              placeholder="Enter module name"
-              onChange={(e) => { setName(e.target.value); setIsDirty(true); }}
-            />
-          </div>
-          <div className="col-md-6">
-            <label className="form-label">Module Type</label>
-            <select
-              className="form-select"
-              defaultValue={formatModuleType(module?.type) || ''}
-              onChange={(e) => { setType(e.target.value); setIsDirty(true); }}
-            >
-              <option value="">Select module type</option>
-              {config.module_types.data.map((type) => (
-                <option key={type} value={type}>
-                  {type}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="col-md-6">
-            <label className="form-label">NQF Level</label>
-            <select
-              className="form-select"
-              defaultValue={module?.nqf_level?.toString() || ''}
-              onChange={(e) => { setNqf(Number(e.target.value)); setIsDirty(true); console.log(e.target.value) }}
-            >
-              <option value="">Select NQF level</option>
-              {config.nqf_levels.data.map((level) => (
-                <option key={level} value={level}>
-                  Level {level}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="col-md-6">
-            <label className="form-label">Credits</label>
-            <select
-              className="form-select"
-              defaultValue={module?.credits?.toString() || ''}
-              onChange={(e) => { setCredits(Number(e.target.value)); setIsDirty(true); }}
-            >
-              <option value="">Select credits</option>
-              {config.credits.data.map((credit) => (
-                <option key={credit} value={credit}>
-                  {credit} credits
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="col-12">
-            <div className="d-flex align-items-center gap-2 mb-2">
-              <label className="form-label m-0">Associated Courses</label>
-
-              <button
-                type="button"
-                className="btn btn-link p-0 d-inline-flex align-items-center justify-content-center"
-                aria-label="Add course"
-                onClick={() => {/* open add-course UI */}}
+        <Modal.Body className="p-4">
+          <div className="row g-3">
+            <div className="col-md-6">
+              <label className="form-label">Module Code</label>
+              <input
+                type="text"
+                className="form-control opacity-50"
+                style={{ border: 'none', boxShadow: 'none' }}
+                value={code}
+                placeholder="Enter module code"
+                readOnly
+              />
+            </div>
+            <div className="col-md-6">
+              <label className="form-label">Module Name</label>
+              <input
+                type="text"
+                className="form-control"
+                value={name}
+                placeholder="Enter module name"
+                onChange={(e) => { setName(e.target.value); setIsDirty(true); }}
+              />
+            </div>
+            <div className="col-md-6">
+              <label className="form-label">Module Type</label>
+              <select
+                className="form-select"
+                defaultValue={formatModuleType(module?.type) || ''}
+                onChange={(e) => { setType(e.target.value); setIsDirty(true); }}
               >
-                <i className="bi bi-plus icon-small" />
-              </button>
+                <option value="">Select module type</option>
+                {config.module_types.data.map((type) => (
+                  <option key={type} value={type}>
+                    {type}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="col-md-6">
+              <label className="form-label">NQF Level</label>
+              <select
+                className="form-select"
+                defaultValue={module?.nqf_level?.toString() || ''}
+                onChange={(e) => { setNqf(Number(e.target.value)); setIsDirty(true); console.log(e.target.value) }}
+              >
+                <option value="">Select NQF level</option>
+                {config.nqf_levels.data.map((level) => (
+                  <option key={level} value={level}>
+                    Level {level}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="col-md-6">
+              <label className="form-label">Credits</label>
+              <select
+                className="form-select"
+                defaultValue={module?.credits?.toString() || ''}
+                onChange={(e) => { setCredits(Number(e.target.value)); setIsDirty(true); }}
+              >
+                <option value="">Select credits</option>
+                {config.credits.data.map((credit) => (
+                  <option key={credit} value={credit}>
+                    {credit} credits
+                  </option>
+                ))}
+              </select>
             </div>
 
-            <div className="border rounded p-3" style={{ backgroundColor: 'var(--card-bg)' }}>
-              {courses && courses.length > 0 ? (
-                <div className="d-flex flex-wrap gap-2">
-                  {courses.map((course) => (
-                    <span
-                      key={course.code}
-                      className="badge text-bg-secondary d-inline-flex align-items-center"
-                      style={{
-                        color: 'var(--text-color)',
-                        border: '1px solid var(--border-color)'
-                      }}
-                    >
-                      <span className="me-2">{course.code} - {course.courseName}</span>
-                      <button
-                        type="button"
-                        className="btn p-0 d-inline-flex align-items-center justify-content-center ms-1"
-                        aria-label={`Remove ${course.code}`}
-                        onClick={() => { removeCourse(course.code) }}
+            <div className="col-12">
+              <div className="d-flex align-items-center gap-2 mb-2 position-relative">
+                <label className="form-label m-0">Prerequisite Modules</label>
+
+                <button
+                  type="button"
+                  className="btn btn-link p-0 d-inline-flex align-items-center justify-content-center"
+                  aria-label="Add course"
+                  onClick={() => { setShowModuleSearch(true); }}
+                >
+                  <i className="bi bi-plus icon-small" />
+                </button>
+
+                {showModuleSearch && (
+                  <SearchModal
+                    add={(code: string, name: string) => addPreq({ code, moduleName: name })}
+                    onClose={() => setShowModuleSearch(false)}
+                    type="module" />
+                )}
+              </div>
+
+              <div className="border rounded p-3" style={{ backgroundColor: 'var(--card-bg)' }}>
+                {preReqs && preReqs.length > 0 ? (
+                  <div className="d-flex flex-wrap gap-2">
+                    {preReqs.map((prereq) => (
+                      <span
+                        key={prereq.code}
+                        className="badge text-bg-secondary d-inline-flex align-items-center"
+                        style={{
+                          color: 'var(--text-color)',
+                          border: '1px solid var(--border-color)'
+                        }}
                       >
-                        <i className="bi bi-dash icon-small" />
-                      </button>
-                    </span>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-muted mb-0">No associated courses</p>
-              )}
+                        <span className="me-2">{prereq.code} - {prereq.moduleName}</span>
+                        <button
+                          type="button"
+                          className="btn p-0 d-inline-flex align-items-center justify-content-center ms-1"
+                          aria-label={`Remove ${prereq.code}`}
+                          onClick={() => { }}
+                        >
+                          <i className="bi bi-dash icon-small" />
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-muted mb-0">No prerequisite modules</p>
+                )}
+              </div>
+            </div>
+
+            <div className="col-12">
+              <div className="d-flex align-items-center gap-2 mb-2">
+                <label className="form-label m-0">Associated Courses</label>
+
+                <button
+                  type="button"
+                  className="btn btn-link p-0 d-inline-flex align-items-center justify-content-center"
+                  aria-label="Add course"
+                  onClick={() => {setShowCourseSearch(true)}}
+                >
+                  <i className="bi bi-plus icon-small" />
+                </button>
+
+                {showCourseSearch && (
+                  <SearchModal
+                    add={(code: string, name: string) => addCourse({ code, courseName: name })}
+                    onClose={() => setShowCourseSearch(false)}
+                    type="course" />
+                )}
+
+              </div>
+
+              <div className="border rounded p-3" style={{ backgroundColor: 'var(--card-bg)' }}>
+                {courses && courses.length > 0 ? (
+                  <div className="d-flex flex-wrap gap-2">
+                    {courses.map((course) => (
+                      <span
+                        key={course.code}
+                        className="badge text-bg-secondary d-inline-flex align-items-center"
+                        style={{
+                          color: 'var(--text-color)',
+                          border: '1px solid var(--border-color)'
+                        }}
+                      >
+                        <span className="me-2">{course.code} - {course.courseName}</span>
+                        <button
+                          type="button"
+                          className="btn p-0 d-inline-flex align-items-center justify-content-center ms-1"
+                          aria-label={`Remove ${course.code}`}
+                          onClick={() => { removeCourse(course.code) }}
+                        >
+                          <i className="bi bi-dash icon-small" />
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-muted mb-0">No associated courses</p>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-      </Modal.Body>
+        </Modal.Body>
 
-      <Modal.Footer>
-        <button
-         className="btn btn-secondary" onClick={onHide} disabled={isLoading}>
-          <i className="bi bi-x-lg me-2"></i>
-          Cancel
-        </button>
-        <button
-          className="btn btn-primary"
-          onClick={handleOnclickSave}
-          disabled={!isDirty || isLoading}
-          title={!isDirty && !isLoading ? 'No changes to save' : undefined}
-        >
-          {isLoading ? (
-            <>
-              <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-              Saving...
-            </>
-          ) : (
-            <>
-              <i className="bi bi-check-lg me-2"></i>
-              Save Changes
-            </>
-          )}
-        </button>
-      </Modal.Footer>
-    </Modal>
+        <Modal.Footer>
+          <button
+            className="btn btn-secondary" onClick={onHide} disabled={isLoading}>
+            <i className="bi bi-x-lg me-2"></i>
+            Cancel
+          </button>
+          <button
+            className="btn btn-primary"
+            onClick={handleOnclickSave}
+            disabled={!isDirty || isLoading}
+            title={!isDirty && !isLoading ? 'No changes to save' : undefined}
+          >
+            {isLoading ? (
+              <>
+                <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                Saving...
+              </>
+            ) : (
+              <>
+                <i className="bi bi-check-lg me-2"></i>
+                Save Changes
+              </>
+            )}
+          </button>
+        </Modal.Footer>
+      </Modal>
+
+    </>
   );
 }
