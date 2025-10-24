@@ -21,7 +21,7 @@ export interface ModuleRequest extends ModuleProp {
   courseCodes: string[];
 }
 
-type SearchType = "module" | "course";
+type SearchType = "module" | "course" | string;
 export interface ModuleSearchRequest{
   query: string;
   type: SearchType;

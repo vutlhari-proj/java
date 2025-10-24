@@ -76,10 +76,6 @@
   transition: background-color 0.2s ease;
 }
 
-.img-container:hover {
-  background-color: var(--hover-bg) !important;
-}
-
 .img-container:hover .tooltip {
   opacity: 1;
 }
@@ -111,4 +107,22 @@ tr {
 .table-row:hover{
   opacity: .5;
   cursor: pointer;
+}
+
+.search_box .input_box{
+  width: 18rem;
+}
+.search_box .input_box div {
+  opacity: 0.8;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: 10px;
+  
+}
+
+.search_box .input_box div .bi-search{
+  font-size: 0.8rem;
 }

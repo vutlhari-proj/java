@@ -14,22 +14,22 @@ interface TableConfig {
 export const tableConfigs: Record<string, TableConfig> = {
   courses: {
     columns: [
-      { key: 'code', header: 'Course Code' },
-      { key: 'courseName', header: 'Course Name' }
+      { key: "code", header: "Course Code" },
+      { key: "courseName", header: "Course Name" },
     ],
-    entityName: 'course',
-    idKey: 'code',
-    apiEndpoint: '/api/courses',
-    cacheKey: 'courses'
+    entityName: "course",
+    idKey: "code",
+    apiEndpoint: "/api/courses",
+    cacheKey: "courses",
   },
   modules: {
     columns: [
-      { key: 'code', header: 'Module Code' },
-      { key: 'moduleName', header: 'Module Name' }
+      { key: "code", header: "Module Code" },
+      { key: "moduleName", header: "Module Name" },
     ],
-    entityName: 'module',
-    idKey: 'code',
-    apiEndpoint: '/api/modules',
-    cacheKey: 'modules'
-  }
+    entityName: "module",
+    idKey: "code",
+    apiEndpoint: "/api/modules",
+    cacheKey: "modules",
+  },
 };
