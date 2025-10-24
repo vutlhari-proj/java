@@ -1,7 +1,9 @@
 import type { ModuleExtendedProp } from "@/types";
-import { Card, ListGroup } from "react-bootstrap";
+import { Card, ListGroup, Badge } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 export function ModuleCard({ module }: { module: ModuleExtendedProp }) {
+  const navigate = useNavigate();
   // Format module type: "FIRST_SEMESTER" -> "First Semester"
   const formatModuleType = (type: string) => {
     return type
@@ -22,9 +24,27 @@ export function ModuleCard({ module }: { module: ModuleExtendedProp }) {
               <div><strong>Type:</strong> {formatModuleType(module.type)}</div>
               <div><strong>NQF Level:</strong> {module.nqf_level}</div>
               <div><strong>Credits:</strong> {module.credits}</div>
+              <div><strong>Elective:</strong> {module.elective ? 'Yes' : 'No'}</div>
               <div><strong>Prerequisites:</strong> {
-                (module.prerequisites && module.prerequisites.length > 0) 
-                  ? module.prerequisites.map(pr => pr.code).join(", ") 
+                (module.prerequisites && module.prerequisites.length > 0)
+                  ? (
+                    <span className="d-inline-flex flex-wrap gap-2 align-items-center">
+                      {module.prerequisites.map((pr) => (
+                        <Badge
+                          key={pr.code}
+                          bg="primary"
+                          pill
+                          role="button"
+                          tabIndex={0}
+                          className="me-1"
+                          style={{ cursor: 'pointer' }}
+                          onClick={() => navigate(`/modules/module?code=${pr.code}`)}
+                        >
+                          {pr.code}
+                        </Badge>
+                      ))}
+                    </span>
+                  )
                   : 'None'
               }</div>
             </div>

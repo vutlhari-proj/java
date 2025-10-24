@@ -17,16 +17,18 @@ public class ModuleDTO {
     private String type;
     private int credits;
     private int nqf_level;
+    private boolean elective;
     private Set<ModuleSummary> prerequisites;
     private List<CourseSummaryDTO> courses;
 
     public ModuleDTO(String code, String moduleName, String type, int credits, int nqf_level,
-            List<CourseSummaryDTO> courses, Set<ModuleSummary> prerequisites) {
+            boolean elective, List<CourseSummaryDTO> courses, Set<ModuleSummary> prerequisites) {
         this.code = code;
         this.moduleName = moduleName;
         this.type = type;
         this.credits = credits;
         this.nqf_level = nqf_level;
+        this.elective = elective;
         this.courses = courses;
         this.prerequisites = prerequisites;
     }
@@ -86,6 +88,16 @@ public class ModuleDTO {
     public void setNqf_level(int nqf_level) {
         this.nqf_level = nqf_level;
     }
+
+    public boolean isElective() {
+        return elective;
+    }
+
+    public void setElective(boolean elective) {
+        this.elective = elective;
+    }
+    
+    
 
     public Set<ModuleSummary> getPrerequisites() {
         return prerequisites;

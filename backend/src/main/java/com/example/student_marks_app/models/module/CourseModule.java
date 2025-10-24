@@ -161,6 +161,7 @@ public class CourseModule {
                 type != null? type.toString() : "UNKNWON" , 
                 credits != null ? credits.getValue() : 0,
                 nqf_level != null ? nqf_level.getValue() : 0,
+                elective || false,
                 courses, 
                 prereqs);
     }

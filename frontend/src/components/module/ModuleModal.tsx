@@ -23,6 +23,7 @@ export function ModuleModal({ module, show, onHide, refetch }: ModuleModalProps)
   const [name, setName] = useState(module?.moduleName || '');
   const [type, setType] = useState(module?.type || '');
   const [nqf, setNqf] = useState(module?.nqf_level || 0);
+  const [isElective, setIsElective] = useState(module?.elective || false);
   const [credits, setCredits] = useState(module?.credits || 0);
   const [preReqs, setPreReqs] = useState(module?.prerequisites || []);
   const [courses, setCourses] = useState(module?.courses || []);
@@ -51,6 +52,7 @@ export function ModuleModal({ module, show, onHide, refetch }: ModuleModalProps)
       setType(module.type || '');
       setNqf(module.nqf_level || 0);
       setCredits(module.credits || 0);
+      setIsElective(module.elective || false);
       setPreReqs(module.prerequisites || []);
       setCourses(module.courses || []);
     }
@@ -63,12 +65,15 @@ export function ModuleModal({ module, show, onHide, refetch }: ModuleModalProps)
       type: type.replaceAll(' ', '_').trim(),
       nqf_level: nqf,
       credits,
+      elective: isElective,
       prerequisites: preReqs.map(pr => pr.code),
       courseCodes: courses.map(c => c.code)
     });
+
+    console.log(isElective);
   };
 
-  const addPreq = (prereq: {code: string, moduleName: string}) =>{
+  const addPreq = (prereq: { code: string, moduleName: string }) => {
     setPreReqs([...preReqs, prereq]);
     setIsDirty(true);
   }
@@ -178,6 +183,22 @@ export function ModuleModal({ module, show, onHide, refetch }: ModuleModalProps)
               </select>
             </div>
 
+            <div className="col-md-6">
+              <label className="form-label">Elective</label>
+              <select
+                className="form-select"
+                defaultValue={module?.elective ? 'true' : 'false'}
+                onChange={(e) => { setIsElective(Boolean(e.target.value)); setIsDirty(true); 
+                  console.log((Boolean(e.target.value)))
+                }}
+              >
+                <option value="">Select elective status</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+              </select>
+            </div>
+
+
             <RelatedListSection
               title="Prerequisite Modules"
               items={prereqItems}
@@ -227,7 +248,7 @@ export function ModuleModal({ module, show, onHide, refetch }: ModuleModalProps)
             )}
           </button>
         </Modal.Footer>
-      </Modal>
+      </Modal >
 
     </>
   );
