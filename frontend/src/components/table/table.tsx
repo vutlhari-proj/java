@@ -3,7 +3,7 @@ import { Role } from "@/services";
 import './table.css';
 import type { GenericTableProps, TableData } from "@/types/tables";
 import { useNavigate } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "@/context/auth/AuthContext";
 import { usePostData } from "@/hooks";
 import type { ModuleSearchRequest, CourseProp, ModuleProp } from "@/types";
@@ -20,6 +20,11 @@ export function Table({ data, columns, entityName, idKey }: GenericTableProps) {
   const [query, setQuery] = useState("");
   const [searchedItems, setSearchedItems] = useState<(ModuleProp | CourseProp)[]>([]);
   const [isSearching, setIsSearching] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, [displaySearchInput]);
 
   const { mutateData: search, isLoading } = usePostData<ModuleSearchRequest, { results: ModuleProp[] | CourseProp[] }>({
     apiEndpoint: "/api/search",
@@ -76,8 +81,8 @@ export function Table({ data, columns, entityName, idKey }: GenericTableProps) {
                     <div className="input_box">
                       <input
                         className="input_field px-2 py-1 rounded-2"
-                        onChange={(e) => { setQuery(e.target.value) }} />
-
+                        onChange={(e) => { setQuery(e.target.value) }} 
+                        ref={inputRef}/>
                       <div>
                         <i className="bi bi-search icon-medium"></i>
                       </div>
