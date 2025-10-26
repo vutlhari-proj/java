@@ -87,6 +87,14 @@ public class CourseModule {
         return code;
     }
 
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public void setNqf_level(Nqf_Level nqf_level) {
+        this.nqf_level = nqf_level;
+    }
+
     public String getModuleName() {
         return moduleName;
     }

@@ -9,6 +9,7 @@ interface TableConfig {
   idKey: string;
   apiEndpoint: string;
   cacheKey: string;
+  pages?: (index: number, size: number) => string;
 }
 
 export const tableConfigs: Record<string, TableConfig> = {
@@ -31,5 +32,6 @@ export const tableConfigs: Record<string, TableConfig> = {
     idKey: "code",
     apiEndpoint: "/api/modules",
     cacheKey: "modules",
+    pages: (index: number, size: number) => `/api/modules?page=${index}&size=${size}`,
   },
 };

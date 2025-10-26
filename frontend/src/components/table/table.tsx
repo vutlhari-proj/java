@@ -9,7 +9,7 @@ import { usePostData } from "@/hooks";
 import type { ModuleSearchRequest, CourseProp, ModuleProp } from "@/types";
 import { Loading } from "../loading/Loading";
 
-export function Table({ data, columns, entityName, idKey }: GenericTableProps) {
+export function Table({ data, columns, entityName, idKey, onLoadMore, hasMore = false, isLoadingMore = false }: GenericTableProps) {
   console.log("Table received data:", data);
   console.log("data type:", typeof data);
   console.log("is array:", Array.isArray(data));
@@ -21,6 +21,8 @@ export function Table({ data, columns, entityName, idKey }: GenericTableProps) {
   const [searchedItems, setSearchedItems] = useState<(ModuleProp | CourseProp)[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const loadMoreTriggerRef = useRef<HTMLTableRowElement>(null);
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -62,6 +64,33 @@ export function Table({ data, columns, entityName, idKey }: GenericTableProps) {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [displaySearchInput]);
+
+  // Infinite scroll: Trigger load more when user scrolls near bottom
+  useEffect(() => {
+    if (!onLoadMore || !hasMore || isLoadingMore || query.trim().length >= 2) {
+      return; // Don't trigger during search or when no more data
+    }
+
+    const trigger = loadMoreTriggerRef.current;
+    if (!trigger) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        if (entry.isIntersecting && hasMore && !isLoadingMore) {
+          onLoadMore();
+        }
+      },
+      {
+        root: scrollContainerRef.current,
+        rootMargin: '200px', // Trigger 200px before reaching the element
+        threshold: 0.1,
+      }
+    );
+
+    observer.observe(trigger);
+    return () => observer.disconnect();
+  }, [onLoadMore, hasMore, isLoadingMore, query]);
 
   return (
     <div className="table-container d-flex flex-column align-items-center w-100 h-100">
@@ -111,7 +140,7 @@ export function Table({ data, columns, entityName, idKey }: GenericTableProps) {
           </tr>
         </thead>
       </TableBs>
-      <div className="table-scroll-container">
+      <div className="table-scroll-container" ref={scrollContainerRef}>
         <TableBs borderless hover className="mb-0 custom-table-body" style={{ borderBottomLeftRadius: '10px', borderBottomRightRadius: '10px' }}>
           <tbody>
             {
@@ -181,6 +210,27 @@ export function Table({ data, columns, entityName, idKey }: GenericTableProps) {
                     </tr>
                   ))
             }
+            {/* Infinite scroll trigger and loading indicator */}
+            {data && data.length > 0 && query.trim().length < 2 && (
+              <tr ref={loadMoreTriggerRef}>
+                <td colSpan={columns.length} style={{ textAlign: 'center', padding: '1rem' }}>
+                  {isLoadingMore && (
+                    <div className="d-flex justify-content-center align-items-center gap-2">
+                      <div className="spinner-border spinner-border-sm text-primary" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                      </div>
+                      <span className="text-muted">Loading more {entityName}s...</span>
+                    </div>
+                  )}
+                  {!isLoadingMore && hasMore && (
+                    <span className="text-muted" style={{ fontSize: '0.875rem' }}>Scroll for more</span>
+                  )}
+                  {!hasMore && data.length > 0 && (
+                    <span className="text-muted" style={{ fontSize: '0.875rem' }}>All {entityName}s loaded</span>
+                  )}
+                </td>
+              </tr>
+            )}
           </tbody>
         </TableBs>
       </div>

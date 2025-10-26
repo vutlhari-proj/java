@@ -4,8 +4,11 @@
  */
 package com.example.student_marks_app.repositories;
 
+import com.example.student_marks_app.dtos.ModuleSummary;
 import com.example.student_marks_app.models.module.CourseModule;
 import java.util.List;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -49,4 +52,6 @@ public interface CourseModuleRepository extends JpaRepository<CourseModule, Stri
     )
     List<CourseModule> searchModulesInDepartment(@Param("deptCode") long deptCode,
                                                  @Param("query") String query);
+    
+    Page<ModuleSummary> findAllBy(Pageable pageable);
 }

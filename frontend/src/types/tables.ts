@@ -12,4 +12,7 @@ export interface GenericTableProps {
   columns: TableColumn[];
   entityName: "module" | "course" | string; // "course" or "module"
   idKey: string; // "code" for courses, and modules
+  onLoadMore?: () => void; // Callback to load next page
+  hasMore?: boolean; // Whether there are more pages to load
+  isLoadingMore?: boolean; // Whether currently loading next page
 }

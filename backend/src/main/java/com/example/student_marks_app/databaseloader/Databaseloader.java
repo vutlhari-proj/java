@@ -8,6 +8,8 @@ import com.example.student_marks_app.models.course.Course;
 import com.example.student_marks_app.models.department.Department;
 import com.example.student_marks_app.models.faculty.Faculty;
 import com.example.student_marks_app.models.module.CourseModule;
+import com.example.student_marks_app.models.module.Credits;
+import com.example.student_marks_app.models.module.Nqf_Level;
 import com.example.student_marks_app.repositories.CourseModuleRepository;
 import com.example.student_marks_app.repositories.CourseRepository;
 import com.example.student_marks_app.repositories.DepartmentRepository;
@@ -47,6 +49,35 @@ public class Databaseloader {
     public Databaseloader() {
     }
     
+    /*@PostConstruct
+    public void loadMod(){
+        try(BufferedReader br = new BufferedReader(
+                new FileReader("C:\\Users\\vutlh\\Downloads\\modules_formatted.txt"))){
+            String line;
+            
+            while((line = br.readLine()) != null){
+                line = line.trim();
+                
+                String tokens[] = line.split("#");
+                if(tokens.length < 4) continue;
+                String code = tokens[0];
+                String name = tokens[1];
+                Credits credits = Credits.fromValue(Integer.parseInt(tokens[2]));
+                Nqf_Level nqf = Nqf_Level.fromValue(Integer.parseInt(tokens[3]));
+                
+                CourseModule module = new CourseModule();
+                module.setCode(code);
+                module.setModuleName(name);
+                module.setCredits(credits);
+                module.setNqf_level(nqf);
+                moduleRepository.save(module);
+            }
+            
+            System.out.println("success");
+        } catch (IOException ex) {
+            Logger.getLogger(Databaseloader.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     /*@PostConstruct
     public void loadFac(){
         try(BufferedReader br = new BufferedReader(

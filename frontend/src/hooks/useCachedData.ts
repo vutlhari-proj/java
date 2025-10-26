@@ -66,16 +66,22 @@ export function useCachedData<T>({
       const response = await axios.get<T[]>(apiEndpoint);
       console.log("API Response:", response.data);
       
-      // Validate response data
-      if (!Array.isArray(response.data)) {
-        throw new Error('Expected array response from API');
+      // Validate response data - handle both array and paginated responses
+      let dataToCache: T[];
+      if (Array.isArray(response.data)) {
+        dataToCache = response.data;
+      } else if (response.data && typeof response.data === 'object' && 'content' in response.data) {
+        // Handle paginated response - store the whole object
+        dataToCache = response.data as T[];
+      } else {
+        throw new Error('Expected array or paginated response from API');
       }
       
       // Cache the data
-      localStorage.setItem(cacheKey, JSON.stringify(response.data));
+      localStorage.setItem(cacheKey, JSON.stringify(dataToCache));
       localStorage.setItem(`${cacheKey}_timestamp`, Date.now().toString());
       
-      setData(response.data);
+      setData(dataToCache);
     } catch (err) {
       console.error(`Error fetching ${cacheKey}:`, err);
       
