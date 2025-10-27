@@ -78,6 +78,44 @@ public class Databaseloader {
             Logger.getLogger(Databaseloader.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    /*@PostConstruct
+    public void loadCourse(){
+        System.out.println("called");
+        int counter = 0;
+        try(BufferedReader br = new BufferedReader(
+                new FileReader("C:\\Users\\vutlh\\Downloads\\courses (3).txt"))){
+            String line;
+            
+            while((line = br.readLine()) != null){
+                line = line.trim();
+                
+                String tokens[] = line.split("#");
+                if(tokens.length < 4) continue;
+                String code = tokens[0];
+                String name = tokens[1];
+                Nqf_Level nqf = Nqf_Level.fromValue(Integer.parseInt(tokens[2]));
+                Credits credits = Credits.fromValue(Integer.parseInt(tokens[3]));
+                
+                
+                Course course = new Course();
+                course.setCode(code);
+                course.setCourseName(name);
+                course.setCredits(credits);
+                course.setNqf_level(nqf);
+                counter++;
+                System.out.println("line " + counter + " " + course.toString());
+                courseRepository.save(course);
+                
+            }
+            
+            System.out.println("success");
+        } catch (IOException ex) {
+            System.err.println("line " + counter);
+            Logger.getLogger(Databaseloader.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     /*@PostConstruct
     public void loadFac(){
         try(BufferedReader br = new BufferedReader(

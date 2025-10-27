@@ -8,7 +8,6 @@ import com.example.student_marks_app.coursemodulemapping.CourseModuleId;
 import com.example.student_marks_app.coursemodulemapping.CourseModuleMapping;
 import com.example.student_marks_app.dtos.CourseDTO;
 import com.example.student_marks_app.dtos.CourseSummaryDTO;
-import com.example.student_marks_app.dtos.ModuleDTO;
 import com.example.student_marks_app.dtos.ModuleSummary;
 import com.example.student_marks_app.models.course.Course;
 import com.example.student_marks_app.models.module.CourseModule;
@@ -26,7 +25,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.student_marks_app.repositories.CourseModuleRepository;
 import com.example.student_marks_app.repositories.DepartmentRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.server.ResponseStatusException;
@@ -56,11 +58,25 @@ public class CourseRestController {
         this.deptRepository = deptRepository;
     }
     
-    @GetMapping
+    /*@GetMapping
     public List<CourseSummaryDTO> getAllCourse(){
         return courseRepository.findAll().stream()
                 .map(Course::shortHand)
                 .toList();
+    }*/
+    
+    @GetMapping
+    public ResponseEntity<?> getAllCourses(@RequestParam(defaultValue = "0") int page,
+                                            @RequestParam(defaultValue = "200") int size){
+        try{
+            Page<CourseSummaryDTO> pageable = 
+                    courseRepository.findAllBy(PageRequest.of(page, size));
+            System.out.println(pageable);
+            return ResponseEntity.ok(pageable);
+        }
+        catch(IllegalArgumentException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
     
     @GetMapping("/{code}")

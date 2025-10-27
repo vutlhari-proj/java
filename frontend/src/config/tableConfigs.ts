@@ -22,6 +22,7 @@ export const tableConfigs: Record<string, TableConfig> = {
     idKey: "code",
     apiEndpoint: "/api/courses",
     cacheKey: "courses",
+    pages: (index: number, size: number) => `/api/courses?page=${index}&size=${size}`,
   },
   modules: {
     columns: [

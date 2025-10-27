@@ -23,6 +23,7 @@ export function Table({ data, columns, entityName, idKey, onLoadMore, hasMore = 
   const inputRef = useRef<HTMLInputElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const loadMoreTriggerRef = useRef<HTMLTableRowElement>(null);
+  const loadMoreRequestedRef = useRef(false);
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -77,7 +78,8 @@ export function Table({ data, columns, entityName, idKey, onLoadMore, hasMore = 
     const observer = new IntersectionObserver(
       (entries) => {
         const [entry] = entries;
-        if (entry.isIntersecting && hasMore && !isLoadingMore) {
+        if (entry.isIntersecting && hasMore && !isLoadingMore && !loadMoreRequestedRef.current) {
+          loadMoreRequestedRef.current = true; // gate until parent flips isLoadingMore
           onLoadMore();
         }
       },
@@ -91,6 +93,13 @@ export function Table({ data, columns, entityName, idKey, onLoadMore, hasMore = 
     observer.observe(trigger);
     return () => observer.disconnect();
   }, [onLoadMore, hasMore, isLoadingMore, query]);
+
+  // Reset the local gate once loading cycle completes
+  useEffect(() => {
+    if (!isLoadingMore) {
+      loadMoreRequestedRef.current = false;
+    }
+  }, [isLoadingMore]);
 
   return (
     <div className="table-container d-flex flex-column align-items-center w-100 h-100">

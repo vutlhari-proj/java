@@ -4,12 +4,15 @@
  */
 package com.example.student_marks_app.models.module;
 
+import com.example.student_marks_app.converters.CreditsConverter;
+import com.example.student_marks_app.converters.NqfConverter;
 import com.example.student_marks_app.coursemodulemapping.CourseModuleMapping;
 import com.example.student_marks_app.dtos.CourseSummaryDTO;
 import com.example.student_marks_app.dtos.ModuleDTO;
 import com.example.student_marks_app.dtos.ModuleSummary;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -39,11 +42,11 @@ public class CourseModule {
     @Enumerated(EnumType.STRING)
     private Type type = Type.FIRST_SEMESTER;
             
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = CreditsConverter.class)
     private Credits credits = Credits.TWO;
     
-    @Column(name = "nqf_level", length = 10)
-    @Enumerated(EnumType.STRING)
+    @Column(name = "nqf_level")
+    @Convert(converter = NqfConverter.class)
     private Nqf_Level nqf_level = Nqf_Level.FIVE;
     
     private boolean elective = false;
