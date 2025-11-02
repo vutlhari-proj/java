@@ -51,7 +51,7 @@ export function ModuleCard({ module }: { module: ModuleExtendedProp }) {
           </Card.Header>
 
           {/* Card Body - Associated Courses */}
-          <Card.Body className="flex-fill border-start">
+          <Card.Body className="flex-fill">
             <h4 className="mb-3">Associated Courses</h4>
             {module.courses && Array.isArray(module.courses) && module.courses.length > 0 ? (
               <ListGroup className="list-group">

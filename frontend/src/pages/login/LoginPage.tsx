@@ -31,7 +31,7 @@ function LoginForm() {
     }
 
     try {
-      const response = await axios.post("/api/auth/login", { username, password }, { withCredentials: true });
+      const response = await axios.post("http://10.2.40.218:8081/api/auth/login", { username, password }, { withCredentials: true });
       console.log("Login successful:", response.data);
 
       /* Validate response structure

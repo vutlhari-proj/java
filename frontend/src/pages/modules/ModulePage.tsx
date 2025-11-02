@@ -79,7 +79,7 @@ export function ModulePage() {
             <div className="d-flex align-items-center gap-3">
               <h1>Module Information</h1>
               <div className="img-container pointer d-flex align-items-center" onClick={handleEditClick}>
-                <img src="/images/icons/pencil.svg" alt="Edit Module Info" className="img" />
+                <i className="bi bi-pencil-square me-5"></i>
                 <span className="tooltip">Edit Module</span>
               </div>
             </div>

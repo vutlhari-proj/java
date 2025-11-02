@@ -5,11 +5,11 @@ interface CourseModuleConfig {
 }
 export const courseModuleConfigs = (code: string): Record<string, CourseModuleConfig> => ({
   course: {
-    apiEndpoint: `/api/courses/${code}`,
+    apiEndpoint: `http://10.2.40.218:8081/api/courses/${code}`,
     cacheKey: `course-${code}`
   },
   module: {
-    apiEndpoint: `/api/modules/${code}`,
+    apiEndpoint: `http://10.2.40.218:8081/api/modules/${code}`,
     cacheKey: `module-${code}`
   }
 });

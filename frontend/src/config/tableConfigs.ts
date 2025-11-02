@@ -20,9 +20,9 @@ export const tableConfigs: Record<string, TableConfig> = {
     ],
     entityName: "course",
     idKey: "code",
-    apiEndpoint: "/api/courses",
+    apiEndpoint: "http://10.2.40.218:8081/api/courses",
     cacheKey: "courses",
-    pages: (index: number, size: number) => `/api/courses?page=${index}&size=${size}`,
+    pages: (index: number, size: number) => `http://10.2.40.218:8081/api/courses?page=${index}&size=${size}`,
   },
   modules: {
     columns: [
@@ -31,8 +31,8 @@ export const tableConfigs: Record<string, TableConfig> = {
     ],
     entityName: "module",
     idKey: "code",
-    apiEndpoint: "/api/modules",
+    apiEndpoint: "http://10.2.40.218:8081/api/modules",
     cacheKey: "modules",
-    pages: (index: number, size: number) => `/api/modules?page=${index}&size=${size}`,
+    pages: (index: number, size: number) => `http://10.2.40.218:8081/api/modules?page=${index}&size=${size}`,
   },
 };

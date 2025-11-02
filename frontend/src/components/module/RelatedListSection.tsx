@@ -86,18 +86,21 @@ export function RelatedListSection({
             {items.map((it) => (
               <span
                 key={it.code}
-                className="badge text-bg-secondary d-inline-flex align-items-center"
+                className="badge text-bg-secondary d-flex align-items-center"
                 style={{
                   color: 'var(--text-color)',
-                  border: '1px solid var(--border-color)'
+                  border: '1px solid var(--border-color)',
+                  width: '100%',
+                  justifyContent: 'space-between',
                 }}
               >
-                <span className="me-2">{it.code} - {it.name}</span>
+                <span className="me-2 text-wrap text-start" style={{ flex: '1 1 auto' }}>{it.code} - {it.name}</span>
                 <button
                   type="button"
                   className="btn p-0 d-inline-flex align-items-center justify-content-center ms-1"
                   aria-label={`Remove ${it.code}`}
                   onClick={() => onRemove(it.code)}
+                  style={{ flex: '0 0 auto' }}
                 >
                   <i className="bi bi-dash icon-small" />
                 </button>

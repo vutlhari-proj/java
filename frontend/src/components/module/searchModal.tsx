@@ -19,10 +19,11 @@ function SearchModal({
   const [query, setQuery] = useState("");
   const [searchedItems, setSearchedItems] = useState<(ModuleProp | CourseProp)[]>([]);
   const input = useRef<HTMLInputElement>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
 
   // Configure request/response types for search
   const { mutateData: search } = usePostData<ModuleSearchRequest, { results: ModuleProp[] | CourseProp[] }>({
-    apiEndpoint: "/api/search",
+    apiEndpoint: "http://10.2.40.218:8081/api/search",
     onSuccess: (data) => {
       // Backend returns { results: [...] }
       const items = data?.results || [];
@@ -58,9 +59,24 @@ function SearchModal({
     return () => window.removeEventListener("keydown", onKey);
   }, [onClose]);
 
+  // Close when clicking outside the modal container
+  useEffect(() => {
+    if (!onClose) return;
+    const onDocMouse = (e: MouseEvent) => {
+      const root = rootRef.current;
+      if (!root) return;
+      // If the click target is outside the root element, close
+      if (e.target instanceof Node && !root.contains(e.target)) {
+        onClose();
+      }
+    };
+    document.addEventListener('mousedown', onDocMouse);
+    return () => document.removeEventListener('mousedown', onDocMouse);
+  }, [onClose]);
+
 
   return (
-    <div className="search d-flex justify-content-center align-items-center flex-column gap-4 p-4">
+    <div ref={rootRef} className="search d-flex justify-content-center align-items-center flex-column gap-4 p-4">
       <div className="search-input d-flex justify-content-center align-items-center">
         <input
           className="p-1"

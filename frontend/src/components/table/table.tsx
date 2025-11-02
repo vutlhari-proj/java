@@ -30,7 +30,7 @@ export function Table({ data, columns, entityName, idKey, onLoadMore, hasMore = 
   }, [displaySearchInput]);
 
   const { mutateData: search, isLoading } = usePostData<ModuleSearchRequest, { results: ModuleProp[] | CourseProp[] }>({
-    apiEndpoint: "/api/search",
+    apiEndpoint: "http://10.2.40.218:8081/api/search",
     onSuccess: (data) => {
       const items = data?.results || [];
       setSearchedItems(Array.isArray(items) ? items : []);
