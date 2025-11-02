@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Loading, Navbar, Table } from "@/components";
+import { MobileTable } from "@/components/table/mobileTable";
 import type { TableData } from "@/types";
 
 export interface ColumnDef { key: string; header: string }
@@ -32,6 +33,22 @@ export function PaginatedTablePage(props: Props) {
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return;
+    const mq = window.matchMedia('(max-width: 576px)');
+    const onChange = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    // Set initial
+    setIsMobile(mq.matches);
+    // Listen for changes
+    if (mq.addEventListener) mq.addEventListener('change', onChange);
+    else mq.addListener(onChange as unknown as EventListener);
+    return () => {
+      if (mq.removeEventListener) mq.removeEventListener('change', onChange);
+      else mq.removeListener(onChange as unknown as EventListener);
+    };
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -100,15 +117,27 @@ export function PaginatedTablePage(props: Props) {
         {isLoading && page === 0 ? (
           <Loading />
         ) : items.length > 0 ? (
-          <Table
-            data={items as unknown as TableData[]}
-            columns={columns}
-            entityName={entityName}
-            idKey={idKey}
-            onLoadMore={loadMore}
-            hasMore={hasMore}
-            isLoadingMore={isLoadingMore}
-          />
+          isMobile ? (
+            <MobileTable
+              data={items as unknown as TableData[]}
+              columns={columns}
+              entityName={entityName}
+              idKey={idKey}
+              onLoadMore={loadMore}
+              hasMore={hasMore}
+              isLoadingMore={isLoadingMore}
+            />
+          ) : (
+            <Table
+              data={items as unknown as TableData[]}
+              columns={columns}
+              entityName={entityName}
+              idKey={idKey}
+              onLoadMore={loadMore}
+              hasMore={hasMore}
+              isLoadingMore={isLoadingMore}
+            />
+          )
         ) : (
           <div className="alert alert-info">No {entityName}s available at the moment.</div>
         )}

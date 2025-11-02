@@ -44,19 +44,19 @@ interface ModuleConfig {
 export const ModuleConfigs = (): Record<string, ModuleConfig> => ({
   module: {
     post:{
-      apiEndpoint: 'http://10.2.40.218:8081/api/modules',
+      apiEndpoint: 'http://10.2.41.95:8081/api/modules',
       payload: (data: ModuleExtendedProp) => data
     },
     put:{
-      apiEndpoint: 'http://10.2.40.218:8081/api/modules/update',
+      apiEndpoint: 'http://10.2.41.95:8081/api/modules/update',
       payload: (data: ModuleExtendedProp) => data
     },
     delete:{
-      apiEndpoint: 'http://10.2.40.218:8081/api/modules/delete',
+      apiEndpoint: 'http://10.2.41.95:8081/api/modules/delete',
       payload: (data: { code: string }) => data
     },
     search:{
-      apiEndpoint: 'http://10.2.40.218:8081/api/search',
+      apiEndpoint: 'http://10.2.41.95:8081/api/search',
       payload: (data: ModuleSearchRequest) => data
     }
   }

@@ -10,7 +10,7 @@ export function AuthProvider({ children }: {children: ReactNode}) {
   useEffect(() => {
     const authenticate = async () => {
       try {
-        const response = await axios.get("http://10.2.40.218:8081/api/auth/me", { withCredentials: true });
+        const response = await axios.get("http://10.2.41.95:8081/api/auth/me", { withCredentials: true });
         console.log("Authentication check response:", response.data);
         setUser(response.data.userExpanded || response.data);
       }

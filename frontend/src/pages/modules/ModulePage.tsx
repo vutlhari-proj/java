@@ -6,9 +6,12 @@ import { Navbar } from "@/components";
 import './modulePage.css';
 import { ModuleCard, Loading } from "@/components";
 import { ModuleModal } from "@/components/module/ModuleModal";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { Role } from "@/services";
+import { AuthContext } from "@/context";
 
 export function ModulePage() {
+  const { user } = useContext(AuthContext);
   const [searchParams] = useSearchParams();
   const code = searchParams.get("code");
   const [showModal, setShowModal] = useState(false);
@@ -78,10 +81,13 @@ export function ModulePage() {
           <div style={{ width: 'min(1200px, 95vw)' }}>
             <div className="d-flex align-items-center gap-3">
               <h1>Module Information</h1>
-              <div className="img-container pointer d-flex align-items-center" onClick={handleEditClick}>
+
+              {user?.role === Role.ADMINISTRATOR && (
+                <div className="img-container pointer d-flex align-items-center" onClick={handleEditClick}>
                 <i className="bi bi-pencil-square me-5"></i>
                 <span className="tooltip">Edit Module</span>
               </div>
+              )}
             </div>
           </div>
         </div>

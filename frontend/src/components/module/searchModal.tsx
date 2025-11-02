@@ -23,7 +23,7 @@ function SearchModal({
 
   // Configure request/response types for search
   const { mutateData: search } = usePostData<ModuleSearchRequest, { results: ModuleProp[] | CourseProp[] }>({
-    apiEndpoint: "http://10.2.40.218:8081/api/search",
+    apiEndpoint: "http://10.2.41.95:8081/api/search",
     onSuccess: (data) => {
       // Backend returns { results: [...] }
       const items = data?.results || [];
