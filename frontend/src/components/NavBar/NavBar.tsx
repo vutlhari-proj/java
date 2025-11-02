@@ -45,7 +45,7 @@ export function Navbar() {
           data-bs-theme={backgroundColor}>
           <UserOffcanvas
             id="offcanvasUser"
-            title="User Menu" />
+            title="Menu" />
         </NavbarBs.Offcanvas>
       </Container>
     </NavbarBs>

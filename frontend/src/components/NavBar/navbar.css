@@ -16,3 +16,54 @@
   background-color: var(--hover-bg);
 }
 
+/* Reduce padding on small screens (phones) */
+@media (max-width: 576px) {
+  .navbar {
+    padding: 0.25rem 0.5rem !important;
+  }
+
+  .offcanvas {
+    padding: 0.5rem !important;
+  }
+
+  .offCanvasItem{
+    padding: 0.4rem 0.5rem;
+  }
+
+  /* Tighten other navbar elements on mobile */
+  .navbar .navbar-brand {
+    font-size: 1rem;
+    padding: 0.125rem 0;
+    margin-right: 0.5rem;
+  }
+
+  .navbar .nav-link {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .navbar .navbar-toggler {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.95rem;
+  }
+
+  /* small icon sizing for compact header */
+  .navbar .bi,
+  .navbar .icon-medium,
+  .img-container i {
+    font-size: 1rem;
+  }
+
+  .img-container {
+    padding: 0.5rem;
+    border-radius: 0.35rem;
+  }
+
+  .offCanvasItem, .dropdown-item,
+  .dropdown {
+    font-size: 0.95rem;
+  }
+}
+
+
+
